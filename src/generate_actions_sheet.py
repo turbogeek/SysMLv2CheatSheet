@@ -33,7 +33,21 @@ def generate_for_theme(theme_key, theme):
         [("   then", theme.c_keyword), (" strike", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Action Definition", lines, "Reusable behavior spec.", theme, sheet_name="Actions", wrapper_type="action")
+    code_1 = """package Actions_1ActionDefinition {
+    private import ScalarValues::*;
+    private import SysML::*;
+    attribute def Speed;
+    attribute def Result;
+    action def Serve {
+       in speed : Speed;
+       out result : Result;
+       first toss;
+       then strike;
+       action toss;
+       action strike;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Action Definition", lines, "Reusable behavior spec.", theme, full_code=code_1, sheet_name="Actions", wrapper_type="action")
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -41,12 +55,27 @@ def generate_for_theme(theme_key, theme):
     lines = [
         [("action", theme.c_keyword), (" playPoint", theme.c_normal), (" {", theme.c_normal)],
         [("   action", theme.c_keyword), (" serve", theme.c_normal), (" :", theme.c_normal), (" Serve", theme.c_type), (";", theme.c_normal)],
-        [("   perform", theme.c_keyword), (" serve", theme.c_normal), (" {", theme.c_normal), (" ...", theme.c_comment), (" }", theme.c_normal)],
+        [("   perform", theme.c_keyword), (" serve", theme.c_normal), (" {", theme.c_normal), (" /* ... */", theme.c_comment), (" }", theme.c_normal)],
         [("   action", theme.c_keyword), (" serve2", theme.c_normal), (" :", theme.c_normal), (" Serve", theme.c_type), (";", theme.c_normal)],
         [("   perform", theme.c_keyword), (" action", theme.c_keyword), (" serve2", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Action Usage", lines, "Executing an action.", theme, sheet_name='Actions', wrapper_type='action')
+
+    code_2 = """package Actions_2ActionUsage {
+    private import ScalarValues::*;
+    private import SysML::*;
+    action def Serve;
+    action def Main {
+        action playPoint {
+           action serve : Serve;
+           perform serve { /* ... */ }
+           action serve2 : Serve;
+           perform serve2;
+        }
+    }
+    view ExposeExample { expose Main; }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Action Usage", lines, "Executing an action.", theme, full_code=code_2, sheet_name='Actions', wrapper_type='action')
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -58,7 +87,16 @@ def generate_for_theme(theme_key, theme):
         [("   return", theme.c_keyword), (" z", theme.c_normal), (" :", theme.c_normal), (" Real", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Parameters", lines, "Input, Output, Return.", theme, sheet_name='Actions', wrapper_type='action')
+    code_4 = """package Actions_4Parameters {
+    private import ScalarValues::*;
+    private import SysML::*;
+    action def ComputeValues {
+       in x : Real;
+       inout y : Real;
+       out z : Real;
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Parameters", lines, "Input, Output, Return.", theme, full_code=code_4, sheet_name='Actions', wrapper_type='action')
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -70,7 +108,22 @@ def generate_for_theme(theme_key, theme):
         [("   accept", theme.c_keyword), (" Signal::Resume", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Send/Accept Signal", lines, "Async communication.", theme, sheet_name='Actions', wrapper_type='action')
+    code_5 = """package Actions_5SendAcceptSignal {
+    private import ScalarValues::*;
+    private import SysML::*;
+    package Signal { action def Stop; action def Resume; }
+    action def Main {
+        part pOut;
+        part ctl;
+        action communicate {
+           attribute sig : Signal::Stop;
+           send sig via pOut to ctl;
+           accept Signal::Resume;
+        }
+    }
+    view ExposeExample { expose Main; }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Send/Accept Signal", lines, "Async communication.", theme, full_code=code_5, sheet_name='Actions', wrapper_type='action')
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -81,7 +134,21 @@ def generate_for_theme(theme_key, theme):
         [("then", theme.c_keyword), (" finish", theme.c_normal), (";", theme.c_normal)],
         [("doc", theme.c_keyword), (" /* Control flow sequence */", theme.c_comment)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Succession (first/then)", lines, "Ordering of actions.", theme, sheet_name='Actions', wrapper_type='action')
+    code_6 = """package Actions_6Successionfirstthen {
+    private import ScalarValues::*;
+    private import SysML::*;
+    action def Main {
+        action start;
+        action process;
+        action finish;
+        first start;
+        then process;
+        then finish;
+        doc /* Control flow sequence */
+    }
+    view ExposeExample { expose Main; }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Succession (first/then)", lines, "Ordering of actions.", theme, full_code=code_6, sheet_name='Actions', wrapper_type='action')
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -91,7 +158,18 @@ def generate_for_theme(theme_key, theme):
         [("assign", theme.c_keyword), (" y", theme.c_normal), (" :=", theme.c_normal), (" x + 1", theme.c_normal), (";", theme.c_normal)],
         [("doc", theme.c_keyword), (" /* Value assignment */", theme.c_comment)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "7. Assignment (assign)", lines, "Setting values.", theme, sheet_name='Actions', wrapper_type='action')
+    code_7 = """package Actions_7Assignmentassign {
+    private import ScalarValues::*;
+    action def Main {
+        attribute x : Integer;
+        attribute y : Integer;
+        assign x := 42;
+        assign y := x + 1;
+        doc /* Value assignment */
+    }
+    view ExposeExample { expose Main; }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "7. Assignment (assign)", lines, "Setting values.", theme, full_code=code_7, sheet_name='Actions', wrapper_type='action')
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -101,7 +179,20 @@ def generate_for_theme(theme_key, theme):
         [("accept", theme.c_keyword), (" when", theme.c_keyword), (" t > 10.0", theme.c_normal), (";", theme.c_normal)],
         [("doc", theme.c_keyword), (" /* Event trigger with guard */", theme.c_comment)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "8. Trigger", lines, "Reacting to events.", theme, sheet_name='Actions', wrapper_type='action')
+    code_8 = """package Actions_8Trigger {
+    private import ScalarValues::*;
+    private import SysML::*;
+    action def Main {
+        action def Tick;
+        part clock;
+        attribute t : Real;
+        accept tick : Tick via clock;
+        accept when t > 10.0;
+        doc /* Event trigger with guard */
+    }
+    view ExposeExample { expose Main; }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "8. Trigger", lines, "Reacting to events.", theme, full_code=code_8, sheet_name='Actions', wrapper_type='action')
     svg += card
     cur_y_c2 += h + ROW_GAP
 

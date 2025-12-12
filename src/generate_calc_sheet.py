@@ -32,7 +32,19 @@ def generate_for_theme(theme_key, theme):
         [("   return", theme.c_keyword), (" p", theme.c_normal), (" :", theme.c_normal), (" Power", theme.c_type), (" =", theme.c_normal), (" v * i", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Calculation Definition", lines, "Reusable math expressions.", theme, sheet_name="Calculations", wrapper_type="structure")
+    code_1 = """package Calculations_1CalculationDefinition {
+    private import ScalarValues::*;
+    private import SysML::*;
+    attribute def Voltage;
+    attribute def Current;
+    attribute def Power;
+    calc def PowerCalc {
+       in v : Voltage;
+       in i : Current;
+       return p : Power = v * i;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Calculation Definition", lines, "Reusable math expressions.", theme, full_code=code_1, sheet_name="Calculations", wrapper_type="structure")
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -43,7 +55,24 @@ def generate_for_theme(theme_key, theme):
         [("   in", theme.c_keyword), (" i", theme.c_normal), (" =", theme.c_normal), (" 5.0", theme.c_string), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Calculation Usage", lines, "Performing a calculation.", theme, sheet_name="Calculations", wrapper_type="action")
+    code_2 = """package Calculations_2CalculationUsage {
+    private import ScalarValues::*;
+    private import SysML::*;
+    attribute def Voltage; attribute def Current; attribute def Power;
+    calc def PowerCalc { in v : Voltage; in i : Current; return p : Power; }
+    // Wrapped Snippet (Action Context)
+    action def Main {
+        calc  p_motor  :  PowerCalc  {
+           in  v  =  12.0 ;
+           in  i  =  5.0 ;
+        }
+    }
+
+    view ExposeExample {
+        expose Main;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Calculation Usage", lines, "Performing a calculation.", theme, full_code=code_2, sheet_name="Calculations", wrapper_type="action")
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -53,20 +82,30 @@ def generate_for_theme(theme_key, theme):
         [("   in", theme.c_keyword), (" m", theme.c_normal), (" :", theme.c_normal), (" Mass", theme.c_type), (";", theme.c_normal)],
         [("   in", theme.c_keyword), (" limit", theme.c_normal), (" :", theme.c_normal), (" Mass", theme.c_type), (";", theme.c_normal)],
         [("   m <= limit", theme.c_normal), (";", theme.c_normal)],
-        [("}", theme.c_normal)]
-    ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Constraint Definition", lines, "Reusable boolean conditions.", theme, sheet_name="Calculations", wrapper_type="structure")
-    svg += card
-    cur_y_c1 += h + ROW_GAP
-
-    # --- Card 4: Constraint Usage ---
-    lines = [
         [("constraint", theme.c_keyword), (" checkMass", theme.c_normal), (" :", theme.c_normal), (" MassLimit", theme.c_type), (" {", theme.c_normal)],
         [("   in", theme.c_keyword), (" m", theme.c_normal), (" =", theme.c_normal), (" self.mass", theme.c_normal), (";", theme.c_normal)],
         [("   in", theme.c_keyword), (" limit", theme.c_normal), (" =", theme.c_normal), (" 1000.0", theme.c_string), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Constraint Usage", lines, "Applying a constraint.", theme, sheet_name="Calculations", wrapper_type="action")
+    code_4 = """package Calculations_4ConstraintUsage {
+    private import ScalarValues::*;
+    private import SysML::*;
+    attribute def Mass;
+    constraint def MassLimit { in m : Mass; in limit : Mass; }
+    // Wrapped Snippet (Action Context)
+    action def Main {
+        attribute mass : Mass;
+        constraint  checkMass  :  MassLimit  {
+           in  m  =  mass ;
+           in  limit  =  1000.0 ;
+        }
+    }
+
+    view ExposeExample {
+        expose Main;
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Constraint Usage", lines, "Applying a constraint.", theme, full_code=code_4, sheet_name="Calculations", wrapper_type="action")
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -79,7 +118,22 @@ def generate_for_theme(theme_key, theme):
         [("   y < 0", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Assertions", lines, "Enforcing truth.", theme, sheet_name="Calculations", wrapper_type="action")
+    code_5 = """package Calculations_5Assertions {
+    private import ScalarValues::*;
+    private import SysML::*;
+    action def Main {
+        attribute x : Integer;
+        attribute y : Integer;
+        assert constraint {
+           x > 0
+        }
+        assert constraint {
+           not (y < 0)
+        }
+    }
+    view ExposeExample { expose Main; }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Assertions", lines, "Enforcing truth.", theme, full_code=code_5, sheet_name="Calculations", wrapper_type="action")
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -90,7 +144,17 @@ def generate_for_theme(theme_key, theme):
         [("   require", theme.c_keyword), (" constraint", theme.c_keyword), (" {", theme.c_normal), (" pressure < 50", theme.c_normal), (" }", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Requirements", lines, "Assumptions and requirements.", theme, sheet_name="Calculations", wrapper_type="structure")
+    code_6 = """package Calculations_6Requirements {
+    private import ScalarValues::*;
+    private import SysML::*;
+    requirement def Safety {
+       attribute temp : Real;
+       attribute pressure : Real;
+       assume constraint { temp < 100 }
+       require constraint { pressure < 50 }
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Requirements", lines, "Assumptions and requirements.", theme, full_code=code_6, sheet_name="Calculations", wrapper_type="structure")
     svg += card
     cur_y_c2 += h + ROW_GAP
 

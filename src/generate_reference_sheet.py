@@ -33,7 +33,25 @@ def generate_for_theme(theme_key, theme):
         [("requirement", theme.c_keyword), (", ", theme.c_normal), ("use case", theme.c_keyword)],
         [("import", theme.c_keyword), (", ", theme.c_normal), ("alias", theme.c_keyword), (", ", theme.c_normal), ("metadata", theme.c_keyword)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Common Keywords", lines, "Core language definitions.", theme, sheet_name='Reference', wrapper_type='structure')
+    code_1 = """package Reference_1CommonKeywords {
+    doc /*
+      package, import, private import
+      attribute def, attribute
+      part def, part
+      action def, action
+      item def, item
+      state def, state
+      interface def, port def, port
+      connection def, connection
+      requirement def, requirement
+      constraint def, constraint, assert
+      analysis def, analysis
+      verification def, verification
+      view def, view
+      metadata def, metadata
+    */
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Common Keywords", lines, "Core language definitions.", theme, full_code=code_1, sheet_name='Reference', wrapper_type='structure')
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -45,7 +63,17 @@ def generate_for_theme(theme_key, theme):
         [("String", theme.c_type), (" /* 'text\" */", theme.c_comment)],
         [("UnlimitedNatural", theme.c_type), (" /* 0, 1, * */", theme.c_comment)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Primitive Types", lines, "Basic data types.", theme, sheet_name='Reference', wrapper_type='structure')
+    code_2 = """package Reference_2PrimitiveTypes {
+    private import ScalarValues::*;
+    private import Base::*;
+    private import SysML::*;
+    attribute b : Boolean; // true, false
+    attribute i : Integer; // 1, -5, 0
+    attribute r : Real; // 3.14, 1.0
+    attribute s : String; // 'text'
+    attribute n : Natural; // 0, 1, * (UnlimitedNatural in v1)
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Primitive Types", lines, "Basic data types.", theme, full_code=code_2, sheet_name='Reference', wrapper_type='structure')
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -58,7 +86,19 @@ def generate_for_theme(theme_key, theme):
         [("ref", theme.c_keyword), (" Reference (Pointer)", theme.c_normal)],
         [("import", theme.c_keyword), (" Import Namespace", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Relationships", lines, "Connecting elements.", theme, sheet_name='Reference', wrapper_type='structure')
+    code_3 = """package Reference_3Relationships {
+    doc /*
+      Generalization ( :> ) - Inheritance
+      Subsetting ( :> ) - Hierarchy
+      Redefinition ( :>> ) - Specialized replacement
+      Reference ( references ) - Pointer
+      Conjugation ( ~ ) - Reverse port
+      Binding ( = ) - Equality
+      Assignment ( := ) - Value set
+      Succession ( first..then ) - Ordering
+    */
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Relationships", lines, "Connecting elements.", theme, full_code=code_3, sheet_name='Reference', wrapper_type='structure')
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -70,7 +110,19 @@ def generate_for_theme(theme_key, theme):
         [("doc /* Documentation */", theme.c_comment)],
         [("comment", theme.c_keyword), (" about", theme.c_keyword), (" element", theme.c_normal), (" /* text */", theme.c_comment)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Comments", lines, "Annotating code.", theme, sheet_name='Reference', wrapper_type='structure')
+    code_4 = """package Reference_4Comments {
+    /* Single line */
+    /* Multi-line
+       comment */
+    doc /* Documentation */
+    /* Single line */
+    /* Multi-line
+       comment */
+    doc /* Documentation */
+    part element;
+    comment about element /* text */
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Comments", lines, "Annotating code.", theme, full_code=code_4, sheet_name='Reference', wrapper_type='structure')
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -85,7 +137,16 @@ def generate_for_theme(theme_key, theme):
         [("Part/Attr", theme.c_normal), (" -> [1]", theme.c_normal)],
         [("Other", theme.c_normal), (" -> [0..*]", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Multiplicity", lines, "Cardinality & Ordering.", theme, sheet_name='Reference', wrapper_type='structure')
+    code_5 = """package Reference_5Multiplicity {
+    doc /*
+      [1]      - Exactly one (Default)
+      [0..1]   - Optional
+      [*]      - Zero or more
+      [1..*]   - One or more
+      [2..5]   - Specific range
+    */
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Multiplicity", lines, "Cardinality & Ordering.", theme, full_code=code_5, sheet_name='Reference', wrapper_type='structure')
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -95,7 +156,14 @@ def generate_for_theme(theme_key, theme):
         [("private", theme.c_keyword), (" (internal only)", theme.c_normal)],
         [("protected", theme.c_keyword), (" (subtypes only)", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Visibility", lines, "Access control.", theme, sheet_name='Reference', wrapper_type='structure')
+    code_6 = """package Reference_6Visibility {
+    doc /*
+      public    (default) - Visible everywhere
+      private   (private) - Visible only inside
+      protected (protected) - Visible to children
+    */
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Visibility", lines, "Access control.", theme, full_code=code_6, sheet_name='Reference', wrapper_type='structure')
     svg += card
     cur_y_c2 += h + ROW_GAP
 

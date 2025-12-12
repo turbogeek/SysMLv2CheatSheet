@@ -33,7 +33,17 @@ def generate_for_theme(theme_key, theme):
         [("   state", theme.c_keyword), (" Serving", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. State Definition", lines, "States and lifecycle actions.", theme, sheet_name="Behavior", wrapper_type="action")
+    code_1 = """package Behavior_1StateDefinition {
+    private import ScalarValues::*;
+    private import SysML::*;
+    // Wrapped Snippet (Structure Context)
+    state   def  PracticeSession  {
+       entry ;  exit ;
+       state  Idle ;
+       state  Serving ;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. State Definition", lines, "States and lifecycle actions.", theme, full_code=code_1, sheet_name="Behavior", wrapper_type="structure")
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -45,7 +55,24 @@ def generate_for_theme(theme_key, theme):
         [("   do", theme.c_keyword), (" action", theme.c_keyword), (" log", theme.c_normal), (" :", theme.c_normal), (" Log", theme.c_type), ("(", theme.c_normal), ("'Serving'", theme.c_string), (");", theme.c_normal)],
         [("   then", theme.c_keyword), (" Serving", theme.c_type), (";", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Transitions", lines, "Move between states on triggers.", theme, sheet_name="Behavior", wrapper_type="action")
+
+    code_2 = """package Behavior_2Transitions {
+    private import ScalarValues::*;
+    private import SysML::*;
+    state def Main {
+        state Idle;
+        state Serving;
+        action def Log { in msg : String; }
+        action def Start;
+        part Remote { action start : Start; }
+        transition startServe
+           first Idle
+           accept Remote.start
+           do action log : Log { in msg = 'Serving'; }
+           then Serving;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Transitions", lines, "Move between states on triggers.", theme, full_code=code_2, sheet_name="Behavior", wrapper_type="state")
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -58,7 +85,18 @@ def generate_for_theme(theme_key, theme):
         [("   then", theme.c_keyword), (" Red", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Guards & Effects", lines, "Conditions and actions on transition.", theme, sheet_name="Behavior", wrapper_type="action")
+    code_3 = """package Behavior_3GuardsEffects {
+    private import ScalarValues::*;
+    private import SysML::*;
+    state def Main {
+        state Green;
+        state Red;
+        attribute traffic : Integer;
+        action resetTimer;
+        transition t2 first Green if traffic == 0 do resetTimer then Red;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Guards & Effects", lines, "Conditions and actions on transition.", theme, full_code=code_3, sheet_name="Behavior", wrapper_type="state")
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -71,7 +109,17 @@ def generate_for_theme(theme_key, theme):
         [("      do", theme.c_keyword), (" action", theme.c_keyword), (" check", theme.c_normal), (" then", theme.c_keyword), (" selfCheck", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3b. Internal Transition", lines, "Self-transition pattern.", theme, sheet_name="Behavior", wrapper_type="action")
+    code_3b = """package Behavior_3bInternalTransition {
+    private import ScalarValues::*;
+    private import SysML::*;
+    state def Monitoring {
+       state selfCheck;
+       action def tick;
+       action check;
+       transition t1 first selfCheck accept tick do check then selfCheck;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3b. Internal Transition", lines, "Self-transition pattern.", theme, full_code=code_3b, sheet_name="Behavior", wrapper_type="structure")
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -84,7 +132,21 @@ def generate_for_theme(theme_key, theme):
         [("   then", theme.c_keyword), (" strike", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Action Definition", lines, "Reusable behavior spec.", theme, sheet_name="Behavior", wrapper_type="action")
+    code_4 = """package Behavior_4ActionDefinition {
+    private import ScalarValues::*;
+    private import SysML::*;
+    attribute def Speed;
+    attribute def Result;
+    action def Serve {
+       in speed : Speed;
+       out result : Result;
+       first toss;
+       then strike;
+       action toss;
+       action strike;
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Action Definition", lines, "Reusable behavior spec.", theme, full_code=code_4, sheet_name="Behavior", wrapper_type="structure")
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -97,7 +159,25 @@ def generate_for_theme(theme_key, theme):
         [("   }", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Action Usage", lines, "Executing an action.", theme, sheet_name="Behavior", wrapper_type="action")
+    code_5 = """package Behavior_5ActionUsage {
+    private import ScalarValues::*;
+    private import SysML::*;
+    action def Serve { in speed : Integer; }
+    // Wrapped Snippet (Action Context)
+    action def Main {
+        action  playPoint  {
+           action  serve  :  Serve ;
+           perform  serve  {
+              in  speed  =  60 ;
+           }
+        }
+    }
+
+    view ExposeExample {
+        expose Main;
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Action Usage", lines, "Executing an action.", theme, full_code=code_5, sheet_name="Behavior", wrapper_type="action")
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -111,7 +191,20 @@ def generate_for_theme(theme_key, theme):
         [("   }", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Use Cases", lines, "High-level user goals.", theme, sheet_name="Behavior", wrapper_type="action")
+    code_6 = """package Behavior_6UseCases {
+    private import ScalarValues::*;
+    private import SysML::*;
+    part def PickleBot;
+    part def Player;
+    use case def Practice {
+       subject b : PickleBot;
+       actor p : Player;
+       objective {
+          doc /* Improve skills */
+       }
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Use Cases", lines, "High-level user goals.", theme, full_code=code_6, sheet_name="Behavior", wrapper_type="structure")
     svg += card
     cur_y_c2 += h + ROW_GAP
 

@@ -2,13 +2,13 @@ package Patterns_1MetadataAnnotations {
     private import ScalarValues::*;
     private import SysML::*;
     // Wrapped Snippet (Structure Context)
-    metadata def Status {
-      attribute priority : Integer;
-      attribute approved : Boolean;
+    metadata   def  Status  {
+      attribute  priority  :  Integer ;
+      attribute  approved  :  Boolean ;
     }
-    part myPart {
-      metadata Status {
-        priority = 1;
+    part  myPart  {
+      metadata  Status  {
+        priority  =  1 ;
       }
     }
 }

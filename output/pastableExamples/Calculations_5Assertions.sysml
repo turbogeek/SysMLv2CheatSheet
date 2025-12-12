@@ -1,17 +1,15 @@
 package Calculations_5Assertions {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
     action def Main {
+        attribute x : Integer;
+        attribute y : Integer;
         assert constraint {
-           x > 0;
+           x > 0
         }
-        not assert constraint {
-           y < 0;
+        assert constraint {
+           not (y < 0)
         }
     }
-
-    view ExposeExample {
-        expose Main;
-    }
+    view ExposeExample { expose Main; }
 }

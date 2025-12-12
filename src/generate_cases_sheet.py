@@ -35,7 +35,21 @@ def generate_for_theme(theme_key, theme):
         [("   }", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Use Case Definition", lines, "Functional goals.", theme, sheet_name='Cases', wrapper_type='structure')
+    code_1 = """package Cases_1UseCaseDefinition {
+    private import ScalarValues::*;
+    private import SysML::*;
+    attribute def Vehicle;
+    attribute def Person;
+    // Wrapped Snippet (Structure Context)
+    use   case   def  DriveCar  {
+        subject  vehicle  :  Vehicle ;
+        actor  driver  :  Person ;
+        objective  {
+           doc  /* Transport safely */
+        }
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Use Case Definition", lines, "Functional goals.", theme, full_code=code_1, sheet_name='Cases', wrapper_type='structure')
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -49,7 +63,24 @@ def generate_for_theme(theme_key, theme):
         [("   return", theme.c_keyword), (" verdict", theme.c_normal), (" :", theme.c_normal), (" VerdictKind", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Test Case (Verification)", lines, "Verifying requirements.", theme, sheet_name='Cases', wrapper_type='structure')
+    code_2 = """package Cases_2TestCaseVerification {
+    private import ScalarValues::*;
+    private import SysML::*;
+    attribute def Vehicle;
+    attribute def Person;
+    attribute def VerdictKind;
+    // Wrapped Snippet (Structure Context)
+    requirement brakeReq;
+    requirement stoppingDistance;
+    verification   def  TestBrakes  {
+       objective {
+           verify  brakeReq ;
+           verify  stoppingDistance ;
+       }
+       return  verdict  :  VerdictKind ;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Test Case (Verification)", lines, "Verifying requirements.", theme, full_code=code_2, sheet_name='Cases', wrapper_type='structure')
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -63,7 +94,20 @@ def generate_for_theme(theme_key, theme):
         [("   return", theme.c_keyword), (" mpg", theme.c_normal), (" :", theme.c_normal), (" Real", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Analysis Case", lines, "Evaluating properties.", theme, sheet_name='Cases', wrapper_type='structure')
+    code_3 = """package Cases_3AnalysisCase {
+    private import ScalarValues::*;
+    private import SysML::*;
+    attribute def Vehicle;
+    // Wrapped Snippet (Structure Context)
+    analysis   def  FuelEconomy  {
+       subject  vehicle  :  Vehicle ;
+       objective  {
+          doc  /* Estimate MPG */
+       }
+       return  mpg  :  Real ;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Analysis Case", lines, "Evaluating properties.", theme, full_code=code_3, sheet_name='Cases', wrapper_type='structure')
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -73,7 +117,18 @@ def generate_for_theme(theme_key, theme):
         [("   actor", theme.c_keyword), (" driver", theme.c_normal), (" =", theme.c_normal), (" me", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Case Usage", lines, "Instantiating a case.", theme, sheet_name='Cases', wrapper_type='structure')
+    code_4 = """package Cases_4CaseUsage {
+    private import ScalarValues::*;
+    private import SysML::*;
+    attribute def Vehicle; attribute def Person;
+    use case def DriveCar { subject vehicle : Vehicle; actor driver : Person; }
+    part me : Person;
+    // Wrapped Snippet (Structure Context)
+    use   case  driveToWork  :  DriveCar  {
+       actor  driver  =  me ;
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Case Usage", lines, "Instantiating a case.", theme, full_code=code_4, sheet_name='Cases', wrapper_type='structure')
     svg += card
     cur_y_c2 += h + ROW_GAP
 

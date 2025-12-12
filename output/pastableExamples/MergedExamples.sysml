@@ -19,12 +19,12 @@ package WhileLoopExample {
 
 // --- Source: ActionPatterns_2ForLoop.sysml ---
 package ForLoopExample {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     action def Main {
         action process { in i : Integer; }
         action loopAction {
             for i in 1..10 {
-                perform process(i);
+                perform process { in i = i; }
             }
         }
     }
@@ -69,52 +69,51 @@ package LoopVariationsExample {
 package ActionPatterns_3IfElse {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
     action def Main {
+        attribute x : Integer = 0;
+        attribute y : Integer;
         if x > 0 {
            assign y := 1;
         } else {
            assign y := 0;
         }
     }
-
-    view ExposeExample {
-        expose Main;
-    }
+    view ExposeExample { expose Main; }
 }
 
 // --- Source: ActionPatterns_4AcceptVariations.sysml ---
 package ActionPatterns_4AcceptVariations {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
     action def Main {
-        accept startSignal : StartSignal;
-        comment about startSignal ...
-        accept when temp > 100;
-        accept at schedule;
-        accept after 10 [s];
+        attribute temp : Real;
+        attribute s : Real;
+        part schedule;
+        action def StartSignal;
+        action acceptSomething {
+            accept startSignal : StartSignal;
+            doc /* about startSignal ... */
+            accept when temp > 100;
+            accept at schedule;
+            accept after 10 [s];
+        }
     }
-
-    view ExposeExample {
-        expose Main;
-    }
+    view ExposeExample { expose Main; }
 }
 
 // --- Source: ActionPatterns_5SendVariations.sysml ---
 package ActionPatterns_5SendVariations {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
     action def Main {
-        action sendA send startSignal via p1;
-        send startSignal via p1;
+        action def StartSignal;
+        part p1;
+        attribute sig : StartSignal;
+        action sendA { send sig via p1; }
+        send sig via p1;
         doc /* Named vs Unnamed */
     }
-
-    view ExposeExample {
-        expose Main;
-    }
+    view ExposeExample { expose Main; }
 }
 
 // --- Source: ActionPatterns_6ControlNodes.sysml ---
@@ -123,10 +122,10 @@ package ActionPatterns_6ControlNodes {
     private import SysML::*;
     // Wrapped Snippet (Action Context)
     action def Main {
-        fork f1;
-        join j1;
-        decide d1;
-        merge m1;
+        fork  f1 ;
+        join  j1 ;
+        decide  d1 ;
+        merge  m1 ;
     }
 
     view ExposeExample {
@@ -137,37 +136,34 @@ package ActionPatterns_6ControlNodes {
 // --- Source: ActionPatterns_7AdvancedSend.sysml ---
 package ActionPatterns_7AdvancedSend {
     private import ScalarValues::*;
+    private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
+    private import Base::*;
     action def Main {
+        attribute val : Anything;
+        part monitor;
         action sendReading send {
            in payload;
            in sender = monitor;
         }
         flow val to sendReading.payload;
     }
-
-    view ExposeExample {
-        expose Main;
-    }
+    view ExposeExample { expose Main; }
 }
 
 // --- Source: Actions_1ActionDefinition.sysml ---
 package Actions_1ActionDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
-    action def Main {
-        action def Serve {
-           in speed : Speed;
-           out result : Result;
-           first toss;
-           then strike;
-        }
-    }
-
-    view ExposeExample {
-        expose Main;
+    attribute def Speed;
+    attribute def Result;
+    action def Serve {
+       in speed : Speed;
+       out result : Result;
+       first toss;
+       then strike;
+       action toss;
+       action strike;
     }
 }
 
@@ -175,36 +171,26 @@ package Actions_1ActionDefinition {
 package Actions_2ActionUsage {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
+    action def Serve;
     action def Main {
         action playPoint {
            action serve : Serve;
-           perform serve { ... }
+           perform serve { /* ... */ }
            action serve2 : Serve;
-           perform action serve2;
+           perform serve2;
         }
     }
-
-    view ExposeExample {
-        expose Main;
-    }
+    view ExposeExample { expose Main; }
 }
 
 // --- Source: Actions_4Parameters.sysml ---
 package Actions_4Parameters {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
-    action def Main {
-        action def ComputeValues {
-           in x : Real;
-           inout y : Real;
-           return z : Real;
-        }
-    }
-
-    view ExposeExample {
-        expose Main;
+    action def ComputeValues {
+       in x : Real;
+       inout y : Real;
+       out z : Real;
     }
 }
 
@@ -212,84 +198,72 @@ package Actions_4Parameters {
 package Actions_5SendAcceptSignal {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
+    package Signal { action def Stop; action def Resume; }
     action def Main {
+        part pOut;
+        part ctl;
         action communicate {
            attribute sig : Signal::Stop;
            send sig via pOut to ctl;
            accept Signal::Resume;
         }
     }
-
-    view ExposeExample {
-        expose Main;
-    }
+    view ExposeExample { expose Main; }
 }
 
 // --- Source: Actions_6Successionfirstthen.sysml ---
 package Actions_6Successionfirstthen {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
     action def Main {
+        action start;
+        action process;
+        action finish;
         first start;
         then process;
         then finish;
         doc /* Control flow sequence */
     }
-
-    view ExposeExample {
-        expose Main;
-    }
+    view ExposeExample { expose Main; }
 }
 
 // --- Source: Actions_7Assignmentassign.sysml ---
 package Actions_7Assignmentassign {
     private import ScalarValues::*;
-    private import SysML::*;
-    // Wrapped Snippet (Action Context)
     action def Main {
+        attribute x : Integer;
+        attribute y : Integer;
         assign x := 42;
         assign y := x + 1;
         doc /* Value assignment */
     }
-
-    view ExposeExample {
-        expose Main;
-    }
+    view ExposeExample { expose Main; }
 }
 
 // --- Source: Actions_8Trigger.sysml ---
 package Actions_8Trigger {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
     action def Main {
+        action def Tick;
+        part clock;
+        attribute t : Real;
         accept tick : Tick via clock;
         accept when t > 10.0;
         doc /* Event trigger with guard */
     }
-
-    view ExposeExample {
-        expose Main;
-    }
+    view ExposeExample { expose Main; }
 }
 
 // --- Source: Behavior_1StateDefinition.sysml ---
 package Behavior_1StateDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
-    action def Main {
-        state def PracticeSession {
-           entry; exit;
-           state Idle;
-           state Serving;
-        }
-    }
-
-    view ExposeExample {
-        expose Main;
+    // Wrapped Snippet (Structure Context)
+    state   def  PracticeSession  {
+       entry ;  exit ;
+       state  Idle ;
+       state  Serving ;
     }
 }
 
@@ -297,17 +271,17 @@ package Behavior_1StateDefinition {
 package Behavior_2Transitions {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
-    action def Main {
+    state def Main {
+        state Idle;
+        state Serving;
+        action def Log { in msg : String; }
+        action def Start;
+        part Remote { action start : Start; }
         transition startServe
            first Idle
-           accept Remote.Start
-           do action log : Log('Serving');
+           accept Remote.start
+           do action log : Log { in msg = 'Serving'; }
            then Serving;
-    }
-
-    view ExposeExample {
-        expose Main;
     }
 }
 
@@ -315,18 +289,12 @@ package Behavior_2Transitions {
 package Behavior_3GuardsEffects {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
-    action def Main {
-        transition t2 {
-           first Green
-           if traffic == 0
-           do action resetTimer
-           then Red;
-        }
-    }
-
-    view ExposeExample {
-        expose Main;
+    state def Main {
+        state Green;
+        state Red;
+        attribute traffic : Integer;
+        action resetTimer;
+        transition t2 first Green if traffic == 0 do resetTimer then Red;
     }
 }
 
@@ -334,18 +302,11 @@ package Behavior_3GuardsEffects {
 package Behavior_3bInternalTransition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
-    action def Main {
-        state def Monitoring {
-           state selfCheck;
-           transition selfCheck
-              accept tick
-              do action check then selfCheck;
-        }
-    }
-
-    view ExposeExample {
-        expose Main;
+    state def Monitoring {
+       state selfCheck;
+       action def tick;
+       action check;
+       transition t1 first selfCheck accept tick do check then selfCheck;
     }
 }
 
@@ -353,18 +314,15 @@ package Behavior_3bInternalTransition {
 package Behavior_4ActionDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
-    action def Main {
-        action def Serve {
-           in speed : Speed;
-           out result : Result;
-           first toss;
-           then strike;
-        }
-    }
-
-    view ExposeExample {
-        expose Main;
+    attribute def Speed;
+    attribute def Result;
+    action def Serve {
+       in speed : Speed;
+       out result : Result;
+       first toss;
+       then strike;
+       action toss;
+       action strike;
     }
 }
 
@@ -372,12 +330,13 @@ package Behavior_4ActionDefinition {
 package Behavior_5ActionUsage {
     private import ScalarValues::*;
     private import SysML::*;
+    action def Serve { in speed : Integer; }
     // Wrapped Snippet (Action Context)
     action def Main {
-        action playPoint {
-           action serve : Serve;
-           perform serve {
-              in speed = 60;
+        action  playPoint  {
+           action  serve  :  Serve ;
+           perform  serve  {
+              in  speed  =  60 ;
            }
         }
     }
@@ -391,19 +350,14 @@ package Behavior_5ActionUsage {
 package Behavior_6UseCases {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
-    action def Main {
-        use case def Practice {
-           subject b : PickleBot;
-           actor p : Player;
-           objective {
-              doc /* Improve skills */
-           }
-        }
-    }
-
-    view ExposeExample {
-        expose Main;
+    part def PickleBot;
+    part def Player;
+    use case def Practice {
+       subject b : PickleBot;
+       actor p : Player;
+       objective {
+          doc /* Improve skills */
+       }
     }
 }
 
@@ -411,7 +365,9 @@ package Behavior_6UseCases {
 package Calculations_1CalculationDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    attribute def Voltage;
+    attribute def Current;
+    attribute def Power;
     calc def PowerCalc {
        in v : Voltage;
        in i : Current;
@@ -423,11 +379,13 @@ package Calculations_1CalculationDefinition {
 package Calculations_2CalculationUsage {
     private import ScalarValues::*;
     private import SysML::*;
+    attribute def Voltage; attribute def Current; attribute def Power;
+    calc def PowerCalc { in v : Voltage; in i : Current; return p : Power; }
     // Wrapped Snippet (Action Context)
     action def Main {
-        calc p_motor : PowerCalc {
-           in v = 12.0;
-           in i = 5.0;
+        calc  p_motor  :  PowerCalc  {
+           in  v  =  12.0 ;
+           in  i  =  5.0 ;
         }
     }
 
@@ -436,27 +394,18 @@ package Calculations_2CalculationUsage {
     }
 }
 
-// --- Source: Calculations_3ConstraintDefinition.sysml ---
-package Calculations_3ConstraintDefinition {
-    private import ScalarValues::*;
-    private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    constraint def MassLimit {
-       in m : Mass;
-       in limit : Mass;
-       m <= limit;
-    }
-}
-
 // --- Source: Calculations_4ConstraintUsage.sysml ---
 package Calculations_4ConstraintUsage {
     private import ScalarValues::*;
     private import SysML::*;
+    attribute def Mass;
+    constraint def MassLimit { in m : Mass; in limit : Mass; }
     // Wrapped Snippet (Action Context)
     action def Main {
-        constraint checkMass : MassLimit {
-           in m = self.mass;
-           in limit = 1000.0;
+        attribute mass : Mass;
+        constraint  checkMass  :  MassLimit  {
+           in  m  =  mass ;
+           in  limit  =  1000.0 ;
         }
     }
 
@@ -469,27 +418,26 @@ package Calculations_4ConstraintUsage {
 package Calculations_5Assertions {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
     action def Main {
+        attribute x : Integer;
+        attribute y : Integer;
         assert constraint {
-           x > 0;
+           x > 0
         }
-        not assert constraint {
-           y < 0;
+        assert constraint {
+           not (y < 0)
         }
     }
-
-    view ExposeExample {
-        expose Main;
-    }
+    view ExposeExample { expose Main; }
 }
 
 // --- Source: Calculations_6Requirements.sysml ---
 package Calculations_6Requirements {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
     requirement def Safety {
+       attribute temp : Real;
+       attribute pressure : Real;
        assume constraint { temp < 100 }
        require constraint { pressure < 50 }
     }
@@ -499,13 +447,15 @@ package Calculations_6Requirements {
 package Cases_1UseCaseDefinition {
     private import ScalarValues::*;
     private import SysML::*;
+    attribute def Vehicle;
+    attribute def Person;
     // Wrapped Snippet (Structure Context)
-    use case def DriveCar {
-       subject vehicle : Vehicle;
-       actor driver : Person;
-       objective {
-          doc /* Transport safely */
-       }
+    use   case   def  DriveCar  {
+        subject  vehicle  :  Vehicle ;
+        actor  driver  :  Person ;
+        objective  {
+           doc  /* Transport safely */
+        }
     }
 }
 
@@ -513,13 +463,18 @@ package Cases_1UseCaseDefinition {
 package Cases_2TestCaseVerification {
     private import ScalarValues::*;
     private import SysML::*;
+    attribute def Vehicle;
+    attribute def Person;
+    attribute def VerdictKind;
     // Wrapped Snippet (Structure Context)
-    verification def TestBrakes {
-       verify brakeReq;
+    requirement brakeReq;
+    requirement stoppingDistance;
+    verification   def  TestBrakes  {
        objective {
-          verify stoppingDistance;
+           verify  brakeReq ;
+           verify  stoppingDistance ;
        }
-       return verdict : VerdictKind;
+       return  verdict  :  VerdictKind ;
     }
 }
 
@@ -527,13 +482,14 @@ package Cases_2TestCaseVerification {
 package Cases_3AnalysisCase {
     private import ScalarValues::*;
     private import SysML::*;
+    attribute def Vehicle;
     // Wrapped Snippet (Structure Context)
-    analysis def FuelEconomy {
-       subject vehicle : Vehicle;
-       objective {
-          doc /* Estimate MPG */
+    analysis   def  FuelEconomy  {
+       subject  vehicle  :  Vehicle ;
+       objective  {
+          doc  /* Estimate MPG */
        }
-       return mpg : Real;
+       return  mpg  :  Real ;
     }
 }
 
@@ -541,9 +497,12 @@ package Cases_3AnalysisCase {
 package Cases_4CaseUsage {
     private import ScalarValues::*;
     private import SysML::*;
+    attribute def Vehicle; attribute def Person;
+    use case def DriveCar { subject vehicle : Vehicle; actor driver : Person; }
+    part me : Person;
     // Wrapped Snippet (Structure Context)
-    use case driveToWork : DriveCar {
-       actor driver = me;
+    use   case  driveToWork  :  DriveCar  {
+       actor  driver  =  me ;
     }
 }
 
@@ -551,7 +510,8 @@ package Cases_4CaseUsage {
 package Connections_1ConnectionDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    part def Hub;
+    part def Device;
     connection def DeviceConn {
        end hub : Hub;
        end device : Device;
@@ -562,8 +522,12 @@ package Connections_1ConnectionDefinition {
 package Connections_1bConnectionUsage {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    part def Hub;
+    part def Device;
+    connection def DeviceConn { end hub : Hub; end device : Device; }
     part context {
+       part hub : Hub;
+       part device : Device;
        connection c1 : DeviceConn
           connect hub to device;
     }
@@ -573,7 +537,8 @@ package Connections_1bConnectionUsage {
 package Connections_2BindingConnector {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    part def A { port p1; }
+    part def B { port p2; }
     part system {
        part a : A;
        part b : B;
@@ -586,10 +551,10 @@ package Connections_3InterfaceConnection {
     private import ScalarValues::*;
     private import SysML::*;
     // Wrapped Snippet (Structure Context)
-    interface def IData {
-       end source;
-       end target;
-       flow source to target;
+    interface   def  IData  {
+       end  source ;
+       end  target ;
+       flow  source  to  target ;
     }
 }
 
@@ -597,9 +562,11 @@ package Connections_3InterfaceConnection {
 package Connections_4SuccessionFlow {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
     action process {
-       step1 then step2;
+       action step1;
+       action step2;
+       first step1;
+       then step2;
        doc /* Equivalent to: */
        flow from step1 to step2;
     }
@@ -609,7 +576,9 @@ package Connections_4SuccessionFlow {
 package Constraints_1ConstraintDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    attribute def Force;
+    attribute def Mass;
+    attribute def Acceleration;
     constraint def NewtonLaw {
       in f : Force;
       in m : Mass;
@@ -622,7 +591,10 @@ package Constraints_1ConstraintDefinition {
 package Constraints_2ConstraintUsageAssert {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    attribute def Mass;
+    attribute def Acceleration;
+    attribute def Force;
+    constraint def NewtonLaw { in f : Force; in m : Mass; in a : Acceleration; }
     part Car {
       attribute mass : Mass;
       attribute accel : Acceleration;
@@ -639,23 +611,27 @@ package Constraints_2ConstraintUsageAssert {
 package Constraints_2bInlineAssertion {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    assert constraint {
-      x > 0
+    action def Main {
+        attribute x : Integer;
+        assert constraint {
+           x > 0
+        }
+        /* Boolean expression */
     }
-    /* Boolean expression */
+    view ExposeExample { expose Main; }
 }
 
 // --- Source: Constraints_3CalculationDefinition.sysml ---
 package Constraints_3CalculationDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    attribute def Mass;
+    attribute def Speed;
+    attribute def Energy;
     calc def calcKineticEnergy {
       in m : Mass;
       in v : Speed;
-      return ke : Energy;
-      0.5 * m * v^2
+      return ke : Energy = 0.5 * m * v^2;
     }
 }
 
@@ -663,70 +639,137 @@ package Constraints_3CalculationDefinition {
 package Constraints_4CalculationUsage {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    attribute kEnergy = calcKineticEnergy(
-      m = 100[kg],
-      v = 20[m/s]
-    );
-    /* Result assigned to attribute */
+    attribute def Mass;
+    attribute def Speed;
+    attribute def Energy;
+    attribute kg;
+    attribute m;
+    attribute s;
+    calc def calcKineticEnergy { in m : Mass; in v : Speed; return ke : Energy; }
+    action def Main {
+        attribute kEnergy : Energy = calcKineticEnergy(m = 100 [kg], v = 20 [m/s]);
+    }
+    view ExposeExample { expose Main; }
 }
 
-// --- Source: Constraints_5Objective.sysml ---
-package Constraints_5Objective {
+// --- Source: Metadata_1MetadataDefinition.sysml ---
+package Metadata_1Definition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    objective def MinimizeMass {
-      in m : Mass;
-      minimize m;
+    doc /* Define custom metadata (like a Stereotype) */
+    metadata def Risk {
+        attribute level : Integer;
+        attribute desc : String;
     }
 }
 
-// --- Source: ForLoop.sysml ---
-package ForLoopExample {
-    import ScalarValues::*;
-    action def Main {
-        action process { in i : Integer; }
-        action loopAction {
-            for i in 1..10 {
-                perform process(i);
-            }
-        }
-    }
-    view LoopView {
-        expose Main;
-    }
-}
-
-// --- Source: LoopVariations.sysml ---
-package LoopVariationsExample {
+// --- Source: Metadata_2ElementAnnotation.sysml ---
+package Metadata_2ElementAnnotation {
     private import ScalarValues::*;
-    attribute def Power;
-    attribute profile : Power[*];
-    action def Main {
-        attribute x : Integer = 0;
-        attribute done : Boolean = false;
-        
-        action collectionLoop {
-            for p : Power in profile {
-                // body
-            }
-        }
-        
-        action whileUntilLoop {
-            while x < 10 {
-                assign x := x + 1;
-            } until done;
-        }
-        
-        action infiniteLoop {
-            loop {
-               assign x := x + 1;
-            } until x > 100;
+    private import SysML::*;
+    metadata def Risk { attribute level : Integer; attribute desc : String = ""; }
+    
+    doc /* Usage within element */
+    part engine {
+        metadata Risk {
+            :>> level = 5;
+            :>> desc = "Overheat potential";
         }
     }
-    view LoopView {
-        expose Main;
+    
+    doc /* Shorthand annotation nested in definition */
+    part wheel {
+        @Risk { :>> level = 1; }
+    }
+}
+
+// --- Source: Metadata_3RelationshipAnnotation.sysml ---
+package Metadata_3RelationshipAnnotation {
+    private import ScalarValues::*;
+    private import SysML::*;
+    metadata def RefineData { attribute isRefine : Boolean; }
+    requirement req1;
+    requirement req2;
+    
+    doc /* Annotating a dependency */
+    dependency from req2 to req1 {
+        metadata RefineData {
+            :>> isRefine = true;
+        }
+    }
+}
+
+// --- Source: Metadata_4StandardMetadata.sysml ---
+package Metadata_4Standard {
+    private import ScalarValues::*;
+    private import SysML::*;
+    
+    doc /* Deprecation */
+    part oldPart {
+        @Deprecated;
+    }
+    
+    metadata def FIXME;
+    
+    action check {
+        @FIXME {
+            doc /* Needs update */
+        }
+    }
+}
+
+// --- Source: Metadata_5MetadataExtension.sysml ---
+package Metadata_5Extension {
+    private import ScalarValues::*;
+    private import SysML::*;
+    
+    doc /* Base metadata */
+    metadata def TestPlan {
+        attribute tool : String;
+    }
+    
+    doc /* Extended metadata (Inheritance) */
+    metadata def LabTest :> TestPlan {
+        attribute labId : String;
+    }
+    
+    metadata def VRTest :> TestPlan {
+        attribute headsetModel : String;
+    }
+    
+    doc /* Usage with values */
+    action runUnitTests {
+        @LabTest {
+            :>> tool = "JUnit";
+            :>> labId = "Lab-101";
+        }
+    }
+    
+    action runSimTest {
+        @VRTest {
+            :>> tool = "Unity";
+            :>> headsetModel = "Quest 3";
+        }
+    }
+}
+
+// --- Source: Metadata_6ShortAnnotation.sysml ---
+package Metadata_6Hashtags {
+    private import ScalarValues::*;
+    private import SysML::*;
+    
+    package Vehicle_Metadata {
+        metadata def Vehicle;
+        metadata def Engine;
+        metadata def Wheel;
+    }
+    package Car_Example {
+        private import Vehicle_Metadata::*;
+        
+        #Vehicle def Car {
+            #Engine part carEngine [1];
+            #Wheel part carWheels [4];
+        }
     }
 }
 
@@ -735,13 +778,13 @@ package Patterns_1MetadataAnnotations {
     private import ScalarValues::*;
     private import SysML::*;
     // Wrapped Snippet (Structure Context)
-    metadata def Status {
-      attribute priority : Integer;
-      attribute approved : Boolean;
+    metadata   def  Status  {
+      attribute  priority  :  Integer ;
+      attribute  approved  :  Boolean ;
     }
-    part myPart {
-      metadata Status {
-        priority = 1;
+    part  myPart  {
+      metadata  Status  {
+        priority  =  1 ;
       }
     }
 }
@@ -750,8 +793,9 @@ package Patterns_1MetadataAnnotations {
 package Patterns_2Views {
     private import ScalarValues::*;
     private import SysML::*;
+    part def GeneralDiagram;
     // Wrapped Snippet (Structure Context)
-    view MyView : GeneralDiagram {
+    view  MyView  :  GeneralDiagram  {
     /* filter Status; */
     }
     /* Rendering specific subsets */
@@ -759,12 +803,18 @@ package Patterns_2Views {
 
 // --- Source: Patterns_3CustomUnitsNanoBanana.sysml ---
 package BananaUnits {
-  attribute <nB> nanoBanana : LengthUnit {
-    attribute unitConversion;
-      :>> prefix = nano;
-      :>> referenceUnit = 'Standard Banana';
+    private import ScalarValues::*;
+    private import SysML::*;
+    attribute def LengthUnit {
+        attribute prefix;
+        attribute referenceUnit;
     }
-  }
+    attribute nano;
+    attribute <nB> nanoBanana : LengthUnit {
+        attribute unitConversion;
+        :>> prefix = nano;
+        :>> referenceUnit = "Standard Banana";
+    }
 }
 
 // --- Source: Patterns_4AbstractvsIndividual.sysml ---
@@ -772,94 +822,100 @@ package Patterns_4AbstractvsIndividual {
     private import ScalarValues::*;
     private import SysML::*;
     // Wrapped Snippet (Structure Context)
-    abstract part def Wheel;
-    part def Bus {
-      abstract part wheel [4] : Wheel;
+    abstract  part  def  Wheel ;
+    part  def  Bus  {
+      abstract  part  wheel  [4]  :  Wheel ;
     }
-    individual part myBus : Bus {
-      part frontLeft :> wheel;
+    individual  part  myBus  :  Bus  {
+      part  frontLeft  :>  wheel ;
     }
 }
 
 // --- Source: Reference_1CommonKeywords.sysml ---
 package Reference_1CommonKeywords {
-    private import ScalarValues::*;
-    private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    package, part, item, port
-    attribute, action, state
-    transition, constraint
-    requirement, use case
-    import, alias, metadata
+    doc /*
+      package, import, private import
+      attribute def, attribute
+      part def, part
+      action def, action
+      item def, item
+      state def, state
+      interface def, port def, port
+      connection def, connection
+      requirement def, requirement
+      constraint def, constraint, assert
+      analysis def, analysis
+      verification def, verification
+      view def, view
+      metadata def, metadata
+    */
 }
 
 // --- Source: Reference_2PrimitiveTypes.sysml ---
 package Reference_2PrimitiveTypes {
     private import ScalarValues::*;
+    private import Base::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    Boolean /* true, false */
-    Integer /* 1, -5, 0 */
-    Real /* 3.14, 1.0 */
-    String /* 'text" */
-    UnlimitedNatural /* 0, 1, * */
+    attribute b : Boolean; // true, false
+    attribute i : Integer; // 1, -5, 0
+    attribute r : Real; // 3.14, 1.0
+    attribute s : String; // 'text'
+    attribute n : Natural; // 0, 1, * (UnlimitedNatural in v1)
 }
 
 // --- Source: Reference_3Relationships.sysml ---
 package Reference_3Relationships {
-    private import ScalarValues::*;
-    private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    :> Specialization (Inheritance)
-    : Classification (Typing)
-    = Binding / Equality
-    connect Connection
-    ref Reference (Pointer)
-    import Import Namespace
+    doc /*
+      Generalization ( :> ) - Inheritance
+      Subsetting ( :> ) - Hierarchy
+      Redefinition ( :>> ) - Specialized replacement
+      Reference ( references ) - Pointer
+      Conjugation ( ~ ) - Reverse port
+      Binding ( = ) - Equality
+      Assignment ( := ) - Value set
+      Succession ( first..then ) - Ordering
+    */
 }
 
 // --- Source: Reference_4Comments.sysml ---
 package Reference_4Comments {
-    private import ScalarValues::*;
-    private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    /* Single line */ (not persisted)
+    /* Single line */
     /* Multi-line
        comment */
     doc /* Documentation */
+    /* Single line */
+    /* Multi-line
+       comment */
+    doc /* Documentation */
+    part element;
     comment about element /* text */
 }
 
 // --- Source: Reference_5Multiplicity.sysml ---
 package Reference_5Multiplicity {
-    private import ScalarValues::*;
-    private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    [1] Exactly one
-    [*] Zero or more
-    [0..1] Optional
-    ordered /* Sequence (indexed) */
-    nonunique /* Allow duplicates */
-    /* Defaults: */
-    Part/Attr -> [1]
-    Other -> [0..*]
+    doc /*
+      [1]      - Exactly one (Default)
+      [0..1]   - Optional
+      [*]      - Zero or more
+      [1..*]   - One or more
+      [2..5]   - Specific range
+    */
 }
 
 // --- Source: Reference_6Visibility.sysml ---
 package Reference_6Visibility {
-    private import ScalarValues::*;
-    private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    public (default)
-    private (internal only)
-    protected (subtypes only)
+    doc /*
+      public    (default) - Visible everywhere
+      private   (private) - Visible only inside
+      protected (protected) - Visible to children
+    */
 }
 
 // --- Source: Requirements_1RequirementDefinition.sysml ---
 package Requirements_1RequirementDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    attribute def Time;
     requirement def Performance {
       doc /* The system shall be fast. */
       attribute maxResponse : Time;
@@ -870,11 +926,13 @@ package Requirements_1RequirementDefinition {
 package Requirements_2RequirementUsage {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    attribute def Time;
+    attribute ms;
+    requirement def Performance { attribute maxResponse : Time; }
     requirement req1 : Performance {
       doc /* Response < 10ms */
-      id "REQ-001";
-      maxResponse = 10 [ms];
+      attribute id = "REQ-001";
+      attribute maxResponse = 10 [ms];
     }
 }
 
@@ -882,21 +940,23 @@ package Requirements_2RequirementUsage {
 package Requirements_3Satisfy {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    requirement def Performance;
+    requirement req1 : Performance;
     part server {
       satisfy req1;
     }
-    doc /* Or external: */
-    satisfy server by req1;
+    // satisfy req1 by server; // Alternative syntax
 }
 
 // --- Source: Requirements_4Verify.sysml ---
 package Requirements_4Verify {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    requirement req1;
     verification def TestLatency {
-      verify req1;
+      objective {
+          verify req1;
+      }
     }
 }
 
@@ -904,7 +964,8 @@ package Requirements_4Verify {
 package Requirements_5ConstraintDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    attribute def Mass;
+    attribute kg;
     constraint def CheckMass {
       in m : Mass;
       m <= 1000 [kg]
@@ -915,8 +976,11 @@ package Requirements_5ConstraintDefinition {
 package Requirements_6Assertions {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    attribute def Mass;
+    attribute kg;
+    constraint def CheckMass { in m : Mass; m <= 1000[kg] }
     part car {
+      attribute mass : Mass;
       assert constraint CheckMass {
         in m = mass;
       }
@@ -927,10 +991,12 @@ package Requirements_6Assertions {
 package Requirements_7TraceRefine {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    requirement req1;
+    requirement old_doc_item;
     requirement req2 {
-      refine req1;
-      trace old_doc_item;
+      doc /* Using dependency to represent relationships */
+      dependency from req2 to req1;
+      dependency from req2 to old_doc_item;
     }
 }
 
@@ -938,40 +1004,44 @@ package Requirements_7TraceRefine {
 package Shorthand_1Specialization {
     private import ScalarValues::*;
     private import SysML::*;
+    part def Vehicle;
     // Wrapped Snippet (Structure Context)
-    part def Car :> Vehicle;
-    doc /* Equivalent to: */
-    part def Car specializes Vehicle;
+    part  def  Car  :>  Vehicle ;
+    doc  /* Equivalent to: 
+            part  def  Car  specializes  Vehicle ; */
 }
 
 // --- Source: Shorthand_2Subsetting.sysml ---
 package Shorthand_2Subsetting {
     private import ScalarValues::*;
     private import SysML::*;
+    part parts;
     // Wrapped Snippet (Structure Context)
-    part engine :> parts;
-    doc /* Equivalent to: */
-    part engine subsets parts;
+    part  engine  :>  parts ;
+    doc  /* Equivalent to: 
+            part  engine  subsets  parts ; */
 }
 
 // --- Source: Shorthand_3Redefinition.sysml ---
+comment about Shorthand_3Redefinition /* Source: Shorthand_3Redefinition.sysml */
 package Shorthand_3Redefinition {
-    private import ScalarValues::*;
-    private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    attribute :>> mass = 100;
-    doc /* Equivalent to: */
-    attribute redefines mass = 100;
+    private import ISQ::*;
+    comment /* Wrapped Snippet (Structure Context)
+    attribute partMass : ISQBase::mass  =  100.0 ;
+    attribute partMass1 :>> partMass  =  101.0 ;   
+    attribute  partMass2 redefines  partMass  =  101.0 ;
+    comment about partMass1, partMass2 /* :>> and redefines are equivelnt */
 }
 
 // --- Source: Shorthand_4Conjugation.sysml ---
 package Shorthand_4Conjugation {
     private import ScalarValues::*;
     private import SysML::*;
+    port def Interface;
     // Wrapped Snippet (Structure Context)
-    port p : ~Interface;
-    doc /* Equivalent to: */
-    port p : conjugated Interface;
+    port  p  :  ~ Interface ;
+    doc  /* Equivalent to: 
+            port  p  :  conjugated  Interface ; */
 }
 
 // --- Source: Shorthand_5FeatureValues.sysml ---
@@ -979,9 +1049,9 @@ package Shorthand_5FeatureValues {
     private import ScalarValues::*;
     private import SysML::*;
     // Wrapped Snippet (Structure Context)
-    attribute x = 1; /* Binding (Equality) */
-    attribute y := 2; /* Initial Value */
-    attribute z default = 3; /* Default Value */
+    attribute  x  =  1 ;  /* Binding (Equality) */
+    attribute  y  :=  2 ;  /* Initial Value */
+    attribute  z  default  =  3 ;  /* Default Value */
 }
 
 // --- Source: Shorthand_6Multiplicity.sysml ---
@@ -989,16 +1059,18 @@ package Shorthand_6Multiplicity {
     private import ScalarValues::*;
     private import SysML::*;
     // Wrapped Snippet (Structure Context)
-    part many[*]; /* 0..* */
-    part one; /* 1..1 (Default) */
-    part opt[0..1]; /* 0..1 */
+    part  many [*] ;  /* 0..* */
+    part  one ;  /* 1..1 (Default) */
+    part  opt [0..1] ;  /* 0..1 */
 }
 
 // --- Source: StatePatterns_1EntryDoExit.sysml ---
 package StatePatterns_1EntryDoExit {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    action def logStart;
+    action def maintain;
+    action def logEnd;
     state def Active {
        entry action : logStart;
        do action : maintain;
@@ -1010,7 +1082,6 @@ package StatePatterns_1EntryDoExit {
 package StatePatterns_2CompositeState {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
     state def Composite {
        entry;
        state Sub1;
@@ -1025,7 +1096,7 @@ package StatePatterns_2CompositeState {
 package StatePatterns_3ExhibitState {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    package VehicleStates { state operating; }
     part def Vehicle {
        exhibit state opState
           references VehicleStates::operating;
@@ -1036,11 +1107,12 @@ package StatePatterns_3ExhibitState {
 package StatePatterns_4InternalTransition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    action def tick;
+    action check;
     state def Monitoring {
-       transition selfCheck
-          accept tick
-          do action check;
+       state Idle;
+       // Internal behavior (Self-transition)
+       transition t1 first Idle accept tick do check then Idle;
     }
 }
 
@@ -1049,11 +1121,13 @@ package States_1StateDefinition {
     private import ScalarValues::*;
     private import SysML::*;
     // Wrapped Snippet (Structure Context)
-    state def TrafficLight {
-       entry perform logStart;
-       exit perform logEnd;
-       state Red;
-       state Green;
+    action def logStart;
+    action def logEnd;
+    state   def  TrafficLight  {
+       entry  action : logStart ;
+       exit   action : logEnd ;
+       state  Red ;
+       state  Green ;
     }
 }
 
@@ -1061,23 +1135,32 @@ package States_1StateDefinition {
 package States_2Transitions {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    transition t1
-       first Red
-       accept TimeEvent
-       then Green;
+    state def Main {
+        state Red;
+        state Green;
+        action def TimeEvent;
+        transition t1
+           first Red
+           accept TimeEvent
+           then Green;
+    }
 }
 
 // --- Source: States_3GuardsEffects.sysml ---
 package States_3GuardsEffects {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    transition t2
-       first Green
-       if traffic == 0
-       do action resetTimer
-       then Red;
+    state def Main {
+        state Green;
+        state Red;
+        attribute traffic : Integer;
+        action resetTimer;
+        transition t2
+           first Green
+           if traffic == 0
+           do resetTimer
+           then Red;
+    }
 }
 
 // --- Source: States_4CompositeStates.sysml ---
@@ -1086,7 +1169,7 @@ package States_4CompositeStates {
     private import SysML::*;
     // Wrapped Snippet (Structure Context)
     state Operational {
-       entry ...
+       entry;
        state Normal;
        state Maintenance;
     }
@@ -1098,54 +1181,46 @@ package States_5ParallelStates {
     private import SysML::*;
     // Wrapped Snippet (Structure Context)
     state def System parallel {
-       state Power {...}
-       state Connectivity {...}
+       state Power;
+       state Connectivity;
     }
 }
 
 // --- Source: UseCaseTutorial_APS.sysml ---
 package AutomatedPickleballServerModel {
-
-  /* --- 1. Define the Actors --- */
-  /* Actors are external parts that interact with the system. */
-  part def Player :> ActorPart;
-  part def CourtEnvironment :> ActorPart; /* Physical boundaries */
-
-  /* --- 2. Define the Subject System --- */
-  part def AutomatedPickleballServer {
-    part aiController;
-    part ballLauncher;
-    part sensorSuite;
-  }
-
-  /* --- 3. Define the Use Cases --- */
-  use case def PlayPracticeSession {
-    subject aps : AutomatedPickleballServer;
-    actor player : Player;
-
-    doc /* The player engages in a practice session where the server
-           * serves balls tailored to their skill level. */
-
-    /* This use case INCLUDES other core behaviors */
-    include use case trackPlayer : TrackPlayerState;
-    include use case determineShot : DetermineNextShot;
-    include use case serveBall : ServeBall;
-  }
-}
-
-// --- Source: WhileLoop.sysml ---
-package WhileLoopExample {
     private import ScalarValues::*;
-    action def Main {
-        attribute x : Integer = 0;
-        action loopAction {
-            while x < 10 {
-                assign x := x + 1;
-            }
-        }
+    private import SysML::*;
+
+    // --- Definitions ---
+    part def ActorPart;
+    use case def TrackPlayerState;
+    use case def DetermineNextShot;
+    use case def ServeBall;
+
+    /* --- 1. Define the Actors --- */
+    part def Player :> ActorPart;
+    part def CourtEnvironment :> ActorPart;
+
+    /* --- 2. Define the Subject System --- */
+    part def AutomatedPickleballServer {
+      part aiController;
+      part ballLauncher;
+      part sensorSuite;
     }
-    view LoopView {
-        expose Main;
+
+    /* --- 3. Define the Use Cases --- */
+    use case def PlayPracticeSession {
+      subject aps : AutomatedPickleballServer;
+      actor player : Player;
+
+      doc /* The player engages in a practice session where the server
+             serves balls tailored to their skill level. */
+
+      /* This use case INCLUDES other core behaviors */
+      include use case trackPlayer : TrackPlayerState;
+      include use case determineShot : DetermineNextShot;
+      include use case serveBall : ServeBall;
     }
 }
+
 

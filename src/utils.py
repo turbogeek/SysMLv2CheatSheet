@@ -84,7 +84,7 @@ def reconstruct_code(code_lines):
     """Reconstructs plain text code from colored segments."""
     lines = []
     for line_segments in code_lines:
-        line_text = "".join([seg[0] for seg in line_segments])
+        line_text = " ".join([seg[0] for seg in line_segments])
         lines.append(line_text)
     return "\n".join(lines)
 
@@ -116,6 +116,13 @@ def wrap_code(snippet, package_name, wrapper_type="action"):
     if wrapper_type == "action":
         wrapper += "    // Wrapped Snippet (Action Context)\n"
         wrapper += "    action def Main {\n"
+        # Indent snippet
+        indented = "\n".join(["        " + line for line in snippet.split('\n')])
+        wrapper += indented
+        wrapper += "\n    }\n"
+    elif wrapper_type == "state":
+        wrapper += "    // Wrapped Snippet (State Context)\n"
+        wrapper += "    state def Main {\n"
         # Indent snippet
         indented = "\n".join(["        " + line for line in snippet.split('\n')])
         wrapper += indented

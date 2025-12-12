@@ -31,7 +31,16 @@ def generate_for_theme(theme_key, theme):
         [("  attribute", theme.c_keyword), (" maxResponse", theme.c_normal), (" :", theme.c_normal), (" Time", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Requirement Definition", lines, "Defining requirement types.", theme, sheet_name="Requirements", wrapper_type="structure")
+    code_1 = """package Requirements_1RequirementDefinition {
+    private import ScalarValues::*;
+    private import SysML::*;
+    attribute def Time;
+    requirement def Performance {
+      doc /* The system shall be fast. */
+      attribute maxResponse : Time;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Requirement Definition", lines, "Defining requirement types.", theme, full_code=code_1, sheet_name="Requirements", wrapper_type="structure")
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -43,7 +52,19 @@ def generate_for_theme(theme_key, theme):
         [("  maxResponse", theme.c_normal), (" =", theme.c_normal), (" 10", theme.c_string), (" [ms]", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Requirement Usage", lines, "Specific requirement instances.", theme, sheet_name="Requirements", wrapper_type="structure")
+    code_2 = """package Requirements_2RequirementUsage {
+    private import ScalarValues::*;
+    private import SysML::*;
+    attribute def Time;
+    attribute ms;
+    requirement def Performance { attribute maxResponse : Time; }
+    requirement req1 : Performance {
+      doc /* Response < 10ms */
+      attribute id = "REQ-001";
+      attribute maxResponse = 10 [ms];
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Requirement Usage", lines, "Specific requirement instances.", theme, full_code=code_2, sheet_name="Requirements", wrapper_type="structure")
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -55,7 +76,17 @@ def generate_for_theme(theme_key, theme):
         [("doc", theme.c_keyword), (" /* Or external: */", theme.c_comment)],
         [("satisfy", theme.c_keyword), (" server", theme.c_normal), (" by", theme.c_keyword), (" req1", theme.c_normal), (";", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Satisfy", lines, "Design meets requirement.", theme, sheet_name="Requirements", wrapper_type="structure")
+    code_3 = """package Requirements_3Satisfy {
+    private import ScalarValues::*;
+    private import SysML::*;
+    requirement def Performance;
+    requirement req1 : Performance;
+    part server {
+      satisfy req1;
+    }
+    // satisfy req1 by server; // Alternative syntax
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Satisfy", lines, "Design meets requirement.", theme, full_code=code_3, sheet_name="Requirements", wrapper_type="structure")
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -65,7 +96,17 @@ def generate_for_theme(theme_key, theme):
         [("  verify", theme.c_keyword), (" req1", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Verify", lines, "Test case for requirement.", theme, sheet_name="Requirements", wrapper_type="structure")
+    code_4 = """package Requirements_4Verify {
+    private import ScalarValues::*;
+    private import SysML::*;
+    requirement req1;
+    verification def TestLatency {
+      objective {
+          verify req1;
+      }
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Verify", lines, "Test case for requirement.", theme, full_code=code_4, sheet_name="Requirements", wrapper_type="structure")
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -76,7 +117,17 @@ def generate_for_theme(theme_key, theme):
         [("  m <= 1000 [kg]", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Constraint Definition", lines, "Mathematical rules.", theme, sheet_name="Requirements", wrapper_type="structure")
+    code_5 = """package Requirements_5ConstraintDefinition {
+    private import ScalarValues::*;
+    private import SysML::*;
+    attribute def Mass;
+    attribute kg;
+    constraint def CheckMass {
+      in m : Mass;
+      m <= 1000 [kg]
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Constraint Definition", lines, "Mathematical rules.", theme, full_code=code_5, sheet_name="Requirements", wrapper_type="structure")
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -88,7 +139,20 @@ def generate_for_theme(theme_key, theme):
         [("  }", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Assertions", lines, "Applying constraints.", theme, sheet_name="Requirements", wrapper_type="structure")
+    code_6 = """package Requirements_6Assertions {
+    private import ScalarValues::*;
+    private import SysML::*;
+    attribute def Mass;
+    attribute kg;
+    constraint def CheckMass { in m : Mass; m <= 1000[kg] }
+    part car {
+      attribute mass : Mass;
+      assert constraint CheckMass {
+        in m = mass;
+      }
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Assertions", lines, "Applying constraints.", theme, full_code=code_6, sheet_name="Requirements", wrapper_type="structure")
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -99,7 +163,18 @@ def generate_for_theme(theme_key, theme):
         [("  trace", theme.c_keyword), (" old_doc_item", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "7. Trace & Refine", lines, "Requirement relationships.", theme, sheet_name="Requirements", wrapper_type="structure")
+    code_7 = """package Requirements_7TraceRefine {
+    private import ScalarValues::*;
+    private import SysML::*;
+    requirement req1;
+    requirement old_doc_item;
+    requirement req2 {
+      doc /* Using dependency to represent relationships */
+      dependency from req2 to req1;
+      dependency from req2 to old_doc_item;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "7. Trace & Refine", lines, "Requirement relationships.", theme, full_code=code_7, sheet_name="Requirements", wrapper_type="structure")
     svg += card
     cur_y_c1 += h + ROW_GAP
     

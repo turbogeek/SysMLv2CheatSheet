@@ -1,11 +1,12 @@
 package Reference_3Relationships {
-    private import ScalarValues::*;
-    private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    :> Specialization (Inheritance)
-    : Classification (Typing)
-    = Binding / Equality
-    connect Connection
-    ref Reference (Pointer)
-    import Import Namespace
+    doc /*
+      Generalization ( :> ) - Inheritance
+      Subsetting ( :> ) - Hierarchy
+      Redefinition ( :>> ) - Specialized replacement
+      Reference ( references ) - Pointer
+      Conjugation ( ~ ) - Reverse port
+      Binding ( = ) - Equality
+      Assignment ( := ) - Value set
+      Succession ( first..then ) - Ordering
+    */
 }

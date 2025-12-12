@@ -1,7 +1,10 @@
 package Constraints_2ConstraintUsageAssert {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    attribute def Mass;
+    attribute def Acceleration;
+    attribute def Force;
+    constraint def NewtonLaw { in f : Force; in m : Mass; in a : Acceleration; }
     part Car {
       attribute mass : Mass;
       attribute accel : Acceleration;

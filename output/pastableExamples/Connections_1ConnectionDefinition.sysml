@@ -1,7 +1,8 @@
 package Connections_1ConnectionDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    part def Hub;
+    part def Device;
     connection def DeviceConn {
        end hub : Hub;
        end device : Device;

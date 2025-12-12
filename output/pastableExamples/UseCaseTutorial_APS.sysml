@@ -1,28 +1,35 @@
 package AutomatedPickleballServerModel {
+    private import ScalarValues::*;
+    private import SysML::*;
 
-  /* --- 1. Define the Actors --- */
-  /* Actors are external parts that interact with the system. */
-  part def Player :> ActorPart;
-  part def CourtEnvironment :> ActorPart; /* Physical boundaries */
+    // --- Definitions ---
+    part def ActorPart;
+    use case def TrackPlayerState;
+    use case def DetermineNextShot;
+    use case def ServeBall;
 
-  /* --- 2. Define the Subject System --- */
-  part def AutomatedPickleballServer {
-    part aiController;
-    part ballLauncher;
-    part sensorSuite;
-  }
+    /* --- 1. Define the Actors --- */
+    part def Player :> ActorPart;
+    part def CourtEnvironment :> ActorPart;
 
-  /* --- 3. Define the Use Cases --- */
-  use case def PlayPracticeSession {
-    subject aps : AutomatedPickleballServer;
-    actor player : Player;
+    /* --- 2. Define the Subject System --- */
+    part def AutomatedPickleballServer {
+      part aiController;
+      part ballLauncher;
+      part sensorSuite;
+    }
 
-    doc /* The player engages in a practice session where the server
-           * serves balls tailored to their skill level. */
+    /* --- 3. Define the Use Cases --- */
+    use case def PlayPracticeSession {
+      subject aps : AutomatedPickleballServer;
+      actor player : Player;
 
-    /* This use case INCLUDES other core behaviors */
-    include use case trackPlayer : TrackPlayerState;
-    include use case determineShot : DetermineNextShot;
-    include use case serveBall : ServeBall;
-  }
+      doc /* The player engages in a practice session where the server
+             serves balls tailored to their skill level. */
+
+      /* This use case INCLUDES other core behaviors */
+      include use case trackPlayer : TrackPlayerState;
+      include use case determineShot : DetermineNextShot;
+      include use case serveBall : ServeBall;
+    }
 }

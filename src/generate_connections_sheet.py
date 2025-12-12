@@ -31,7 +31,17 @@ def generate_for_theme(theme_key, theme):
         [("   end", theme.c_keyword), (" device", theme.c_normal), (" :", theme.c_normal), (" Device", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Connection Definition", lines, "Defining connection types.", theme, sheet_name='Connections', wrapper_type='structure')
+    code_1 = """package Connections_1ConnectionDefinition {
+    private import ScalarValues::*;
+    private import SysML::*;
+    part def Hub;
+    part def Device;
+    connection def DeviceConn {
+       end hub : Hub;
+       end device : Device;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Connection Definition", lines, "Defining connection types.", theme, full_code=code_1, sheet_name='Connections', wrapper_type='structure')
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -42,7 +52,20 @@ def generate_for_theme(theme_key, theme):
         [("      connect", theme.c_keyword), (" hub", theme.c_normal), (" to", theme.c_keyword), (" device", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1b. Connection Usage", lines, "Connecting parts.", theme, sheet_name='Connections', wrapper_type='structure')
+    code_1b = """package Connections_1bConnectionUsage {
+    private import ScalarValues::*;
+    private import SysML::*;
+    part def Hub;
+    part def Device;
+    connection def DeviceConn { end hub : Hub; end device : Device; }
+    part context {
+       part hub : Hub;
+       part device : Device;
+       connection c1 : DeviceConn
+          connect hub to device;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1b. Connection Usage", lines, "Connecting parts.", theme, full_code=code_1b, sheet_name='Connections', wrapper_type='structure')
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -54,7 +77,18 @@ def generate_for_theme(theme_key, theme):
         [("   bind", theme.c_keyword), (" a.p1", theme.c_normal), (" =", theme.c_normal), (" b.p2", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Binding Connector (=)", lines, "Equating two elements.", theme, sheet_name='Connections', wrapper_type='structure')
+    code_2 = """package Connections_2BindingConnector {
+    private import ScalarValues::*;
+    private import SysML::*;
+    part def A { port p1; }
+    part def B { port p2; }
+    part system {
+       part a : A;
+       part b : B;
+       bind a.p1 = b.p2;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Binding Connector (=)", lines, "Equating two elements.", theme, full_code=code_2, sheet_name='Connections', wrapper_type='structure')
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -66,7 +100,17 @@ def generate_for_theme(theme_key, theme):
         [("   flow", theme.c_keyword), (" source", theme.c_normal), (" to", theme.c_keyword), (" target", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. Interface Connection", lines, "Flows within interfaces.", theme, sheet_name='Connections', wrapper_type='structure')
+    code_3 = """package Connections_3InterfaceConnection {
+    private import ScalarValues::*;
+    private import SysML::*;
+    // Wrapped Snippet (Structure Context)
+    interface   def  IData  {
+       end  source ;
+       end  target ;
+       flow  source  to  target ;
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. Interface Connection", lines, "Flows within interfaces.", theme, full_code=code_3, sheet_name='Connections', wrapper_type='structure')
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -78,7 +122,19 @@ def generate_for_theme(theme_key, theme):
         [("   flow", theme.c_keyword), (" from", theme.c_keyword), (" step1", theme.c_normal), (" to", theme.c_keyword), (" step2", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Succession Flow", lines, "Control/Data flow.", theme, sheet_name='Connections', wrapper_type='structure')
+    code_4 = """package Connections_4SuccessionFlow {
+    private import ScalarValues::*;
+    private import SysML::*;
+    action process {
+       action step1;
+       action step2;
+       first step1;
+       then step2;
+       doc /* Equivalent to: */
+       flow from step1 to step2;
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Succession Flow", lines, "Control/Data flow.", theme, full_code=code_4, sheet_name='Connections', wrapper_type='structure')
     svg += card
     cur_y_c2 += h + ROW_GAP
 

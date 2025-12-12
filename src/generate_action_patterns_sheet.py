@@ -55,12 +55,12 @@ def generate_for_theme(theme_key, theme):
         [("}", theme.c_normal)]
     ]
     code_2 = """package ForLoopExample {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     action def Main {
         action process { in i : Integer; }
         action loopAction {
             for i in 1..10 {
-                perform process(i);
+                perform process { in i = i; }
             }
         }
     }
@@ -122,19 +122,51 @@ def generate_for_theme(theme_key, theme):
         [("   assign", theme.c_keyword), (" y", theme.c_normal), (" :=", theme.c_normal), (" 0", theme.c_string), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. If / Else", lines, "Conditional execution.", theme, sheet_name="ActionPatterns", wrapper_type="action")
+    code_3 = """package ActionPatterns_3IfElse {
+    private import ScalarValues::*;
+    private import SysML::*;
+    action def Main {
+        attribute x : Integer = 0;
+        attribute y : Integer;
+        if x > 0 {
+           assign y := 1;
+        } else {
+           assign y := 0;
+        }
+    }
+    view ExposeExample { expose Main; }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. If / Else", lines, "Conditional execution.", theme, full_code=code_3, sheet_name="ActionPatterns", wrapper_type="action")
     svg += card
     cur_y_c2 += h + ROW_GAP
 
     # --- Card 4: Accept Variations ---
     lines = [
         [("accept", theme.c_keyword), (" startSignal", theme.c_normal), (" :", theme.c_normal), (" StartSignal", theme.c_type), (";", theme.c_normal)],
-        [("comment", theme.c_keyword), (" about", theme.c_normal), (" startSignal", theme.c_normal), (" ...", theme.c_comment)],
+        [("comment", theme.c_keyword), (" about", theme.c_normal), (" startSignal", theme.c_normal), (" /* ... */", theme.c_comment)],
         [("accept", theme.c_keyword), (" when", theme.c_keyword), (" temp > 100", theme.c_normal), (";", theme.c_normal)],
         [("accept", theme.c_keyword), (" at", theme.c_keyword), (" schedule", theme.c_normal), (";", theme.c_normal)],
         [("accept", theme.c_keyword), (" after", theme.c_keyword), (" 10 [s]", theme.c_string), (";", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Accept Variations", lines, "Waiting for events/conditions.", theme, sheet_name="ActionPatterns", wrapper_type="action")
+    code_4 = """package ActionPatterns_4AcceptVariations {
+    private import ScalarValues::*;
+    private import SysML::*;
+    action def Main {
+        attribute temp : Real;
+        attribute s : Real;
+        part schedule;
+        action def StartSignal;
+        action acceptSomething {
+            accept startSignal : StartSignal;
+            doc /* about startSignal ... */
+            accept when temp > 100;
+            accept at schedule;
+            accept after 10 [s];
+        }
+    }
+    view ExposeExample { expose Main; }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Accept Variations", lines, "Waiting for events/conditions.", theme, full_code=code_4, sheet_name="ActionPatterns", wrapper_type="action")
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -144,7 +176,20 @@ def generate_for_theme(theme_key, theme):
         [("send", theme.c_keyword), (" startSignal", theme.c_normal), (" via", theme.c_keyword), (" p1", theme.c_normal), (";", theme.c_normal)],
         [("doc", theme.c_keyword), (" /* Named vs Unnamed */", theme.c_comment)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Send Variations", lines, "Named and unnamed sends.", theme, sheet_name="ActionPatterns", wrapper_type="action")
+    code_5 = """package ActionPatterns_5SendVariations {
+    private import ScalarValues::*;
+    private import SysML::*;
+    action def Main {
+        action def StartSignal;
+        part p1;
+        attribute sig : StartSignal;
+        action sendA { send sig via p1; }
+        send sig via p1;
+        doc /* Named vs Unnamed */
+    }
+    view ExposeExample { expose Main; }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Send Variations", lines, "Named and unnamed sends.", theme, full_code=code_5, sheet_name="ActionPatterns", wrapper_type="action")
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -155,7 +200,22 @@ def generate_for_theme(theme_key, theme):
         [("decide", theme.c_keyword), (" d1", theme.c_normal), (";", theme.c_normal)],
         [("merge", theme.c_keyword), (" m1", theme.c_normal), (";", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "6. Control Nodes", lines, "Flow control points.", theme, sheet_name="ActionPatterns", wrapper_type="action")
+    code_6 = """package ActionPatterns_6ControlNodes {
+    private import ScalarValues::*;
+    private import SysML::*;
+    // Wrapped Snippet (Action Context)
+    action def Main {
+        fork  f1 ;
+        join  j1 ;
+        decide  d1 ;
+        merge  m1 ;
+    }
+
+    view ExposeExample {
+        expose Main;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "6. Control Nodes", lines, "Flow control points.", theme, full_code=code_6, sheet_name="ActionPatterns", wrapper_type="action")
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -167,7 +227,23 @@ def generate_for_theme(theme_key, theme):
         [("}", theme.c_normal)],
         [("flow", theme.c_keyword), (" val", theme.c_normal), (" to", theme.c_keyword), (" sendReading.payload", theme.c_normal), (";", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "7. Advanced Send", lines, "Binding params & flows.", theme, sheet_name="ActionPatterns", wrapper_type="action")
+    code_7 = """package ActionPatterns_7AdvancedSend {
+    private import ScalarValues::*;
+    private import ScalarValues::*;
+    private import SysML::*;
+    private import Base::*;
+    action def Main {
+        attribute val : Anything;
+        part monitor;
+        action sendReading send {
+           in payload;
+           in sender = monitor;
+        }
+        flow val to sendReading.payload;
+    }
+    view ExposeExample { expose Main; }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "7. Advanced Send", lines, "Binding params & flows.", theme, full_code=code_7, sheet_name="ActionPatterns", wrapper_type="action")
     svg += card
     cur_y_c2 += h + ROW_GAP
 

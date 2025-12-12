@@ -34,7 +34,20 @@ def generate_for_theme(theme_key, theme):
         [("   state", theme.c_keyword), (" Green", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. State Definition", lines, "Defining states and lifecycle actions.", theme, sheet_name="States", wrapper_type="structure")
+    code_1 = """package States_1StateDefinition {
+    private import ScalarValues::*;
+    private import SysML::*;
+    // Wrapped Snippet (Structure Context)
+    action def logStart;
+    action def logEnd;
+    state   def  TrafficLight  {
+       entry  action : logStart ;
+       exit   action : logEnd ;
+       state  Red ;
+       state  Green ;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. State Definition", lines, "Defining states and lifecycle actions.", theme, full_code=code_1, sheet_name="States", wrapper_type="structure")
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -45,7 +58,20 @@ def generate_for_theme(theme_key, theme):
         [("   accept", theme.c_keyword), (" TimeEvent", theme.c_type)],
         [("   then", theme.c_keyword), (" Green", theme.c_type), (";", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Transitions", lines, "Moving between states.", theme, sheet_name="States", wrapper_type="structure")
+    code_2 = """package States_2Transitions {
+    private import ScalarValues::*;
+    private import SysML::*;
+    state def Main {
+        state Red;
+        state Green;
+        action def TimeEvent;
+        transition t1
+           first Red
+           accept TimeEvent
+           then Green;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Transitions", lines, "Moving between states.", theme, full_code=code_2, sheet_name="States", wrapper_type="state")
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -57,30 +83,64 @@ def generate_for_theme(theme_key, theme):
         [("   do", theme.c_keyword), (" action", theme.c_keyword), (" resetTimer", theme.c_normal)],
         [("   then", theme.c_keyword), (" Red", theme.c_type), (";", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Guards & Effects", lines, "Conditions and actions on transition.", theme, sheet_name="States", wrapper_type="structure")
+    code_3 = """package States_3GuardsEffects {
+    private import ScalarValues::*;
+    private import SysML::*;
+    state def Main {
+        state Green;
+        state Red;
+        attribute traffic : Integer;
+        action resetTimer;
+        transition t2
+           first Green
+           if traffic == 0
+           do resetTimer
+           then Red;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Guards & Effects", lines, "Conditions and actions on transition.", theme, full_code=code_3, sheet_name="States", wrapper_type="state")
     svg += card
     cur_y_c1 += h + ROW_GAP
 
     # --- Card 4: Composite States ---
     lines = [
         [("state", theme.c_keyword), (" Operational", theme.c_type), (" {", theme.c_normal)],
-        [("   entry", theme.c_keyword), (" ...", theme.c_normal)],
+        [("   entry", theme.c_keyword), (" /* ... */", theme.c_normal)],
         [("   state", theme.c_keyword), (" Normal", theme.c_type), (";", theme.c_normal)],
         [("   state", theme.c_keyword), (" Maintenance", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Composite States", lines, "States within states.", theme, sheet_name="States", wrapper_type="structure")
+    code_4 = """package States_4CompositeStates {
+    private import ScalarValues::*;
+    private import SysML::*;
+    // Wrapped Snippet (Structure Context)
+    state Operational {
+       entry;
+       state Normal;
+       state Maintenance;
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Composite States", lines, "States within states.", theme, full_code=code_4, sheet_name="States", wrapper_type="structure")
     svg += card
     cur_y_c2 += h + ROW_GAP
 
     # --- Card 5: Parallel States ---
     lines = [
         [("state", theme.c_keyword), (" ", theme.c_normal), ("def", theme.c_keyword), (" System", theme.c_type), (" ", theme.c_normal), ("parallel", theme.c_keyword), (" {", theme.c_normal)],
-        [("   state", theme.c_keyword), (" Power", theme.c_type), (" {", theme.c_normal), ("...", theme.c_comment), ("}", theme.c_normal)],
-        [("   state", theme.c_keyword), (" Connectivity", theme.c_type), (" {", theme.c_normal), ("...", theme.c_comment), ("}", theme.c_normal)],
+        [("   state", theme.c_keyword), (" Power", theme.c_type), (" {", theme.c_normal), ("/* ... */", theme.c_comment), ("}", theme.c_normal)],
+        [("   state", theme.c_keyword), (" Connectivity", theme.c_type), (" {", theme.c_normal), ("/* ... */", theme.c_comment), ("}", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Parallel States", lines, "Concurrency.", theme, sheet_name="States", wrapper_type="structure")
+    code_5 = """package States_5ParallelStates {
+    private import ScalarValues::*;
+    private import SysML::*;
+    // Wrapped Snippet (Structure Context)
+    state def System parallel {
+       state Power;
+       state Connectivity;
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Parallel States", lines, "Concurrency.", theme, full_code=code_5, sheet_name="States", wrapper_type="structure")
     svg += card
     cur_y_c2 += h + ROW_GAP
 

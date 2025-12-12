@@ -1,10 +1,11 @@
 package StatePatterns_4InternalTransition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    action def tick;
+    action check;
     state def Monitoring {
-       transition selfCheck
-          accept tick
-          do action check;
+       state Idle;
+       // Internal behavior (Self-transition)
+       transition t1 first Idle accept tick do check then Idle;
     }
 }

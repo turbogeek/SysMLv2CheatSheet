@@ -31,7 +31,16 @@ def generate_for_theme(theme_key, theme):
         [("  part", theme.c_keyword), (" engine", theme.c_normal), (" :", theme.c_normal), (" Engine", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Part Definition", lines, "Defining structural blocks.", theme, sheet_name='Structure', wrapper_type='structure')
+    code_1 = """package Structure_1PartDefinition {
+    private import ScalarValues::*;
+    attribute def Mass;
+    part def Engine;
+    part def Vehicle {
+      attribute massOfVehicle : Mass;
+      part engine : Engine;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Part Definition", lines, "Defining structural blocks.", theme, full_code=code_1, sheet_name='Structure', wrapper_type='structure')
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -42,7 +51,16 @@ def generate_for_theme(theme_key, theme):
         [("  part", theme.c_keyword), (" doors", theme.c_normal), (" [2..4]", theme.c_string), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Usage & Multiplicity", lines, "Instantiating parts with counts.", theme, sheet_name='Structure', wrapper_type='structure')
+    code_2 = """package Structure_2PartUsage {
+    private import ScalarValues::*;
+    part def Vehicle;
+    part def Wheel;
+    part car : Vehicle {
+      part wheels[4] : Wheel;
+      part doors[2..4];
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Usage & Multiplicity", lines, "Instantiating parts with counts.", theme, full_code=code_2, sheet_name='Structure', wrapper_type='structure')
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -55,7 +73,16 @@ def generate_for_theme(theme_key, theme):
         [("  attribute", theme.c_keyword), (" id", theme.c_normal), (" =", theme.c_normal), (" \"ECU-01\"", theme.c_string), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Attributes", lines, "Data properties of parts.", theme, sheet_name='Structure', wrapper_type='structure')
+    code_3 = """package Structure_3Attributes {
+    private import ScalarValues::*;
+    attribute def Status {
+        attribute code : Integer;
+    }
+    part ecu {
+        attribute id = "ECU-01";
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Attributes", lines, "Data properties of parts.", theme, full_code=code_3, sheet_name='Structure', wrapper_type='structure')
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -65,7 +92,13 @@ def generate_for_theme(theme_key, theme):
         [("item", theme.c_keyword), (" ", theme.c_normal), ("def", theme.c_keyword), (" Gasoline", theme.c_type), (" :>", theme.c_normal), (" Fuel", theme.c_type), (";", theme.c_normal)],
         [("doc", theme.c_keyword), (" /* Items flow through ports */", theme.c_comment)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Items", lines, "Things that flow.", theme, sheet_name='Structure', wrapper_type='structure')
+    code_5 = """package Structure_5Items {
+    private import ScalarValues::*;
+    item def Fuel;
+    item def Gasoline :> Fuel;
+    doc /* Items flow through ports */
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Items", lines, "Things that flow.", theme, full_code=code_5, sheet_name='Structure', wrapper_type='structure')
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -73,10 +106,16 @@ def generate_for_theme(theme_key, theme):
     lines = [
         [("package", theme.c_keyword), (" VehicleModel", theme.c_normal), (" {", theme.c_normal)],
         [("  import", theme.c_keyword), (" ScalarValues::*", theme.c_type), (";", theme.c_normal)],
-        [("  part", theme.c_keyword), (" ...", theme.c_normal)],
+        [("  part", theme.c_keyword), (" // ...", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Packages & Imports", lines, "Organizing model elements.", theme, sheet_name='Structure', wrapper_type='structure')
+    code_6 = """package Structure_6Packages {
+    package VehicleModel {
+        import ScalarValues::*;
+        part car;
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Packages & Imports", lines, "Organizing model elements.", theme, full_code=code_6, sheet_name='Structure', wrapper_type='structure')
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -87,7 +126,14 @@ def generate_for_theme(theme_key, theme):
         [("  part", theme.c_keyword), (" battery", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "7. Inheritance (:>)", lines, "Specialization of definitions.", theme, sheet_name='Structure', wrapper_type='structure')
+    code_7 = """package Structure_7Inheritance {
+    private import ScalarValues::*;
+    part def Vehicle;
+    part def ElectricCar :> Vehicle {
+        part battery;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "7. Inheritance (:>)", lines, "Specialization of definitions.", theme, full_code=code_7, sheet_name='Structure', wrapper_type='structure')
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -97,7 +143,13 @@ def generate_for_theme(theme_key, theme):
         [("  Red; Green; Blue;", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "8. Enumerations", lines, "Predefined sets of values.", theme, sheet_name='Structure', wrapper_type='structure')
+    code_8 = """package Structure_8Enumerations {
+    private import ScalarValues::*;
+    enum def Color {
+        Red; Green; Blue;
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "8. Enumerations", lines, "Predefined sets of values.", theme, full_code=code_8, sheet_name='Structure', wrapper_type='structure')
     svg += card
     cur_y_c2 += h + ROW_GAP
     

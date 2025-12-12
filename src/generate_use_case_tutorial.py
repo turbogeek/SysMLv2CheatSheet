@@ -1,6 +1,9 @@
 import utils
 import themes
 import os
+import uuid
+import base64
+import html
 
 def generate_for_theme(theme_key, theme):
     # SVG Dimensions
@@ -79,12 +82,61 @@ def generate_for_theme(theme_key, theme):
     ]
     
     # Save Example
-    raw_code = utils.reconstruct_code(code_lines)
-    utils.save_example("UseCaseTutorial_APS.sysml", raw_code)
+    full_code = """package AutomatedPickleballServerModel {
+    private import ScalarValues::*;
+    private import SysML::*;
+
+    // --- Definitions ---
+    part def ActorPart;
+    use case def TrackPlayerState;
+    use case def DetermineNextShot;
+    use case def ServeBall;
+
+    /* --- 1. Define the Actors --- */
+    part def Player :> ActorPart;
+    part def CourtEnvironment :> ActorPart;
+
+    /* --- 2. Define the Subject System --- */
+    part def AutomatedPickleballServer {
+      part aiController;
+      part ballLauncher;
+      part sensorSuite;
+    }
+
+    /* --- 3. Define the Use Cases --- */
+    use case def PlayPracticeSession {
+      subject aps : AutomatedPickleballServer;
+      actor player : Player;
+
+      doc /* The player engages in a practice session where the server
+             serves balls tailored to their skill level. */
+
+      /* This use case INCLUDES other core behaviors */
+      include use case trackPlayer : TrackPlayerState;
+      include use case determineShot : DetermineNextShot;
+      include use case serveBall : ServeBall;
+    }
+}
+"""
+    utils.save_example("UseCaseTutorial_APS.sysml", full_code)
     
     # Draw Code Box
     code_h = len(code_lines) * 25 + 40
     svg += utils.rect(50, y, 1300, code_h, theme.card_bg, stroke=theme.c_type, stroke_width=1)
+
+    # --- Copy Button ---
+    code_id = f"code_{uuid.uuid4().hex}"
+    b64_code = base64.b64encode(full_code.encode('utf-8')).decode('utf-8')
+    svg += f'<text id="{code_id}" style="display:none;">{b64_code}</text>'
+    
+    btn_x = 50 + 1300 - 80
+    btn_y = y + 10
+    svg += f'<g onclick="copyToClipboard(\'{code_id}\')" style="cursor: pointer;">'
+    svg += f'<title>{html.escape(full_code)}</title>'
+    svg += utils.rect(btn_x, btn_y, 70, 30, theme.c_keyword, r=5)
+    svg += utils.text(btn_x + 35, btn_y + 20, "COPY", 14, "#FFFFFF", "bold", "middle")
+    svg += '</g>'
+    # -------------------
     cy = y + 30
     for line in code_lines:
         svg += utils.colored_code_line(70, cy, line, 16, theme)
@@ -97,7 +149,7 @@ def generate_for_theme(theme_key, theme):
     
     # Path to cartoon
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    cartoon_path = os.path.join(base_dir, "assets", "cartoon.png")
+    cartoon_path = os.path.join(base_dir, "assets", "BadPlayerUseCase.png")
     
     if os.path.exists(cartoon_path):
         # Embed image

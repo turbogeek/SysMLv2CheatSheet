@@ -30,7 +30,16 @@ def generate_for_theme(theme_key, theme):
         [("doc", theme.c_keyword), (" /* Equivalent to: */", theme.c_comment)],
         [("part", theme.c_keyword), (" def", theme.c_keyword), (" Car", theme.c_type), (" specializes", theme.c_keyword), (" Vehicle", theme.c_type), (";", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Specialization (:>)", lines, "Shorthand for 'specializes'.", theme, sheet_name="Shorthand", wrapper_type="structure")
+    code_1 = """package Shorthand_1Specialization {
+    private import ScalarValues::*;
+    private import SysML::*;
+    part def Vehicle;
+    // Wrapped Snippet (Structure Context)
+    part  def  Car  :>  Vehicle ;
+    doc  /* Equivalent to: 
+            part  def  Car  specializes  Vehicle ; */
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Specialization (:>)", lines, "Shorthand for 'specializes'.", theme, full_code=code_1, sheet_name="Shorthand", wrapper_type="structure")
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -40,7 +49,16 @@ def generate_for_theme(theme_key, theme):
         [("doc", theme.c_keyword), (" /* Equivalent to: */", theme.c_comment)],
         [("part", theme.c_keyword), (" engine", theme.c_normal), (" subsets", theme.c_keyword), (" parts", theme.c_normal), (";", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Subsetting (:>)", lines, "Shorthand for 'subsets'.", theme, sheet_name="Shorthand", wrapper_type="structure")
+    code_2 = """package Shorthand_2Subsetting {
+    private import ScalarValues::*;
+    private import SysML::*;
+    part parts;
+    // Wrapped Snippet (Structure Context)
+    part  engine  :>  parts ;
+    doc  /* Equivalent to: 
+            part  engine  subsets  parts ; */
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Subsetting (:>)", lines, "Shorthand for 'subsets'.", theme, full_code=code_2, sheet_name="Shorthand", wrapper_type="structure")
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -50,7 +68,16 @@ def generate_for_theme(theme_key, theme):
         [("doc", theme.c_keyword), (" /* Equivalent to: */", theme.c_comment)],
         [("attribute", theme.c_keyword), (" redefines", theme.c_keyword), (" mass", theme.c_normal), (" =", theme.c_normal), (" 100", theme.c_string), (";", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Redefinition (:>>)", lines, "Shorthand for 'redefines'.", theme, sheet_name="Shorthand", wrapper_type="structure")
+    code_3 = """comment about Shorthand_3Redefinition /* Source: Shorthand_3Redefinition.sysml */
+package Shorthand_3Redefinition {
+    private import ISQ::*;
+    comment /* Wrapped Snippet (Structure Context)
+    attribute partMass : ISQBase::mass  =  100.0 ;
+    attribute partMass1 :>> partMass  =  101.0 ;   
+    attribute  partMass2 redefines  partMass  =  101.0 ;
+    comment about partMass1, partMass2 /* :>> and redefines are equivelnt */
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Redefinition (:>>)", lines, "Shorthand for 'redefines'.", theme, full_code=code_3, sheet_name="Shorthand", wrapper_type="structure")
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -60,7 +87,16 @@ def generate_for_theme(theme_key, theme):
         [("doc", theme.c_keyword), (" /* Equivalent to: */", theme.c_comment)],
         [("port", theme.c_keyword), (" p", theme.c_normal), (" :", theme.c_normal), (" conjugated", theme.c_keyword), (" Interface", theme.c_type), (";", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Conjugation (~)", lines, "Shorthand for 'conjugated'.", theme, sheet_name="Shorthand", wrapper_type="structure")
+    code_4 = """package Shorthand_4Conjugation {
+    private import ScalarValues::*;
+    private import SysML::*;
+    port def Interface;
+    // Wrapped Snippet (Structure Context)
+    port  p  :  ~ Interface ;
+    doc  /* Equivalent to: 
+            port  p  :  conjugated  Interface ; */
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Conjugation (~)", lines, "Shorthand for 'conjugated'.", theme, full_code=code_4, sheet_name="Shorthand", wrapper_type="structure")
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -70,7 +106,15 @@ def generate_for_theme(theme_key, theme):
         [("attribute", theme.c_keyword), (" y", theme.c_normal), (" :=", theme.c_normal), (" 2", theme.c_string), (";", theme.c_normal), (" /* Initial Value */", theme.c_comment)],
         [("attribute", theme.c_keyword), (" z", theme.c_normal), (" default", theme.c_keyword), (" =", theme.c_normal), (" 3", theme.c_string), (";", theme.c_normal), (" /* Default Value */", theme.c_comment)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Feature Values", lines, "Assignment variations.", theme, sheet_name="Shorthand", wrapper_type="structure")
+    code_5 = """package Shorthand_5FeatureValues {
+    private import ScalarValues::*;
+    private import SysML::*;
+    // Wrapped Snippet (Structure Context)
+    attribute  x  =  1 ;  /* Binding (Equality) */
+    attribute  y  :=  2 ;  /* Initial Value */
+    attribute  z  default  =  3 ;  /* Default Value */
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Feature Values", lines, "Assignment variations.", theme, full_code=code_5, sheet_name="Shorthand", wrapper_type="structure")
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -80,7 +124,15 @@ def generate_for_theme(theme_key, theme):
         [("part", theme.c_keyword), (" one", theme.c_normal), (";", theme.c_normal), (" /* 1..1 (Default) */", theme.c_comment)],
         [("part", theme.c_keyword), (" opt", theme.c_normal), ("[0..1]", theme.c_keyword), (";", theme.c_normal), (" /* 0..1 */", theme.c_comment)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Multiplicity", lines, "Common shorthands.", theme, sheet_name="Shorthand", wrapper_type="structure")
+    code_6 = """package Shorthand_6Multiplicity {
+    private import ScalarValues::*;
+    private import SysML::*;
+    // Wrapped Snippet (Structure Context)
+    part  many [*] ;  /* 0..* */
+    part  one ;  /* 1..1 (Default) */
+    part  opt [0..1] ;  /* 0..1 */
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Multiplicity", lines, "Common shorthands.", theme, full_code=code_6, sheet_name="Shorthand", wrapper_type="structure")
     svg += card
     cur_y_c2 += h + ROW_GAP
 

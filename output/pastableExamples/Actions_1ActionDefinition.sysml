@@ -1,17 +1,14 @@
 package Actions_1ActionDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
-    action def Main {
-        action def Serve {
-           in speed : Speed;
-           out result : Result;
-           first toss;
-           then strike;
-        }
-    }
-
-    view ExposeExample {
-        expose Main;
+    attribute def Speed;
+    attribute def Result;
+    action def Serve {
+       in speed : Speed;
+       out result : Result;
+       first toss;
+       then strike;
+       action toss;
+       action strike;
     }
 }

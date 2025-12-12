@@ -32,7 +32,19 @@ def generate_for_theme(theme_key, theme):
         [("   exit", theme.c_keyword), (" action", theme.c_keyword), (" :", theme.c_normal), (" logEnd", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Entry/Do/Exit", lines, "State lifecycle actions.", theme, sheet_name="StatePatterns", wrapper_type="structure")
+    code_1 = """package StatePatterns_1EntryDoExit {
+    private import ScalarValues::*;
+    private import SysML::*;
+    action def logStart;
+    action def maintain;
+    action def logEnd;
+    state def Active {
+       entry action : logStart;
+       do action : maintain;
+       exit action : logEnd;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Entry/Do/Exit", lines, "State lifecycle actions.", theme, full_code=code_1, sheet_name="StatePatterns", wrapper_type="structure")
     svg += card
     cur_y_c1 += h + ROW_GAP
     # --- Card 2: Composite State ---
@@ -46,7 +58,19 @@ def generate_for_theme(theme_key, theme):
         [("      then", theme.c_keyword), (" Sub2", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Composite State", lines, "States within states.", theme, sheet_name="StatePatterns", wrapper_type="structure")
+    code_2 = """package StatePatterns_2CompositeState {
+    private import ScalarValues::*;
+    private import SysML::*;
+    state def Composite {
+       entry;
+       state Sub1;
+       state Sub2;
+       transition t1
+          first Sub1
+          then Sub2;
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Composite State", lines, "States within states.", theme, full_code=code_2, sheet_name="StatePatterns", wrapper_type="structure")
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -57,7 +81,16 @@ def generate_for_theme(theme_key, theme):
         [("      references", theme.c_keyword), (" VehicleStates::operating", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. Exhibit State", lines, "Part exhibiting a state.", theme, sheet_name="StatePatterns", wrapper_type="structure")
+    code_3 = """package StatePatterns_3ExhibitState {
+    private import ScalarValues::*;
+    private import SysML::*;
+    package VehicleStates { state operating; }
+    part def Vehicle {
+       exhibit state opState
+          references VehicleStates::operating;
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. Exhibit State", lines, "Part exhibiting a state.", theme, full_code=code_3, sheet_name="StatePatterns", wrapper_type="structure")
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -69,7 +102,18 @@ def generate_for_theme(theme_key, theme):
         [("      do", theme.c_keyword), (" action", theme.c_keyword), (" check", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Internal Transition", lines, "Transition without state change.", theme, sheet_name="StatePatterns", wrapper_type="structure")
+    code_4 = """package StatePatterns_4InternalTransition {
+    private import ScalarValues::*;
+    private import SysML::*;
+    action def tick;
+    action check;
+    state def Monitoring {
+       state Idle;
+       // Internal behavior (Self-transition)
+       transition t1 first Idle accept tick do check then Idle;
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Internal Transition", lines, "Transition without state change.", theme, full_code=code_4, sheet_name="StatePatterns", wrapper_type="structure")
     svg += card
     cur_y_c2 += h + ROW_GAP
 

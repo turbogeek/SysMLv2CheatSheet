@@ -36,7 +36,21 @@ def generate_for_theme(theme_key, theme):
         [("  }", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Metadata (Annotations)", lines, "Tagging elements with data.", theme, sheet_name="Patterns", wrapper_type="structure")
+    code_1 = """package Patterns_1MetadataAnnotations {
+    private import ScalarValues::*;
+    private import SysML::*;
+    // Wrapped Snippet (Structure Context)
+    metadata   def  Status  {
+      attribute  priority  :  Integer ;
+      attribute  approved  :  Boolean ;
+    }
+    part  myPart  {
+      metadata  Status  {
+        priority  =  1 ;
+      }
+    }
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Metadata (Annotations)", lines, "Tagging elements with data.", theme, full_code=code_1, sheet_name="Patterns", wrapper_type="structure")
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -47,7 +61,17 @@ def generate_for_theme(theme_key, theme):
         [("}", theme.c_normal)],
         [("/* Rendering specific subsets */", theme.c_comment)]
     ]
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Views", lines, "Visualizing the model.", theme, sheet_name="Patterns", wrapper_type="structure")
+    code_2 = """package Patterns_2Views {
+    private import ScalarValues::*;
+    private import SysML::*;
+    part def GeneralDiagram;
+    // Wrapped Snippet (Structure Context)
+    view  MyView  :  GeneralDiagram  {
+    /* filter Status; */
+    }
+    /* Rendering specific subsets */
+}"""
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Views", lines, "Visualizing the model.", theme, full_code=code_2, sheet_name="Patterns", wrapper_type="structure")
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -59,10 +83,23 @@ def generate_for_theme(theme_key, theme):
         [("      :>>", theme.c_keyword), (" prefix", theme.c_normal), (" =", theme.c_normal), (" nano", theme.c_string), (";", theme.c_normal)],
         [("      :>>", theme.c_keyword), (" referenceUnit", theme.c_normal), (" =", theme.c_normal), (" 'Standard Banana'", theme.c_string), (";", theme.c_normal)],
         [("    }", theme.c_normal)],
-        [("  }", theme.c_normal)],
-        [("}", theme.c_normal)]
+        [("  }", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. Custom Units (Nano Banana)", lines, "Defining domain-specific units.", theme, sheet_name="Patterns", wrapper_type="structure")
+    code_3 = """package BananaUnits {
+    private import ScalarValues::*;
+    private import SysML::*;
+    attribute def LengthUnit {
+        attribute prefix;
+        attribute referenceUnit;
+    }
+    attribute nano;
+    attribute <nB> nanoBanana : LengthUnit {
+        attribute unitConversion;
+        :>> prefix = nano;
+        :>> referenceUnit = "Standard Banana";
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. Custom Units (Nano Banana)", lines, "Defining domain-specific units.", theme, full_code=code_3, sheet_name="Patterns", wrapper_type="structure")
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -76,7 +113,19 @@ def generate_for_theme(theme_key, theme):
         [("  part", theme.c_keyword), (" frontLeft", theme.c_normal), (" :>", theme.c_keyword), (" wheel", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Abstract vs Individual", lines, "Templates vs Concrete instances.", theme, sheet_name="Patterns", wrapper_type="structure")
+    code_4 = """package Patterns_4AbstractvsIndividual {
+    private import ScalarValues::*;
+    private import SysML::*;
+    // Wrapped Snippet (Structure Context)
+    abstract  part  def  Wheel ;
+    part  def  Bus  {
+      abstract  part  wheel  [4]  :  Wheel ;
+    }
+    individual  part  myBus  :  Bus  {
+      part  frontLeft  :>  wheel ;
+    }
+}"""
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Abstract vs Individual", lines, "Templates vs Concrete instances.", theme, full_code=code_4, sheet_name="Patterns", wrapper_type="structure")
     svg += card
     cur_y_c2 += h + ROW_GAP
 
