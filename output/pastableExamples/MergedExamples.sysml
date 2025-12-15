@@ -652,6 +652,89 @@ package Constraints_4CalculationUsage {
     view ExposeExample { expose Main; }
 }
 
+// --- Source: CoreTypes_1PartvsItem.sysml ---
+package CoreTypes_1PartItems {
+    // A Part occupies space and time
+    part def Engine {
+        // Parts can contain other parts
+        part cylinder;
+    }
+    
+    // An Item is information or substance flow (no structure)
+    item def TorqueCommand;
+    
+    part car {
+        part myEngine : Engine;
+        // Items often flow between parts
+        item currentCmd : TorqueCommand;
+    }
+}
+
+// --- Source: CoreTypes_2AttributesScalars.sysml ---
+package CoreTypes_2Attributes {
+    // 1. Define the Scalar (Primitive Type)
+    scalar def Kilogram;
+    
+    // 2. Define the Attribute Concept (Property)
+    attribute def Mass {
+        attribute val : Kilogram;
+    }
+    
+    part def Rocket;
+    
+    part myRocket : Rocket {
+        // 3. Use the Attribute
+        attribute dryMass : Mass = 5000;
+        
+        // Or simple usage with standard types
+        attribute name : String = "Falcon";
+    }
+}
+
+// --- Source: CoreTypes_3Enumerations.sysml ---
+package CoreTypes_3Enums {
+    enum def TrafficColor {
+        enum Red;
+        enum Yellow;
+        enum Green;
+    }
+    
+    part trafficLight {
+        attribute state : TrafficColor;
+    }
+    
+    // Assigning an enum value
+    part intersection {
+        part light1 : trafficLight {
+             attribute :>> state = TrafficColor::Red;
+        }
+    }
+}
+
+// --- Source: CoreTypes_4IntegratedExample.sysml ---
+package CoreTypes_4Integrated {
+    import ScalarValues::Real;
+    
+    scalar def Percent;
+    
+    item def Fuel;
+    
+    part def Tank {
+        attribute level : Percent; 
+        attribute capacity : Real;
+    }
+    
+    part fuelSystem {
+        part mainTank : Tank {
+            attribute :>> level = 85.5;
+            attribute :>> capacity = 50.0;
+        }
+        
+        // Item existing within component
+        item currentFuel : Fuel;
+    }
+}
+
 // --- Source: Metadata_1MetadataDefinition.sysml ---
 package Metadata_1Definition {
     private import ScalarValues::*;
