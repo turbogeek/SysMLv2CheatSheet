@@ -773,6 +773,66 @@ package Metadata_6Hashtags {
     }
 }
 
+// --- Source: Naming_1NamingIdentifiers.sysml ---
+package Naming_1Identifiers {
+    part def VehiclePart;      // PascalCase for Definitions
+    part myEngine : VehiclePart; // camelCase for Usages
+    
+    // Escaped identifiers for special chars or keywords
+    part '123-Start'; 
+    part 'Space Name';
+    
+    // Avoid name collisions with keywords
+    // part type; // Error: 'type' is reserved
+}
+
+// --- Source: Naming_2ImportBasics.sysml ---
+package Naming_2Imports {
+    package Lib {
+        part def Tool;
+    }
+    
+    // Public Import: Visible to importers of Naming_2Imports
+    import Lib::*;
+    
+    // Private Import: Only visible inside this package
+    private import ScalarValues::Boolean;
+    
+    part t : Tool;
+    attribute isReady : Boolean;
+}
+
+// --- Source: Naming_3WildcardsScope.sysml ---
+package Naming_3Wildcards {
+    package BigLibrary {
+        package SubLib { part def InnerThing; }
+        part def OuterThing;
+    }
+    
+    // Imports only OuterThing, NOT InnerThing
+    import BigLibrary::*; 
+    
+    // Imports OuterThing AND InnerThing (Recursive)
+    // CAUTION: Can cause namespace pollution and conflicts
+    // import BigLibrary::**; 
+    
+    part o : OuterThing;
+    // part i : InnerThing; // Error if using *
+}
+
+// --- Source: Naming_4Aliasing.sysml ---
+package Naming_4Aliasing {
+    package LibA { part def Widget; }
+    package LibB { part def Widget; }
+    
+    // Conflict resolution
+    import LibA::Widget as A_Widget;
+    import LibB::Widget as B_Widget;
+    
+    part w1 : A_Widget;
+    part w2 : B_Widget;
+}
+
 // --- Source: Patterns_1MetadataAnnotations.sysml ---
 package Patterns_1MetadataAnnotations {
     private import ScalarValues::*;

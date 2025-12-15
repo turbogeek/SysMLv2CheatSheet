@@ -19,7 +19,8 @@ scripts = [
     "generate_states_sheet.py",
     "generate_state_patterns_sheet.py",
     "generate_metadata_sheet.py",
-    "generate_use_case_tutorial.py"
+    "generate_use_case_tutorial.py",
+    "generate_naming_tutorial.py"
 ]
 
 # --- Cleanup ---
