@@ -1,63 +1,57 @@
-package DSLinSysML {
-    doc /* https://www.omg.org/cgi-bin/doc?syseng/25-03-07.pdf */
+package DroneDSLinSysML {
     
     // --- 1. Domain Library (Vocabulary) ---
-    library package Vehicle_Library {
-        port def DrivePort {
-            out attribute torque : ISQ::TorqueValue;
-        }
-        part def Engine {
-            port enginePort : DrivePort;
-        }
-        part engines : Engine [0..*];
-        part def Wheel {
-            port wheelPort : ~DrivePort;
-        }
-        part wheels : Wheel [0..*];
-        interface def DriveTrain {
-            end [0..1] port drivePort : DrivePort;
-            end [0..*] port drivenPort : ~DrivePort;
-        }
-        abstract interface driveTrains : DriveTrain [0..*];
+    library package Drone_Library {
+        part def Sensor;
+        part def ImageSensor :> Sensor;
+        part def CollisionSensor :> Sensor;
         
-        part def Vehicle {
-            part :>> engines;
-            part :>> wheels;
-            part :>> driveTrains;
+        part def Rotor;
+        
+        part def Drone {
+           part rotors : Rotor [1..*];
+           part sensors : Sensor [0..*];
         }
     }
     
     // --- 2. Metadata Definitions (The Mapping) ---
-    package Vehicle_Metadata {
-        private import Vehicle_Library::*;
+    package Drone_Metadata {
+        private import Drone_Library::*;
         private import Metaobjects::SemanticMetadata;
         
-        metadata def drive :> SemanticMetadata {
-            :>> baseType = driveTrains meta SysML::Usage;
-            :> annotatedElement : SysML::InterfaceUsage;
-        }
-        metadata def engine :> SemanticMetadata {
-            :>> baseType = engines meta SysML::Usage;
-            :> annotatedElement : SysML::Usage;
-        }
-        metadata def wheel :> SemanticMetadata {
-            :>> baseType = wheels meta SysML::Usage;
-            :> annotatedElement : SysML::Usage;
-        }
-        metadata def vehicle :> SemanticMetadata {
-            :>> baseType = Vehicle meta SysML::Definition;
+        metadata def drone :> SemanticMetadata {
+            :>> baseType = Drone meta SysML::Definition;
             :> annotatedElement : SysML::Definition;
+        }
+        
+        metadata def rotor :> SemanticMetadata {
+            :>> baseType = Rotor meta SysML::Usage;
+            :> annotatedElement : SysML::Usage;
+        }
+        
+        metadata def cam :> SemanticMetadata {
+            :>> baseType = ImageSensor meta SysML::Usage;
+            :> annotatedElement : SysML::Usage;
+        }
+        
+        metadata def lidar :> SemanticMetadata {
+            :>> baseType = CollisionSensor meta SysML::Usage;
+            :> annotatedElement : SysML::Usage;
         }
     }
     
     // --- 3. DSL Usage (The Result) ---
-    package Car_Example {
-        private import Vehicle_Metadata::*;
+    package Mission_Model {
+        private import Drone_Metadata::*;
         
-        #vehicle def Car {
-            #engine carEngine [1];
-            #wheel carWheels [4];
-            #drive interface [1] carEngine.enginePort to [2] carWheels.wheelPort;
+        #drone part def SurveillanceDrone {
+            // Using the DSL vocabulary:
+            #rotor part frontRotors[2];
+            #rotor part rearRotors[2];
+            
+            // Defining sensors using shorthand
+            #cam part mainCamera;
+            #lidar part obstacleAvoider;
         }
     }
 }
