@@ -735,6 +735,66 @@ package CoreTypes_4Integrated {
     }
 }
 
+// --- Source: Features_1WhatisaFeature.sysml ---
+package Feature_Basics {
+    part def Car {
+        // Structural Features
+        attribute vin : String;
+        part engine : Engine;
+        
+        // Behavioral Features
+        action drive;
+    }
+}
+
+// --- Source: Features_2Subsetting.sysml ---
+package Subsetting_Example {
+    part def Vehicle {
+        part wheels[4];
+    }
+    
+    part def Car :> Vehicle {
+        // 'frontWheels' is a specific subset of 'wheels'
+        part frontWheels[2] subsets wheels;
+        
+        // 'rearWheels' is another subset
+        part rearWheels[2] subsets wheels;
+        
+        // Total items in subsets cannot exceed superset multiplicity
+    }
+}
+
+// --- Source: Features_3Redefinition.sysml ---
+package Redefinition_Example {
+    part def Vehicle {
+        part engine : Engine;
+    }
+    
+    part def ElectricCar :> Vehicle {
+        // Replace the generic Engine with an ElectricMotor
+        // Multiplicity or Type can change
+        part redefines engine : ElectricMotor;
+    }
+    
+    part def ElectricMotor :> Engine;
+    part def Engine;
+}
+
+// --- Source: Features_4Redeclaration.sysml ---
+package Redeclaration_Example {
+    part def Spacecraft {
+        part module;
+    }
+    
+    part def Lander :> Spacecraft {
+        // Add details to the inherited 'module'
+        // Equivalent to: part module :>> module { ... }
+        part :>> module {
+            attribute mass = 500 [ISQ::kg];
+        }
+    }
+}
+
 // --- Source: Metadata_1MetadataDefinition.sysml ---
 package Metadata_1Definition {
     private import ScalarValues::*;

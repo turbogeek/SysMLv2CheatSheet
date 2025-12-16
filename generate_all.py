@@ -22,7 +22,8 @@ scripts = [
     "generate_use_case_tutorial.py",
     "generate_naming_tutorial.py",
     "generate_core_types_tutorial.py",
-    "generate_semantic_metadata_tutorial.py"
+    "generate_semantic_metadata_tutorial.py",
+    "generate_features_tutorial.py"
 ]
 
 # --- Cleanup ---
