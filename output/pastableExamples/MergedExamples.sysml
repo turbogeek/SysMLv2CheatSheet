@@ -735,63 +735,49 @@ package CoreTypes_4Integrated {
     }
 }
 
-// --- Source: Features_1WhatisaFeature.sysml ---
-package Feature_Basics {
-    part def Car {
-        // Structural Features
-        attribute vin : String;
-        part engine : Engine;
-        
-        // Behavioral Features
-        action drive;
-    }
-}
+// --- Source: Features_Tutorial.sysml ---
+package Feature_Tutorial_Model {
+    import ISQ::*;
 
-// --- Source: Features_2Subsetting.sysml ---
-package Subsetting_Example {
-    part def Vehicle {
-        part wheels[4];
+    // --- 1. Base Definitions ---
+    part def Engine {
+        attribute horsepower : PowerValue;
+        attribute mass : MassValue;
     }
-    
-    part def Car :> Vehicle {
-        // 'frontWheels' is a specific subset of 'wheels'
+
+    part def Wheel;
+
+    part def Vehicle {
+        part engine : Engine[1];
+        part wheels : Wheel[4];
+    }
+
+    // --- 2. Subsetting Example ---
+    part def Truck :> Vehicle {
+        // 'front' and 'rear' partition the 'wheels' set
         part frontWheels[2] subsets wheels;
-        
-        // 'rearWheels' is another subset
         part rearWheels[2] subsets wheels;
-        
-        // Total items in subsets cannot exceed superset multiplicity
     }
-}
 
-// --- Source: Features_3Redefinition.sysml ---
-package Redefinition_Example {
-    part def Vehicle {
-        part engine : Engine;
-    }
+    // --- 3. Redefinition Example ---
+    part def ElectricMotor :> Engine;
     
     part def ElectricCar :> Vehicle {
-        // Replace the generic Engine with an ElectricMotor
-        // Multiplicity or Type can change
+        // Replace generic Engine with ElectricMotor
         part redefines engine : ElectricMotor;
     }
-    
-    part def ElectricMotor :> Engine;
-    part def Engine;
-}
 
-// --- Source: Features_4Redeclaration.sysml ---
-package Redeclaration_Example {
-    part def Spacecraft {
-        part module;
-    }
-    
-    part def Lander :> Spacecraft {
-        // Add details to the inherited 'module'
-        // Equivalent to: part module :>> module { ... }
-        part :>> module {
-            attribute mass = 500 [ISQ::kg];
-        }
+    // --- 4. Feature Chaining & Redeclaration Example ---
+    part def SportsCar :> Vehicle {
+        // Feature Chaining: reaching into 'engine'
+        // Redeclaration (:>>) shorthand for 'redefines' or 'subsets'
+        
+        attribute :>> engine.horsepower = 500 [hp];
+        
+        // This is structurally equivalent to:
+        // part :>> engine {
+        //    attribute :>> horsepower = 500 [hp];
+        // }
     }
 }
 
