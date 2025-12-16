@@ -255,6 +255,67 @@ package Actions_8Trigger {
     view ExposeExample { expose Main; }
 }
 
+// --- Source: Actions_Tutorial.sysml ---
+package Actions_Tutorial {
+    import ScalarValues::*;
+    
+    // reusable action
+    action def LogStatus { in msg : String; }
+
+    action def ProcessData {
+        // Defining steps
+        action step1;
+        action step2;
+        action step3;
+        
+        // --- Control Flow ---
+        // 'first' implies the entry point
+        first step1;
+        
+        // 'then' implies succession (step1 completes before step2 starts)
+        flow from step1 to step2; // explicit
+        
+        // Shorthand for flow:
+        // step2 then step3; 
+        
+        // --- Parallelism ---
+        action branchA;
+        action branchB;
+        
+        // Forking: step3 triggers both branches
+        flow from step3 to branchA;
+        flow from step3 to branchB;
+        
+        // --- Using Definitions ---
+        action logger : LogStatus {
+            in msg = "Processing Complete";
+        }
+        
+        // Joining: both must finish before logger runs
+        flow from branchA to logger;
+        flow from branchB to logger;
+    }
+}
+
+// --- Source: Allocation_Tutorial.sysml ---
+package Allocation_Tutorial {
+    
+    // --- Behavioral / Logical View ---
+    action def ComputePath;
+    
+    // --- Physical / Structural View ---
+    part def FlightComputer;
+    
+    package Deployment {
+        part ecu : FlightComputer;
+        action plan : ComputePath;
+        
+        // Allocate the action (plan) to the hardware (ecu)
+        // Meaning: "The ECU executes the planning action"
+        allocate plan to ecu;
+    }
+}
+
 // --- Source: Behavior_1StateDefinition.sysml ---
 package Behavior_1StateDefinition {
     private import ScalarValues::*;
@@ -1433,6 +1494,36 @@ package Shorthand_6Multiplicity {
     part  many [*] ;  /* 0..* */
     part  one ;  /* 1..1 (Default) */
     part  opt [0..1] ;  /* 0..1 */
+}
+
+// --- Source: StateMachine_Tutorial.sysml ---
+package StateMachine_Tutorial {
+    import ScalarValues::*;
+    
+    // Define the component containing the machine
+    part def TrafficLight {
+        // The machine behavior
+        state def LightLogic {
+             // Initial entry point
+             entry; then Red;
+             
+             state Red {
+                 // Transition after time
+                 transition to Green after 20 [ISQ::s];
+             }
+             
+             state Green {
+                 transition to Yellow after 30 [ISQ::s];
+             }
+             
+             state Yellow {
+                 transition to Red after 5 [ISQ::s];
+             }
+        }
+        
+        // Usage of the machine
+        state logic : LightLogic;
+    }
 }
 
 // --- Source: StatePatterns_1EntryDoExit.sysml ---
