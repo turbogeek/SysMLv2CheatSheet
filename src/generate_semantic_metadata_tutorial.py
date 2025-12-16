@@ -34,14 +34,28 @@ def generate_for_theme(theme_key, theme):
         [("Metadata will map to these concepts.", theme.c_normal)]
     ]
     code_1 = """package Vehicle_Library {
-    part def Vehicle;
-    part def engines;
-    part def wheels;
-    interface def driveTrains;
+    port def DrivePort {
+        out attribute torque : ISQ::TorqueValue;
+    }
+    part def Engine {
+        port enginePort : DrivePort;
+    }
+    part engines : Engine [0..*];
+    part def Wheel {
+        port wheelPort : ~DrivePort;
+    }
+    part wheels : Wheel [0..*];
+    interface def DriveTrain {
+        end [0..1] port drivePort : DrivePort;
+        end [0..*] port drivenPort : ~DrivePort;
+    }
+    abstract interface driveTrains : DriveTrain [0..*];
     
-    // Standard Ports for connections
-    part def EnginePart :> engines { port enginePort; }
-    part def WheelPart :> wheels { port wheelPort; }
+    part def Vehicle {
+        part :>> engines;
+        part :>> wheels;
+        part :>> driveTrains;
+    }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Domain Library", lines, "The vocabulary we want to use.", theme, full_code=code_1, sheet_name='SemanticMetadata', wrapper_type='structure')
     svg += card
@@ -58,27 +72,21 @@ def generate_for_theme(theme_key, theme):
     private import Vehicle_Library::*;
     private import Metaobjects::SemanticMetadata;
 
-    // Define 'drive' metadata mapping to 'driveTrains' interface
-    metadata def drive specializes SemanticMetadata {
-        redefines baseType = driveTrains meta SysML::Usage;
-        subsets annotatedElement : SysML::InterfaceUsage;
+    metadata def drive :> SemanticMetadata {
+        :>> baseType = driveTrains meta SysML::Usage;
+        :> annotatedElement : SysML::InterfaceUsage;
     }
-    
-    // Define 'engine' metadata mapping to 'engines' part
-    metadata def engine specializes SemanticMetadata {
-        redefines baseType = engines meta SysML::Usage;
-        subsets annotatedElement : SysML::Usage;
+    metadata def engine :> SemanticMetadata {
+        :>> baseType = engines meta SysML::Usage;
+        :> annotatedElement : SysML::Usage;
     }
-
-    metadata def wheel specializes SemanticMetadata {
-        redefines baseType = wheels meta SysML::Usage;
-        subsets annotatedElement : SysML::Usage;
+    metadata def wheel :> SemanticMetadata {
+        :>> baseType = wheels meta SysML::Usage;
+        :> annotatedElement : SysML::Usage;
     }
-
-    // Define 'vehicle' metadata mapping to 'Vehicle' definition
-    metadata def vehicle specializes SemanticMetadata {
-        redefines baseType = Vehicle meta SysML::Definition;
-        subsets annotatedElement : SysML::Definition;
+    metadata def vehicle :> SemanticMetadata {
+        :>> baseType = Vehicle meta SysML::Definition;
+        :> annotatedElement : SysML::Definition;
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Defining Metadata", lines, "Mapping keywords to concepts.", theme, full_code=code_2, sheet_name='SemanticMetadata', wrapper_type='structure')
@@ -96,19 +104,12 @@ def generate_for_theme(theme_key, theme):
     ]
     code_3 = """package Car_Example {
     private import Vehicle_Metadata::*;
-
-    // Using the DSL!
-    // #vehicle implies 'part def Car :> Vehicle'
+    
     #vehicle def Car {
+        #engine carEngine [1];
+        #wheel carWheels [4];
         
-        // #engine implies 'part carEngine :> engines'
-        #engine carEngine[1];
-        
-        #wheel carWheels[4];
-        
-        // #drive implies 'interface ... :> driveTrains'
-        #drive interface connect [1] carEngine.enginePort 
-                              to [2] carWheels.wheelPort;
+        #drive interface [1] carEngine.enginePort to [2] carWheels.wheelPort;
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. Using the DSL", lines, "Writing concise, domain-specific code.", theme, full_code=code_3, sheet_name='SemanticMetadata', wrapper_type='structure')
