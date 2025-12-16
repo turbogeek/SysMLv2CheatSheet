@@ -6,155 +6,141 @@ import base64
 import html
 from themes import THEMES
 
-# --- Configuration ---
-WIDTH = 1400
-HEIGHT = 1300
-MARGIN = 30
-COL_GAP = 20
-ROW_GAP = 20
-COL_WIDTH = (WIDTH - (2 * MARGIN) - COL_GAP) / 2
-
 def generate_for_theme(theme_key, theme):
-    svg = utils.svg_start(WIDTH, HEIGHT, theme)
+    w, h = 1400, 2200 
+    svg = utils.svg_start(w, h, theme)
     
-    # Header
-    title_text = "SysML v2 Cheat Sheet: CORE TYPES"
-    svg += utils.text(WIDTH/2, 60, title_text, 40, theme.text_main, "bold", "middle", font_family=theme.title_font)
-    svg += utils.text(WIDTH/2, 100, f"Theme: {theme.name}", 20, theme.text_sec, "normal", "middle")
-    
-    col1_x = MARGIN
-    col2_x = MARGIN + COL_WIDTH + COL_GAP
-    cur_y_c1 = 150
-    cur_y_c2 = 150
-    
-    # --- Card 1: Part vs Item ---
-    lines = [
-        [("Part", theme.c_keyword), (" : Physical/Logical entity (Space/Time)", theme.c_normal)],
-        [("Item", theme.c_keyword), (" : Pure Information/Logical flow", theme.c_normal)],
-        [("Rule:", theme.c_keyword), (" Parts have mass/energy, Items do not.", theme.c_normal)],
-        [("Usage:", theme.c_comment)],
-        [("  part eng : Engine;", theme.c_normal)],
-        [("  item cmd : TorqueCommand;", theme.c_normal)]
-    ]
-    code_1 = """package CoreTypes_1PartItems {
-    // A Part occupies space and time
-    part def Engine {
-        // Parts can contain other parts
-        part cylinder;
-    }
-    
-    // An Item is information or substance flow (no structure)
-    item def TorqueCommand;
-    
-    part car {
-        part myEngine : Engine;
-        // Items often flow between parts
-        item currentCmd : TorqueCommand;
-    }
-}"""
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Part vs. Item", lines, "Physical Structure vs. Information.", theme, full_code=code_1, sheet_name='CoreTypes', wrapper_type='structure')
-    svg += card
-    cur_y_c1 += h + ROW_GAP
+    svg += utils.text(50, 60, "SysML v2 Tutorial: Core Types", 40, theme.text_main, "bold", font_family=theme.title_font)
+    svg += utils.text(50, 100, "Parts, Items, Attributes, and Enumerations", 24, theme.text_sec, "italic", font_family=theme.title_font)
 
-    # --- Card 2: Attributes & Scalars ---
+    y = 150
+
+    # --- Section 1: Part vs Item ---
+    svg += utils.text(50, y, "1. Parts vs Items", 24, theme.c_keyword, "bold")
+    y += 30
     lines = [
-        [("attribute", theme.c_keyword), (" : Carries a value (No independent identity)", theme.c_normal)],
-        [("scalar", theme.c_keyword), ("    : Defines the raw type (Real, String...)", theme.c_normal)],
-        [("Structure:", theme.c_normal)],
-        [("  scalar def -> attribute def -> usage", theme.c_comment)]
+        "SysML v2 distinguishes between physical/logical structure and information/flow.",
+        "• part: Has mass, energy, or spatial extent (e.g., Engine, Server).",
+        "• item: Represents distinct headers or mass that flows (e.g., Water, DataMessage)."
     ]
-    code_2 = """package CoreTypes_2Attributes {
-    // 1. Define the Scalar (Primitive Type)
-    scalar def Kilogram;
+    for line in lines:
+        svg += utils.text(50, y, line, 18, theme.text_main)
+        y += 25
+    y += 20
+
+    # --- Section 2: Attributes & Scalars ---
+    svg += utils.text(50, y, "2. Attributes & Scalars", 24, theme.c_keyword, "bold")
+    y += 30
+    lines = [
+        "Attributes store data values within definitions.",
+        "• attribute def: Defines a reusable data type (can specialize standard types like Real, Integer).",
+        "• attribute: A usage of a definition holding a value."
+    ]
+    for line in lines:
+        svg += utils.text(50, y, line, 18, theme.text_main)
+        y += 25
+    y += 20
+
+    # --- Section 3: Enumerations ---
+    svg += utils.text(50, y, "3. Enumerations", 24, theme.c_keyword, "bold")
+    y += 30
+    lines = [
+        "Enumerations define a fixed set of literals.",
+        "Useful for states, modes, or configuration options."
+    ]
+    for line in lines:
+        svg += utils.text(50, y, line, 18, theme.text_main)
+        y += 25
+    y += 20
+
+    # --- Section 4: Comprehensive Example ---
+    svg += utils.text(50, y, "4. Core Types Example", 24, theme.c_keyword, "bold")
+    y += 30
     
-    // 2. Define the Attribute Concept (Property)
-    attribute def Mass {
-        attribute val : Kilogram;
+    full_code = """package CoreTypes_Tutorial {
+    import ScalarValues::*;
+    
+    // --- 1. Enumerations ---
+    enum def Status {
+        enum Active;
+        enum Idle;
+        enum Error;
     }
+
+    // --- 2. Attributes & Scalars ---
+    attribute def MassValue :> Real;
     
-    part def Rocket;
+    // --- 3. Parts (Structure) ---
+    part def StorageTank {
+        attribute capacity : MassValue = 1000.0;
+        attribute currentStatus : Status = Status::Idle;
+    }
+
+    // --- 4. Items (Flow/Substance) ---
+    item def Water;
     
-    part myRocket : Rocket {
-        // 3. Use the Attribute
-        attribute dryMass : Mass = 5000;
+    part def WaterSystem {
+        part tank1 : StorageTank;
+        part tank2 : StorageTank;
         
-        // Or simple usage with standard types
-        attribute name : String = "Falcon";
+        // Items flow or are stored
+        item storedWater : Water;
     }
 }"""
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Attributes & Scalars", lines, "Defining and using data values.", theme, full_code=code_2, sheet_name='CoreTypes', wrapper_type='structure')
-    svg += card
-    cur_y_c1 += h + ROW_GAP
     
-    # --- Card 3: Enumerations ---
-    lines = [
-        [("enum def", theme.c_keyword), (" : Define a set of valid literals", theme.c_normal)],
-        [("Useful for states, modes, options", theme.c_normal)],
-        [("Example:", theme.c_normal), (" Red, Yellow, Green", theme.c_string)]
-    ]
-    code_3 = """package CoreTypes_3Enums {
-    enum def TrafficColor {
-        enum Red;
-        enum Yellow;
-        enum Green;
-    }
+    utils.save_example("CoreTypes_Tutorial.sysml", full_code)
     
-    part trafficLight {
-        attribute state : TrafficColor;
-    }
-    
-    // Assigning an enum value
-    part intersection {
-        part light1 : trafficLight {
-             attribute :>> state = TrafficColor::Red;
-        }
-    }
-}"""
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. Enumerations", lines, "Predefined sets of values.", theme, full_code=code_3, sheet_name='CoreTypes', wrapper_type='structure')
-    svg += card
-    cur_y_c2 += h + ROW_GAP
+    # Render Code Box
+    code_lines_render = []
+    for line in full_code.split('\n'):
+        parts = []
+        words = line.split(' ')
+        for w in words:
+            color = theme.c_normal
+            if w in ["part", "def", "attribute", "item", "enum", "package", "import"]:
+                color = theme.c_keyword
+            elif w.startswith("//"):
+                color = theme.c_comment
+            elif w in ["Active", "Idle", "Error"]:
+                color = theme.c_string
+            elif w.endswith(";") or w.endswith("{") or w.endswith("}"):
+                color = theme.c_normal
+            
+            if any(p[1] == theme.c_comment for p in parts):
+                 color = theme.c_comment
+            
+            parts.append((w + " ", color))
+        code_lines_render.append(parts)
 
-    # --- Card 4: Putting it Together ---
-    lines = [
-        [("Composition:", theme.c_keyword), (" Parts composed of attributes (vals)", theme.c_normal)],
-        [("Flows:", theme.c_keyword), (" Items flow, Parts execute", theme.c_normal)],
-        [("The Core:", theme.c_keyword), (" Almost everything in SysML v2 extends", theme.c_normal)],
-        [("from these core types.", theme.c_normal)]
-    ]
-    code_4 = """package CoreTypes_4Integrated {
-    import ScalarValues::Real;
+    code_h = len(code_lines_render) * 25 + 40
+    svg += utils.rect(50, y, 1300, code_h, theme.card_bg, stroke=theme.c_type, stroke_width=1)
+
+    # Copy Button
+    code_id = f"code_{uuid.uuid4().hex}"
+    b64_code = base64.b64encode(full_code.encode('utf-8')).decode('utf-8')
+    svg += f'<text id="{code_id}" style="display:none;">{b64_code}</text>'
     
-    scalar def Percent;
+    btn_x = 50 + 1300 - 80
+    btn_y = y + 10
+    svg += f'<g onclick="copyToClipboard(\'{code_id}\')" style="cursor: pointer;">'
+    svg += f'<title>Copy Code</title>'
+    svg += utils.rect(btn_x, btn_y, 70, 30, theme.c_keyword, r=5)
+    svg += utils.text(btn_x + 35, btn_y + 20, "COPY", 14, "#FFFFFF", "bold", "middle")
+    svg += '</g>'
     
-    item def Fuel;
-    
-    part def Tank {
-        attribute level : Percent; 
-        attribute capacity : Real;
-    }
-    
-    part fuelSystem {
-        part mainTank : Tank {
-            attribute :>> level = 85.5;
-            attribute :>> capacity = 50.0;
-        }
+    # Render lines
+    cy = y + 30
+    for line_parts in code_lines_render:
+        svg += utils.colored_code_line(70, cy, line_parts, 16, theme)
+        cy += 25
         
-        // Item existing within component
-        item currentFuel : Fuel;
-    }
-}"""
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Integrated Example", lines, "Combining Structural Concepts.", theme, full_code=code_4, sheet_name='CoreTypes', wrapper_type='structure')
-    svg += card
-    cur_y_c2 += h + ROW_GAP
-
-    # --- Legend ---
-    svg += utils.draw_legend(WIDTH/2 - 250, HEIGHT - 80, 500, theme)
+    y += code_h + 30
+    
     svg += utils.svg_end()
     
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    output_dir = os.path.join(base_dir, "..", "output", "svg", theme_key)
-    os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, "core_types_tutorial.svg")
+    output_path = os.path.join(base_dir, "..", "output", "svg", theme_key, "core_types_tutorial.svg")
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(svg)

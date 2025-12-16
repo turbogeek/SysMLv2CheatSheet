@@ -652,86 +652,35 @@ package Constraints_4CalculationUsage {
     view ExposeExample { expose Main; }
 }
 
-// --- Source: CoreTypes_1PartvsItem.sysml ---
-package CoreTypes_1PartItems {
-    // A Part occupies space and time
-    part def Engine {
-        // Parts can contain other parts
-        part cylinder;
-    }
+// --- Source: CoreTypes_Tutorial.sysml ---
+package CoreTypes_Tutorial {
+    import ScalarValues::*;
     
-    // An Item is information or substance flow (no structure)
-    item def TorqueCommand;
-    
-    part car {
-        part myEngine : Engine;
-        // Items often flow between parts
-        item currentCmd : TorqueCommand;
+    // --- 1. Enumerations ---
+    enum def Status {
+        enum Active;
+        enum Idle;
+        enum Error;
     }
-}
 
-// --- Source: CoreTypes_2AttributesScalars.sysml ---
-package CoreTypes_2Attributes {
-    // 1. Define the Scalar (Primitive Type)
-    scalar def Kilogram;
+    // --- 2. Attributes & Scalars ---
+    attribute def MassValue :> Real;
     
-    // 2. Define the Attribute Concept (Property)
-    attribute def Mass {
-        attribute val : Kilogram;
+    // --- 3. Parts (Structure) ---
+    part def StorageTank {
+        attribute capacity : MassValue = 1000.0;
+        attribute currentStatus : Status = Status::Idle;
     }
+
+    // --- 4. Items (Flow/Substance) ---
+    item def Water;
     
-    part def Rocket;
-    
-    part myRocket : Rocket {
-        // 3. Use the Attribute
-        attribute dryMass : Mass = 5000;
+    part def WaterSystem {
+        part tank1 : StorageTank;
+        part tank2 : StorageTank;
         
-        // Or simple usage with standard types
-        attribute name : String = "Falcon";
-    }
-}
-
-// --- Source: CoreTypes_3Enumerations.sysml ---
-package CoreTypes_3Enums {
-    enum def TrafficColor {
-        enum Red;
-        enum Yellow;
-        enum Green;
-    }
-    
-    part trafficLight {
-        attribute state : TrafficColor;
-    }
-    
-    // Assigning an enum value
-    part intersection {
-        part light1 : trafficLight {
-             attribute :>> state = TrafficColor::Red;
-        }
-    }
-}
-
-// --- Source: CoreTypes_4IntegratedExample.sysml ---
-package CoreTypes_4Integrated {
-    import ScalarValues::Real;
-    
-    scalar def Percent;
-    
-    item def Fuel;
-    
-    part def Tank {
-        attribute level : Percent; 
-        attribute capacity : Real;
-    }
-    
-    part fuelSystem {
-        part mainTank : Tank {
-            attribute :>> level = 85.5;
-            attribute :>> capacity = 50.0;
-        }
-        
-        // Item existing within component
-        item currentFuel : Fuel;
+        // Items flow or are stored
+        item storedWater : Water;
     }
 }
 
@@ -902,64 +851,83 @@ package Metadata_6Hashtags {
     }
 }
 
-// --- Source: Naming_1NamingIdentifiers.sysml ---
-package Naming_1Identifiers {
-    part def VehiclePart;      // PascalCase for Definitions
-    part myEngine : VehiclePart; // camelCase for Usages
-    
-    // Escaped identifiers for special chars or keywords
-    part '123-Start'; 
-    part 'Space Name';
-    
-    // Avoid name collisions with keywords
-    // part type; // Error: 'type' is reserved
-}
-
-// --- Source: Naming_2ImportBasics.sysml ---
-package Naming_2Imports {
-    package Lib {
-        part def Tool;
+// --- Source: Naming_Tutorial.sysml ---
+package Naming_Tutorial {
+    // --- Library Definitions ---
+    package StandardLibrary {
+        part def Widget;
+        part def Gadget;
+        attribute def Status;
     }
     
-    // Public Import: Visible to importers of Naming_2Imports
-    import Lib::*;
+    package SpecializedLibrary {
+        // Name collision with StandardLibrary
+        part def Widget; 
+    }
+
+    // --- Imports & Aliasing ---
+    // Public import: 'StandardLibrary' is visible to users of 'Naming_Tutorial'
+    import StandardLibrary::*;
     
-    // Private Import: Only visible inside this package
-    private import ScalarValues::Boolean;
-    
-    part t : Tool;
-    attribute isReady : Boolean;
+    // Private import: Resolving collision with alias
+    private import SpecializedLibrary::Widget as SpecialWidget;
+
+    // --- Definitions & Usages ---
+    part def SystemContext {
+        // Usage of standard import
+        part standardPart : Widget;
+        
+        // Usage of aliased import
+        part specialPart : SpecialWidget;
+        
+        // Escaped identifier for spaces
+        attribute 'System ID' : String;
+        
+        // Correct Convention: camelCase usage
+        part mainGadget : Gadget;
+    }
 }
 
-// --- Source: Naming_3WildcardsScope.sysml ---
-package Naming_3Wildcards {
-    package BigLibrary {
-        package SubLib { part def InnerThing; }
-        part def OuterThing;
+// --- Source: PartsAndAttributes_Tutorial.sysml ---
+package PartsAndAttributes_Tutorial {
+    import ISQ::*; // Import standard units
+    
+    // --- Definitions ---
+    part def Engine {
+        attribute maxThrust : ForceValue;
+        attribute mass : MassValue;
     }
     
-    // Imports only OuterThing, NOT InnerThing
-    import BigLibrary::*; 
+    part def FuelTank {
+        attribute capacity : VolumeValue;
+    }
     
-    // Imports OuterThing AND InnerThing (Recursive)
-    // CAUTION: Can cause namespace pollution and conflicts
-    // import BigLibrary::**; 
+    // --- Composite Definition ---
+    part def Spacecraft {
+        // Attributes of the spacecraft itself
+        attribute totalMass : MassValue;
+        attribute callSign : String;
+        
+        // Parts (Usages)
+        // Decomposing Spacecraft into subsystems
+        part mainEngine : Engine {
+            // Assigning values to attributes
+            attribute :>> maxThrust = 500 [kN];
+            attribute :>> mass = 1000 [kg];
+        }
+        
+        part reserveEngine : Engine; // Uses defaults if any
+        
+        part fuelSystem {
+            part loxTank : FuelTank;
+            part rp1Tank : FuelTank;
+        }
+    }
     
-    part o : OuterThing;
-    // part i : InnerThing; // Error if using *
-}
-
-// --- Source: Naming_4Aliasing.sysml ---
-package Naming_4Aliasing {
-    package LibA { part def Widget; }
-    package LibB { part def Widget; }
-    
-    // Conflict resolution
-    import LibA::Widget as A_Widget;
-    import LibB::Widget as B_Widget;
-    
-    part w1 : A_Widget;
-    part w2 : B_Widget;
+    // --- Concrete Instance ---
+    part myShip : Spacecraft {
+        attribute :>> callSign = "Voyager-1";
+    }
 }
 
 // --- Source: Patterns_1MetadataAnnotations.sysml ---
@@ -1189,79 +1157,70 @@ package Requirements_7TraceRefine {
     }
 }
 
-// --- Source: SemanticMetadata_1DomainLibrary.sysml ---
-package Vehicle_Library {
-    port def DrivePort {
-        out attribute torque : ISQ::TorqueValue;
-    }
-    part def Engine {
-        port enginePort : DrivePort;
-    }
-    part engines : Engine [0..*];
-    part def Wheel {
-        port wheelPort : ~DrivePort;
-    }
-    part wheels : Wheel [0..*];
-    interface def DriveTrain {
-        end [0..1] port drivePort : DrivePort;
-        end [0..*] port drivenPort : ~DrivePort;
-    }
-    abstract interface driveTrains : DriveTrain [0..*];
+// --- Source: SemanticMetadata_Tutorial.sysml ---
+package DSLinSysML {
+    doc /* https://www.omg.org/cgi-bin/doc?syseng/25-03-07.pdf */
     
-    part def Vehicle {
-        part :>> engines;
-        part :>> wheels;
-        part :>> driveTrains;
-    }
-}
-
-// --- Source: SemanticMetadata_2DefiningMetadata.sysml ---
-package Vehicle_Metadata {
-    private import Vehicle_Library::*;
-    private import Metaobjects::SemanticMetadata;
-
-    metadata def drive :> SemanticMetadata {
-        :>> baseType = driveTrains meta SysML::Usage;
-        :> annotatedElement : SysML::InterfaceUsage;
-    }
-    metadata def engine :> SemanticMetadata {
-        :>> baseType = engines meta SysML::Usage;
-        :> annotatedElement : SysML::Usage;
-    }
-    metadata def wheel :> SemanticMetadata {
-        :>> baseType = wheels meta SysML::Usage;
-        :> annotatedElement : SysML::Usage;
-    }
-    metadata def vehicle :> SemanticMetadata {
-        :>> baseType = Vehicle meta SysML::Definition;
-        :> annotatedElement : SysML::Definition;
-    }
-}
-
-// --- Source: SemanticMetadata_3UsingtheDSL.sysml ---
-package Car_Example {
-    private import Vehicle_Metadata::*;
-    
-    #vehicle def Car {
-        #engine carEngine [1];
-        #wheel carWheels [4];
+    // --- 1. Domain Library (Vocabulary) ---
+    library package Vehicle_Library {
+        port def DrivePort {
+            out attribute torque : ISQ::TorqueValue;
+        }
+        part def Engine {
+            port enginePort : DrivePort;
+        }
+        part engines : Engine [0..*];
+        part def Wheel {
+            port wheelPort : ~DrivePort;
+        }
+        part wheels : Wheel [0..*];
+        interface def DriveTrain {
+            end [0..1] port drivePort : DrivePort;
+            end [0..*] port drivenPort : ~DrivePort;
+        }
+        abstract interface driveTrains : DriveTrain [0..*];
         
-        #drive interface [1] carEngine.enginePort to [2] carWheels.wheelPort;
+        part def Vehicle {
+            part :>> engines;
+            part :>> wheels;
+            part :>> driveTrains;
+        }
+    }
+    
+    // --- 2. Metadata Definitions (The Mapping) ---
+    package Vehicle_Metadata {
+        private import Vehicle_Library::*;
+        private import Metaobjects::SemanticMetadata;
+        
+        metadata def drive :> SemanticMetadata {
+            :>> baseType = driveTrains meta SysML::Usage;
+            :> annotatedElement : SysML::InterfaceUsage;
+        }
+        metadata def engine :> SemanticMetadata {
+            :>> baseType = engines meta SysML::Usage;
+            :> annotatedElement : SysML::Usage;
+        }
+        metadata def wheel :> SemanticMetadata {
+            :>> baseType = wheels meta SysML::Usage;
+            :> annotatedElement : SysML::Usage;
+        }
+        metadata def vehicle :> SemanticMetadata {
+            :>> baseType = Vehicle meta SysML::Definition;
+            :> annotatedElement : SysML::Definition;
+        }
+    }
+    
+    // --- 3. DSL Usage (The Result) ---
+    package Car_Example {
+        private import Vehicle_Metadata::*;
+        
+        #vehicle def Car {
+            #engine carEngine [1];
+            #wheel carWheels [4];
+            #drive interface [1] carEngine.enginePort to [2] carWheels.wheelPort;
+        }
     }
 }
-
-// --- Source: SemanticMetadata_4BehindtheScenes.sysml ---
-// Conceptual view of what happens under the hood
-// When you write:
-// #engine myEngine;
-
-// It effectively becomes:
-// @engine
-// part myEngine :> engines;
-
-// Where @engine links back to the metadata definition
-// allowing tools to know "This part IS an engine"
-// regardless of inheritance hierarchy complexities.
 
 // --- Source: Shorthand_1Specialization.sysml ---
 package Shorthand_1Specialization {

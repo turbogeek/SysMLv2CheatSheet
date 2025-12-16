@@ -6,134 +6,175 @@ import base64
 import html
 from themes import THEMES
 
-# --- Configuration ---
-WIDTH = 1400
-HEIGHT = 1300
-MARGIN = 30
-COL_GAP = 20
-ROW_GAP = 20
-COL_WIDTH = (WIDTH - (2 * MARGIN) - COL_GAP) / 2
-
 def generate_for_theme(theme_key, theme):
-    svg = utils.svg_start(WIDTH, HEIGHT, theme)
+    # Dimensions match Use Case / Features Tutorial
+    w, h = 1400, 2200 
+    svg = utils.svg_start(w, h, theme)
     
-    # Header
-    title_text = "SysML v2 Cheat Sheet: NAMES & IMPORTS"
-    svg += utils.text(WIDTH/2, 60, title_text, 40, theme.text_main, "bold", "middle", font_family=theme.title_font)
-    svg += utils.text(WIDTH/2, 100, f"Theme: {theme.name}", 20, theme.text_sec, "normal", "middle")
-    
-    col1_x = MARGIN
-    col2_x = MARGIN + COL_WIDTH + COL_GAP
-    cur_y_c1 = 150
-    cur_y_c2 = 150
-    
-    # --- Card 1: Naming & Identifiers ---
-    lines = [
-        [("Standard", theme.c_keyword), (" : alphanumeric + _ (start with letter/_) ", theme.c_normal)],
-        [("Escaped", theme.c_keyword), ("  : 'Single Quoted' (allows spaces/symbols)", theme.c_normal)],
-        [("SysML", theme.c_normal), (" is ", theme.c_normal), ("Case Sensitive", theme.c_keyword)],
-        [("Conventions:", theme.c_comment)],
-        [("  PartDef", theme.c_type), (" (PascalCase) - Definitions", theme.c_normal)],
-        [("  myPart", theme.c_string), ("  (camelCase)  - Usages", theme.c_normal)],
-        [("Recommendation:", theme.c_keyword), (" Avoid reserved words (type, id, etc.)", theme.c_normal)]
-    ]
-    code_1 = """package Naming_1Identifiers {
-    part def VehiclePart;      // PascalCase for Definitions
-    part myEngine : VehiclePart; // camelCase for Usages
-    
-    // Escaped identifiers for special chars or keywords
-    part '123-Start'; 
-    part 'Space Name';
-    
-    // Avoid name collisions with keywords
-    // part type; // Error: 'type' is reserved
-}"""
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Naming & Identifiers", lines, "Rules for naming elements.", theme, full_code=code_1, sheet_name='Naming', wrapper_type='structure')
-    svg += card
-    cur_y_c1 += h + ROW_GAP
+    # Title
+    svg += utils.text(50, 60, "SysML v2 Tutorial: Names & Imports", 40, theme.text_main, "bold", font_family=theme.title_font)
+    svg += utils.text(50, 100, "Identifiers, Conventions, and Package Management", 24, theme.text_sec, "italic", font_family=theme.title_font)
 
-    # --- Card 2: Imports & Visibility ---
+    y = 150
+
+    # --- Section 1: Identifiers & Naming Rules ---
+    svg += utils.text(50, y, "1. Identifiers", 24, theme.c_keyword, "bold")
+    y += 30
     lines = [
-        [("import", theme.c_keyword), (" : Public import (transitive)", theme.c_normal)],
-        [("private import", theme.c_keyword), (" : Private to this package", theme.c_normal)],
-        [("Members of imported package become visible", theme.c_normal)],
-        [("No 'include' - use import", theme.c_normal)]
+        "Standard identifiers in SysML v2 are alphanumeric and can include underscores.",
+        "They must start with a letter or underscore.",
+        "You can use 'single quotes' to escape any character sequence (e.g., 'My Name')."
     ]
-    code_2 = """package Naming_2Imports {
-    package Lib {
-        part def Tool;
+    for line in lines:
+        svg += utils.text(50, y, line, 18, theme.text_main)
+        y += 25
+    y += 20
+
+    # --- Section 2: Conventions ---
+    svg += utils.text(50, y, "2. Naming Conventions", 24, theme.c_keyword, "bold")
+    y += 30
+    cols = [
+        ("Definitions (PascalCase)", "CamelCase starting with Uppercase.\nUsed for: part defs, action defs, packages.\nExample: VehicleSystem, FlightControl"),
+        ("Usages (camelCase)", "CamelCase starting with lowercase.\nUsed for: parts, actions, attributes.\nExample: engine, maxSpeed, calculateThrust")
+    ]
+    cx = 50
+    for title, desc in cols:
+        svg += utils.text(cx, y, title, 20, theme.c_type, "bold")
+        y += 25
+        for dline in desc.split('\n'):
+            svg += utils.text(cx, y, dline, 16, theme.text_main)
+            y += 25
+        y += 10
+    y += 10
+
+    # --- Section 3: Imports & Scoping ---
+    svg += utils.text(50, y, "3. Imports", 24, theme.c_keyword, "bold")
+    y += 30
+    lines = [
+        "Imports bring elements from other packages into scope.",
+        "• standard import: Transitive (visible to importers of this package).",
+        "• private import: Only visible within this file/package."
+    ]
+    for line in lines:
+        svg += utils.text(50, y, line, 18, theme.text_main)
+        y += 25
+    y += 20
+    
+    # --- Section 4: Wildcards ---
+    svg += utils.text(50, y, "4. Wildcards (* vs **)", 24, theme.c_keyword, "bold")
+    y += 30
+    lines = [
+        "• *: Shallow import (imports direct children).",
+        "• **: Recursive import (imports everything deeply).",
+        "Warning: Avoid ** in production to prevent namespace pollution!"
+    ]
+    for line in lines:
+        svg += utils.text(50, y, line, 18, theme.text_main)
+        y += 25
+    y += 20
+
+    # --- Section 5: Aliasing ---
+    svg += utils.text(50, y, "5. Aliasing", 24, theme.c_keyword, "bold")
+    y += 30
+    svg += utils.text(50, y, "Use 'as' to rename imports, resolving conflicts or shortening names.", 18, theme.text_main)
+    y += 30
+
+    # --- Section 6: Full Example ---
+    svg += utils.text(50, y, "6. Comprehensive Example", 24, theme.c_keyword, "bold")
+    y += 30
+    
+    full_code = """package Naming_Tutorial {
+    // --- Library Definitions ---
+    package StandardLibrary {
+        part def Widget;
+        part def Gadget;
+        attribute def Status;
     }
     
-    // Public Import: Visible to importers of Naming_2Imports
-    import Lib::*;
-    
-    // Private Import: Only visible inside this package
-    private import ScalarValues::Boolean;
-    
-    part t : Tool;
-    attribute isReady : Boolean;
-}"""
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Import Basics", lines, "Bringing elements into scope.", theme, full_code=code_2, sheet_name='Naming', wrapper_type='structure')
-    svg += card
-    cur_y_c1 += h + ROW_GAP
-    
-    # --- Card 3: Import Scopes & Wildcards ---
-    lines = [
-        [("Specific", theme.c_keyword), (" : import Pkg::Item;", theme.c_normal)],
-        [("Shallow *", theme.c_keyword), (" : import Pkg::*; (Direct contents)", theme.c_normal)],
-        [("Recursive **", theme.c_keyword), (" : import Pkg::**; (All descendants)", theme.c_normal)],
-        [("Warning:", theme.c_keyword), (" ** can import 1000s of names!", theme.c_normal)],
-        [("Best Practice:", theme.c_keyword), (" Use specific imports to avoid pollution.", theme.c_normal)]
-    ]
-    code_3 = """package Naming_3Wildcards {
-    package BigLibrary {
-        package SubLib { part def InnerThing; }
-        part def OuterThing;
+    package SpecializedLibrary {
+        // Name collision with StandardLibrary
+        part def Widget; 
     }
-    
-    // Imports only OuterThing, NOT InnerThing
-    import BigLibrary::*; 
-    
-    // Imports OuterThing AND InnerThing (Recursive)
-    // CAUTION: Can cause namespace pollution and conflicts
-    // import BigLibrary::**; 
-    
-    part o : OuterThing;
-    // part i : InnerThing; // Error if using *
-}"""
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. Wildcards & Scope", lines, "Controlling what you import.", theme, full_code=code_3, sheet_name='Naming', wrapper_type='structure')
-    svg += card
-    cur_y_c2 += h + ROW_GAP
 
-    # --- Card 4: Aliasing ---
-    lines = [
-        [("as", theme.c_keyword), (" : Rename imported element in local scope", theme.c_normal)],
-        [("Resolves name conflicts between libraries", theme.c_normal)],
-        [("Provides shorter names for deep paths", theme.c_normal)]
-    ]
-    code_4 = """package Naming_4Aliasing {
-    package LibA { part def Widget; }
-    package LibB { part def Widget; }
+    // --- Imports & Aliasing ---
+    // Public import: 'StandardLibrary' is visible to users of 'Naming_Tutorial'
+    import StandardLibrary::*;
     
-    // Conflict resolution
-    import LibA::Widget as A_Widget;
-    import LibB::Widget as B_Widget;
-    
-    part w1 : A_Widget;
-    part w2 : B_Widget;
-}"""
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Aliasing", lines, "Renaming for clarity or conflict resolution.", theme, full_code=code_4, sheet_name='Naming', wrapper_type='structure')
-    svg += card
-    cur_y_c2 += h + ROW_GAP
+    // Private import: Resolving collision with alias
+    private import SpecializedLibrary::Widget as SpecialWidget;
 
-    # --- Legend ---
-    svg += utils.draw_legend(WIDTH/2 - 250, HEIGHT - 80, 500, theme)
+    // --- Definitions & Usages ---
+    part def SystemContext {
+        // Usage of standard import
+        part standardPart : Widget;
+        
+        // Usage of aliased import
+        part specialPart : SpecialWidget;
+        
+        // Escaped identifier for spaces
+        attribute 'System ID' : String;
+        
+        // Correct Convention: camelCase usage
+        part mainGadget : Gadget;
+    }
+}"""
+    
+    # Save Example File
+    utils.save_example("Naming_Tutorial.sysml", full_code)
+    
+    # Render Code Box
+    # Split code into lines for rendering
+    code_lines_render = []
+    for line in full_code.split('\n'):
+        parts = []
+        words = line.split(' ')
+        for w in words:
+            color = theme.c_normal
+            if w in ["part", "def", "attribute", "package", "import", "private", "as"]:
+                color = theme.c_keyword
+            elif w.startswith("//"):
+                color = theme.c_comment
+            elif w.endswith(";") or w.endswith("{") or w.endswith("}"):
+                color = theme.c_normal
+            elif w.startswith("'") and w.endswith("'"):
+                 color = theme.c_string
+            
+            # Special case for comments
+            if any(p[1] == theme.c_comment for p in parts):
+                 color = theme.c_comment
+            
+            parts.append((w + " ", color))
+        code_lines_render.append(parts)
+
+    code_h = len(code_lines_render) * 25 + 40
+    svg += utils.rect(50, y, 1300, code_h, theme.card_bg, stroke=theme.c_type, stroke_width=1)
+
+    # Copy Button
+    code_id = f"code_{uuid.uuid4().hex}"
+    b64_code = base64.b64encode(full_code.encode('utf-8')).decode('utf-8')
+    svg += f'<text id="{code_id}" style="display:none;">{b64_code}</text>'
+    
+    btn_x = 50 + 1300 - 80
+    btn_y = y + 10
+    svg += f'<g onclick="copyToClipboard(\'{code_id}\')" style="cursor: pointer;">'
+    svg += f'<title>Copy Code</title>'
+    svg += utils.rect(btn_x, btn_y, 70, 30, theme.c_keyword, r=5)
+    svg += utils.text(btn_x + 35, btn_y + 20, "COPY", 14, "#FFFFFF", "bold", "middle")
+    svg += '</g>'
+    
+    # Render lines
+    cy = y + 30
+    for line_parts in code_lines_render:
+        svg += utils.colored_code_line(70, cy, line_parts, 16, theme)
+        cy += 25
+        
+    y += code_h + 30
+    
     svg += utils.svg_end()
     
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    output_dir = os.path.join(base_dir, "..", "output", "svg", theme_key)
-    os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, "naming_tutorial.svg")
+    output_path = os.path.join(base_dir, "..", "output", "svg", theme_key, "naming_tutorial.svg")
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(svg)

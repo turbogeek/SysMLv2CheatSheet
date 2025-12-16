@@ -23,7 +23,8 @@ scripts = [
     "generate_naming_tutorial.py",
     "generate_core_types_tutorial.py",
     "generate_semantic_metadata_tutorial.py",
-    "generate_features_tutorial.py"
+    "generate_features_tutorial.py",
+    "generate_parts_attributes_tutorial.py"
 ]
 
 # --- Cleanup ---
