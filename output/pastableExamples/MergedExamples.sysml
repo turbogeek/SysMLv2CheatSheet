@@ -1143,6 +1143,79 @@ package Requirements_7TraceRefine {
     }
 }
 
+// --- Source: SemanticMetadata_1DomainLibrary.sysml ---
+package Vehicle_Library {
+    part def Vehicle;
+    part def engines;
+    part def wheels;
+    interface def driveTrains;
+    
+    // Standard Ports for connections
+    part def EnginePart :> engines { port enginePort; }
+    part def WheelPart :> wheels { port wheelPort; }
+}
+
+// --- Source: SemanticMetadata_2DefiningMetadata.sysml ---
+package Vehicle_Metadata {
+    private import Vehicle_Library::*;
+    private import Metaobjects::SemanticMetadata;
+
+    // Define 'drive' metadata mapping to 'driveTrains' interface
+    metadata def drive specializes SemanticMetadata {
+        redefines baseType = driveTrains meta SysML::Usage;
+        subsets annotatedElement : SysML::InterfaceUsage;
+    }
+    
+    // Define 'engine' metadata mapping to 'engines' part
+    metadata def engine specializes SemanticMetadata {
+        redefines baseType = engines meta SysML::Usage;
+        subsets annotatedElement : SysML::Usage;
+    }
+
+    metadata def wheel specializes SemanticMetadata {
+        redefines baseType = wheels meta SysML::Usage;
+        subsets annotatedElement : SysML::Usage;
+    }
+
+    // Define 'vehicle' metadata mapping to 'Vehicle' definition
+    metadata def vehicle specializes SemanticMetadata {
+        redefines baseType = Vehicle meta SysML::Definition;
+        subsets annotatedElement : SysML::Definition;
+    }
+}
+
+// --- Source: SemanticMetadata_3UsingtheDSL.sysml ---
+package Car_Example {
+    private import Vehicle_Metadata::*;
+
+    // Using the DSL!
+    // #vehicle implies 'part def Car :> Vehicle'
+    #vehicle def Car {
+        
+        // #engine implies 'part carEngine :> engines'
+        #engine carEngine[1];
+        
+        #wheel carWheels[4];
+        
+        // #drive implies 'interface ... :> driveTrains'
+        #drive interface connect [1] carEngine.enginePort 
+                              to [2] carWheels.wheelPort;
+    }
+}
+
+// --- Source: SemanticMetadata_4BehindtheScenes.sysml ---
+// Conceptual view of what happens under the hood
+// When you write:
+// #engine myEngine;
+
+// It effectively becomes:
+// @engine
+// part myEngine :> engines;
+
+// Where @engine links back to the metadata definition
+// allowing tools to know "This part IS an engine"
+// regardless of inheritance hierarchy complexities.
+
 // --- Source: Shorthand_1Specialization.sysml ---
 package Shorthand_1Specialization {
     private import ScalarValues::*;
