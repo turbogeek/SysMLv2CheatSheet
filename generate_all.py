@@ -35,7 +35,10 @@ scripts = [
     "generate_state_machines_tutorial.py",
     "generate_allocation_tutorial.py",
     "generate_requirements_tutorial.py",
-    "generate_analysis_tutorial.py"
+    "generate_analysis_tutorial.py",
+    "generate_viewpoints_tutorial.py",
+    "generate_variants_tutorial.py",
+    "generate_domain_libs_tutorial.py"
 ]
 
 # --- Cleanup ---

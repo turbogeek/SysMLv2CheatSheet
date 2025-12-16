@@ -845,6 +845,35 @@ package DataTypes_Tutorial {
     }
 }
 
+// --- Source: DomainLibs_Tutorial.sysml ---
+package DomainLibs_Tutorial {
+    import ISQ::*;
+    import SI::*;
+    import Time::*;
+    
+    // --- 1. Using ISQ Types ---
+    part def MovingObject {
+        attribute mass : MassValue;
+        attribute velocity : SpeedValue;
+        attribute startingTime : TimeInstantValue;
+    }
+    
+    part car : MovingObject {
+        // --- 2. Using Units ---
+        attribute redefines mass = 1500 [kg];
+        attribute redefines velocity = 120 [km/h];
+        
+        // --- 3. Time ISO 8601 ---
+        attribute redefines startingTime = "2023-10-27T10:00:00Z";
+    }
+    
+    // --- 4. Geometry (Shape Library) ---
+    // (Requires Shape library import usually)
+    // part wheel : Cylinder { 
+    //    attribute radius = 30 [cm];
+    // }
+}
+
 // --- Source: Features_Tutorial.sysml ---
 package Feature_Tutorial_Model {
     import ISQ::*;
@@ -1764,4 +1793,73 @@ package AutomatedPickleballServerModel {
     }
 }
 
+
+// --- Source: Variants_Tutorial.sysml ---
+package Variants_Tutorial {
+    
+    // abstract definition
+    part def Engine;
+    
+    // --- 1. Variants ---
+    part def V6Engine :> Engine;
+    part def V8Engine :> Engine;
+    part def ElectricMotor :> Engine;
+    
+    // --- 2. Variation Point ---
+    part def Car {
+        // 'variation' declares this must be chosen
+        variation part engine : Engine;
+    }
+    
+    // --- 3. Configuration (Binding) ---
+    // A specific configuration of the Car
+    part def SportCar :> Car {
+        // Binding the variation point to a specific type
+        variant part redefines engine : V8Engine;
+    }
+    
+    part def EcoCar :> Car {
+        variant part redefines engine : ElectricMotor;
+    }
+}
+
+// --- Source: Viewpoints_Tutorial.sysml ---
+package Viewpoint_Tutorial {
+    import ScalarValues::*;
+    
+    // The subject
+    part def Car {
+        attribute mass : Real;
+        part engine;
+        part wheels;
+    }
+    
+    // --- 1. Viewpoint Definition ---
+    viewpoint def MassReport {
+        doc "A report focusing only on mass properties.";
+    }
+    
+    // --- 2. View Definition ---
+    view def MassView {
+        // The subject being viewed
+        in car : Car;
+        
+        // --- 3. Exposing Elements ---
+        // Show the car itself
+        expose car;
+        
+        // Show sub-parts
+        expose car.engine;
+        
+        // Filter: Only show attributes ending in 'Mass' (conceptual)
+        // filter @Attribute ==> name.endsWith("sw")
+    }
+    
+    // --- 4. View Usage ---
+    part myCar : Car;
+    
+    view report : MassView {
+        in car = myCar;
+    }
+}
 
