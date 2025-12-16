@@ -24,7 +24,9 @@ scripts = [
     "generate_core_types_tutorial.py",
     "generate_semantic_metadata_tutorial.py",
     "generate_features_tutorial.py",
-    "generate_parts_attributes_tutorial.py"
+    "generate_parts_attributes_tutorial.py",
+    "generate_multiplicity_tutorial.py",
+    "generate_data_types_tutorial.py"
 ]
 
 # --- Cleanup ---
