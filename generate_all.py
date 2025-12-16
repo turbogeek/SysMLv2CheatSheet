@@ -26,7 +26,10 @@ scripts = [
     "generate_features_tutorial.py",
     "generate_parts_attributes_tutorial.py",
     "generate_multiplicity_tutorial.py",
-    "generate_data_types_tutorial.py"
+    "generate_data_types_tutorial.py",
+    "generate_ports_interfaces_tutorial.py",
+    "generate_connections_tutorial.py",
+    "generate_flows_tutorial.py"
 ]
 
 # --- Cleanup ---

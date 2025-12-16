@@ -138,6 +138,19 @@ def generate_for_theme(theme_key, theme):
     
     svg += utils.svg_end()
     
+    blocks = [
+        ("header", "1. Parts vs Items"),
+        ("text", "SysML v2 distinguishes between physical/logical structure and information/flow.\n• **part**: Has mass, energy, or spatial extent (e.g., Engine, Server).\n• **item**: Represents distinct headers or mass that flows (e.g., Water, DataMessage)."),
+        ("header", "2. Attributes & Scalars"),
+        ("text", "Attributes store data values within definitions.\n• **attribute def**: Defines a reusable data type.\n• **attribute**: A usage of a definition holding a value."),
+        ("header", "3. Enumerations"),
+        ("text", "Enumerations define a fixed set of literals. Useful for states, modes, or configuration options."),
+        ("header", "4. Core Types Example"),
+        ("code", full_code)
+    ]
+    if theme_key == 'light':
+        utils.save_markdown("CoreTypes_Tutorial.md", "Core Types", "Parts, Items, Attributes, and Enumerations", blocks)
+
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_path = os.path.join(base_dir, "..", "output", "svg", theme_key, "core_types_tutorial.svg")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)

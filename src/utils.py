@@ -97,6 +97,42 @@ def save_example(file_name, content):
     file_path = os.path.join(target_dir, file_name)
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(content)
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(content)
+    return file_path
+
+def save_markdown(file_name, title, subtitle, blocks):
+    """
+    Saves a markdown tutorial.
+    blocks: list of (type, content) tuples.
+    types: 'text', 'code', 'header', 'list'
+    """
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    target_dir = os.path.join(base_dir, "..", "output", "tutorials")
+    os.makedirs(target_dir, exist_ok=True)
+    file_path = os.path.join(target_dir, file_name)
+    
+    md_content = f"# {title}\n\n"
+    if subtitle:
+        md_content += f"*{subtitle}*\n\n"
+        
+    for block_type, content in blocks:
+        if block_type == 'header':
+            md_content += f"## {content}\n\n"
+        elif block_type == 'text':
+            md_content += f"{content}\n\n"
+        elif block_type == 'list':
+            for item in content:
+                md_content += f"- {item}\n"
+            md_content += "\n"
+        elif block_type == 'code':
+            md_content += "```sysml\n"
+            md_content += f"{content}\n"
+            md_content += "```\n\n"
+            
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(md_content)
+    print(f"Generated Markdown: {file_path}")
     return file_path
 
 def sanitize_name(name):

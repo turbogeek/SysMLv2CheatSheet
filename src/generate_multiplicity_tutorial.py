@@ -128,6 +128,17 @@ def generate_for_theme(theme_key, theme):
     
     svg += utils.svg_end()
     
+    blocks = [
+        ("header", "1. Basic Multiplicity"),
+        ("text", "Multiplicity constraints specify how many instances of a feature can exist.\n• **[1]**: Exactly one (Default).\n• **[0..1]**: Optional.\n• **[*]** or **[0..*]**: Zero or more."),
+        ("header", "2. Collection Types"),
+        ("text", "When multiplicity is > 1, the feature is a collection. You can constrain its nature:\n• **ordered**: The order of elements matters.\n• **unique**: No duplicates allowed (Default).\n• **nonunique**: Duplicates allowed."),
+        ("header", "3. Multiplicity Example"),
+        ("code", full_code)
+    ]
+    if theme_key == 'light':
+        utils.save_markdown("Multiplicity_Tutorial.md", "Multiplicity", "Cardinality, Collections, and Ordering", blocks)
+
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_path = os.path.join(base_dir, "..", "output", "svg", theme_key, "multiplicity_tutorial.svg")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)

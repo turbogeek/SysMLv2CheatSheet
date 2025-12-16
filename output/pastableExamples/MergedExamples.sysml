@@ -572,6 +572,29 @@ package Connections_4SuccessionFlow {
     }
 }
 
+// --- Source: Connections_Tutorial.sysml ---
+package Connections_Tutorial {
+    import PortsInterfaces_Tutorial::*; // Import Battery, Computer
+    
+    part def System;
+    
+    part def PowerSystem :> System {
+        part battery : Battery;
+        part computer : Computer;
+        
+        // --- Connection ---
+        // Connecting compatible ports (PowerInterface vs ~PowerInterface)
+        connect battery.pwrPort to computer.pwrIn;
+        
+        // --- Binding (Delegation) ---
+        // Exposing the computer's ethernet port to the outside world
+        port externalEth : DataLink;
+        
+        // 'binding' means internal eth0 IS the same interaction point as externalEth
+        binding externalEth = computer.eth0;
+    }
+}
+
 // --- Source: Constraints_1ConstraintDefinition.sysml ---
 package Constraints_1ConstraintDefinition {
     private import ScalarValues::*;
@@ -767,6 +790,34 @@ package Feature_Tutorial_Model {
         // part :>> engine {
         //    attribute :>> horsepower = 500 [hp];
         // }
+    }
+}
+
+// --- Source: Flows_Tutorial.sysml ---
+package Flows_Tutorial {
+    import ScalarValues::*;
+    
+    item def Fuel;
+    
+    part def Tank;
+    part def Engine;
+    
+    part def FuelSystem {
+        part t : Tank;
+        part e : Engine;
+        
+        // --- Explicit Item Flow ---
+        // Declaring that Fuel moves from Tank to Engine
+        // This implies a connection exists or is abstractly represented
+        flow of Fuel from t to e;
+        
+        // --- Connector with Flow ---
+        connect t to e {
+            // Optional property on the flow
+            flow of Fuel from t to e {
+                attribute rate : Real = 5.0;
+            }
+        }
     }
 }
 
@@ -1055,6 +1106,40 @@ package Patterns_4AbstractvsIndividual {
     }
     individual  part  myBus  :  Bus  {
       part  frontLeft  :>  wheel ;
+    }
+}
+
+// --- Source: PortsInterfaces_Tutorial.sysml ---
+package PortsInterfaces_Tutorial {
+    import ScalarValues::*;
+    
+    // --- 1. Interface Definitions ---
+    // Physical connection interface
+    interface def PowerInterface {
+        // 'out' means power leaves this port locally
+        out powerLevel : Real;
+    }
+    
+    // Logical data interface
+    interface def DataLink {
+        // flow of messages
+        in command : String;
+        out status : String;
+    }
+
+    // --- 2. Component Definitions ---
+    part def Battery {
+        // Provides power (Source)
+        port pwrPort : PowerInterface;
+    }
+
+    part def Computer {
+        // Consumes power (Sink)
+        // '~' (Tilde) conjugates the interface: 'out' becomes 'in'
+        port pwrIn : ~PowerInterface;
+        
+        // Data port
+        port eth0 : DataLink;
     }
 }
 

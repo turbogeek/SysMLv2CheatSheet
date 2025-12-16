@@ -148,18 +148,25 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     # Path to cartoon
+    # Separate Markdown Generation
+    blocks = [
+        ("text", "In SysML v2, a Use Case is a specialized type of case used to specify the required behavior of a system from the perspective of its external users (actors). It represents a coherent unit of functionality that provides something of value to an actor."),
+        ("header", "Key Concepts"),
+        ("list", [
+            "**Use Case Definition (use case def)**: Defines the interaction type, subject, actors, and goal.",
+            "**Actor**: External entity (person, system) interacting with the subject.",
+            "**Subject**: The system under design providing the functionality.",
+            "**Use Case Usage (use case)**: A specific occurrence of a use case definition.",
+            "**Relationships**: Interaction, Include (reuse), Extend (optional/exceptional behavior)."
+        ]),
+        ("header", "Example: Automated Pickleball Server (APS)"),
+        ("code", full_code)
+    ]
+    if theme_key == 'light': # Generate MD only once
+        utils.save_markdown("UseCase_Tutorial.md", "Use Case Tutorial", "A Conceptual Overview & Example", blocks)
+
+    # ... existing SVG generation ...
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    cartoon_path = os.path.join(base_dir, "assets", "BadPlayerUseCase.png")
-    
-    if os.path.exists(cartoon_path):
-        # Embed image
-        svg += utils.image(50, y, 600, 400, cartoon_path)
-        svg += utils.text(50, y + 420, "Figure 1: Automated Pickleball Server Concept", 14, theme.text_sec, "italic")
-    else:
-        svg += utils.text(50, y, "(Image not found)", 16, theme.c_string)
-    
-    svg += utils.svg_end()
-    
     output_path = os.path.join(base_dir, "..", "output", "svg", theme_key, "use_case_tutorial.svg")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     

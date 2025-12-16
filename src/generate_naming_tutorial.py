@@ -172,6 +172,28 @@ def generate_for_theme(theme_key, theme):
     
     svg += utils.svg_end()
     
+    # Separate Markdown Generation
+    blocks = [
+        ("header", "1. Identifiers"),
+        ("text", "Standard identifiers in SysML v2 are alphanumeric and can include underscores. They must start with a letter or underscore. You can use 'single quotes' to escape any character sequence."),
+        ("header", "2. Naming Conventions"),
+        ("list", [
+            "**Definitions (PascalCase)**: CamelCase starting with Uppercase. Used for: part defs, action defs, packages.",
+            "**Usages (camelCase)**: CamelCase starting with lowercase. Used for: parts, actions, attributes."
+        ]),
+        ("header", "3. Imports"),
+        ("text", "Imports bring elements from other packages into scope.\n• standard import: Transitive (visible to importers of this package).\n• private import: Only visible within this file/package."),
+        ("header", "4. Wildcards (* vs **)"),
+        ("text", "• *: Shallow import (imports direct children).\n• **: Recursive import (imports everything deeply).\nWarning: Avoid ** in production to prevent namespace pollution!"),
+        ("header", "5. Aliasing"),
+        ("text", "Use 'as' to rename imports, resolving conflicts or shortening names."),
+        ("header", "6. Comprehensive Example"),
+        ("code", full_code)
+    ]
+    if theme_key == 'light':
+        utils.save_markdown("Naming_Tutorial.md", "Names & Imports", "Identifiers, Conventions, and Package Management", blocks)
+
+    # SVG Output
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_path = os.path.join(base_dir, "..", "output", "svg", theme_key, "naming_tutorial.svg")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)

@@ -155,6 +155,21 @@ def generate_for_theme(theme_key, theme):
     
     svg += utils.svg_end()
     
+    blocks = [
+        ("header", "1. Extending SysML with Metadata"),
+        ("text", "Semantic Metadata allows you to define a Domain Specific Language (DSL) on top of SysML. You map your domain vocabulary (e.g., 'Drone', 'Sensor') to standard SysML concepts."),
+        ("header", "2. Mechanics"),
+        ("list", [
+            "**Define Domain Library**: Standard SysML definitions (parts, ports).",
+            "**Define Metadata**: Mappings using `metadata def` and `specializes SemanticMetadata`.",
+            "**Use DSL**: Apply metadata with `#metadataName`."
+        ]),
+        ("header", "3. Drone DSL Example"),
+        ("code", full_code)
+    ]
+    if theme_key == 'light':
+        utils.save_markdown("SemanticMetadata_Tutorial.md", "Semantic Metadata", "Domain Specific Language (DSL) Extension", blocks)
+
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_path = os.path.join(base_dir, "..", "output", "svg", theme_key, "semantic_metadata_tutorial.svg")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)

@@ -153,6 +153,19 @@ def generate_for_theme(theme_key, theme):
     
     svg += utils.svg_end()
     
+    blocks = [
+        ("header", "1. Standard Primitive Types"),
+        ("text", "SysML v2 provides familiar primitive types in the ScalarValues library:\n• **String**: Textual data.\n• **Integer**: Whole numbers.\n• **Real**: Floating point numbers.\n• **Boolean**: True/False flags."),
+        ("header", "2. ISQ Units (Physical Quantities)"),
+        ("text", "For engineering, prefer strongly-typed physical quantities over plain Reals. The ISQ library defines standard quantities and units like `MassValue [kg]`, `LengthValue [m]`, etc."),
+        ("header", "3. Custom Data Types"),
+        ("text", "You can define domain-specific types:\n• **attribute def**: A reusable value type definition.\n• **struct**: A generalized structured data type."),
+        ("header", "4. Data Types and Values Example"),
+        ("code", full_code)
+    ]
+    if theme_key == 'light':
+        utils.save_markdown("DataTypes_Tutorial.md", "Data Types", "Primitives, Values, and Units", blocks)
+
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_path = os.path.join(base_dir, "..", "output", "svg", theme_key, "data_types_tutorial.svg")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)

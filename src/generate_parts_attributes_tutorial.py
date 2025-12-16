@@ -143,6 +143,19 @@ def generate_for_theme(theme_key, theme):
     
     svg += utils.svg_end()
     
+    blocks = [
+        ("header", "1. Definitions vs Usages"),
+        ("text", "SysML v2 clearly separates definitions (types) from usages (instances).\n• **part def**: Defines the blueprint of a structural element.\n• **part**: A specific usage of that blueprint within another structure."),
+        ("header", "2. Attributes and Values"),
+        ("text", "Attributes capture data properties like mass, power, or status. You typically use the standard ISQ library for physical quantities.\n• **attribute def**: Defines a new value type.\n• **attribute**: Holds the actual value."),
+        ("header", "3. Decomposition"),
+        ("text", "Structure is built by nesting parts inside other parts (Composite Structure)."),
+        ("header", "4. Spacecraft Example"),
+        ("code", full_code)
+    ]
+    if theme_key == 'light':
+        utils.save_markdown("PartsAttributes_Tutorial.md", "Parts & Attributes", "Defining Structure and Values", blocks)
+
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_path = os.path.join(base_dir, "..", "output", "svg", theme_key, "parts_attributes_tutorial.svg")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)

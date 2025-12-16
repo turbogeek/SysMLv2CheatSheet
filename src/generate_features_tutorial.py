@@ -185,6 +185,24 @@ def generate_for_theme(theme_key, theme):
     
     svg += utils.svg_end()
     
+    blocks = [
+        ("header", "1. What is a Feature?"),
+        ("text", "In SysML v2, almost everything is a Feature. Features describe the characteristics of a defined type. They can be structural (parts, attributes, ports) or behavioral (actions, states)."),
+        ("header", "2. Feature Chaining (Dot Notation)"),
+        ("text", "Feature chaining allows you to access deeply nested features without redefining the entire hierarchy. You can 'reach into' a part to constrain or redefine its internal properties using the dot (.) operator."),
+        ("code", """// Feature Chaining Example
+part :>> engine.mass = 150 [ISQ::kg];"""),
+        ("header", "3. Modifying Features: Subsets vs Redefines"),
+        ("list", [
+            "**Subsetting (subsets)**: Classifies a feature as a member of a broader set. Both sets exist simultaneously.",
+            "**Redefinition (redefines)**: Replaces an inherited feature completely. The original definition is hidden."
+        ]),
+        ("header", "4. Full Example Code"),
+        ("code", full_code)
+    ]
+    if theme_key == 'light':
+        utils.save_markdown("Features_Tutorial.md", "Features & Chaining", "Understanding Structure, Behavior, and feature paths", blocks)
+    
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_path = os.path.join(base_dir, "..", "output", "svg", theme_key, "features_tutorial.svg")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
