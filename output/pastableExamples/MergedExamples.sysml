@@ -316,6 +316,43 @@ package Allocation_Tutorial {
     }
 }
 
+// --- Source: Analysis_Tutorial.sysml ---
+package Analysis_Tutorial {
+    import ScalarValues::*;
+    
+    // --- 1. Constraint Definition ---
+    constraint def MassEquation {
+        in total : Real;
+        in p1 : Real;
+        in p2 : Real;
+        
+        // The math
+        total == p1 + p2
+    }
+    
+    part def System {
+        attribute mass : Real;
+        attribute part1Mass : Real;
+        attribute part2Mass : Real;
+        
+        // --- 2. Constraint Usage (Parametrics) ---
+        // Binding properties to the equation parameters
+        constraint massCheck : MassEquation {
+            in total = mass;
+            in p1 = part1Mass;
+            in p2 = part2Mass;
+        }
+    }
+    
+    // --- 3. Analysis Case ---
+    analysis def WeightCheck {
+        subject system : System;
+        
+        // Determining if mass is within limits
+        return result : Boolean = system.mass < 100.0;
+    }
+}
+
 // --- Source: Behavior_1StateDefinition.sysml ---
 package Behavior_1StateDefinition {
     private import ScalarValues::*;
@@ -1370,6 +1407,48 @@ package Requirements_7TraceRefine {
       doc /* Using dependency to represent relationships */
       dependency from req2 to req1;
       dependency from req2 to old_doc_item;
+    }
+}
+
+// --- Source: Requirements_Tutorial.sysml ---
+package Requirements_Tutorial {
+    import ScalarValues::*;
+    
+    // --- 1. Requirements ---
+    requirement def PerformanceReq {
+        doc /* Textual description */
+            "The system shall operate within performance limits.";
+    }
+    
+    requirement <101> 'Breaking Distance' : PerformanceReq {
+        doc "The vehicle must stop within 50 meters from 100km/h.";
+        // Formal constraint
+        attribute maxDistance : Real = 50.0;
+    }
+
+    // --- 2. Satisfaction (Design) ---
+    part def BrakeSystem;
+    
+    part brakes : BrakeSystem {
+        // Asserting that this part satisfies the requirement
+        satisfy 'Breaking Distance';
+    }
+    
+    // --- 3. Verification (Testing) ---
+    // A case to test the requirement
+    verification def BrakeTest {
+        // The requirement being verified
+        subject req : PerformanceReq;
+        
+        // The logic (action) of the test
+        action executeTest {
+            // ... test steps ...
+        }
+    }
+    
+    // Usage of validation
+    verification case test1 : BrakeTest {
+        verify 'Breaking Distance';
     }
 }
 
