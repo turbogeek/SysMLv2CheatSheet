@@ -4,7 +4,7 @@
 
 ## 1. Identifiers
 
-Standard identifiers in SysML v2 are alphanumeric and can include underscores. They must start with a letter or underscore. You can use 'single quotes' to escape any character sequence.
+Standard identifiers in SysML v2 are alphanumeric and can include underscores. They must start with a letter or underscore. You can use 'single quotes' to escape any character sequence. Exception: Units in brackets `[ ]` don't need quotes (e.g., `[km/h]`).
 
 ## 2. Naming Conventions
 
@@ -14,8 +14,8 @@ Standard identifiers in SysML v2 are alphanumeric and can include underscores. T
 ## 3. Imports
 
 Imports bring elements from other packages into scope.
-• standard import: Transitive (visible to importers of this package).
-• private import: Only visible within this file/package.
+• standard import: Transitive (publicly exposes imported elements). Example: `SI` libraries publicly import `ISQ` so you get both units and quantities.
+• private import: Only visible within the current package.
 
 ## 4. Wildcards (* vs **)
 
@@ -25,13 +25,15 @@ Warning: Avoid ** in production to prevent namespace pollution!
 
 ## 5. Aliasing
 
-Use 'as' to rename imports, resolving conflicts or shortening names.
+Use `alias` to create short names for long qualified names. Sytnax: `alias <NewName> for <OldName>;`.
 
 ## 6. Comprehensive Example
 
 ```sysml
 package Naming_Tutorial {
-    // --- Library Definitions ---
+    private import ScalarValues::*;
+    
+    /* --- Library Definitions --- */
     package StandardLibrary {
         part def Widget;
         part def Gadget;
@@ -39,30 +41,38 @@ package Naming_Tutorial {
     }
     
     package SpecializedLibrary {
-        // Name collision with StandardLibrary
+        /* Name collision with StandardLibrary */
         part def Widget; 
     }
 
-    // --- Imports & Aliasing ---
-    // Public import: 'StandardLibrary' is visible to users of 'Naming_Tutorial'
-    import StandardLibrary::*;
+    /* --- Imports & Aliasing --- */
+    /* Public import: 'StandardLibrary' is visible to users of 'Naming_Tutorial' */
+    /* Real-world example: The 'SI' library has 'public import ISQ::*;' */
+    public import StandardLibrary::*;
     
-    // Private import: Resolving collision with alias
+    /* Private import: Resolving collision with alias */
     private import SpecializedLibrary::Widget as SpecialWidget;
 
-    // --- Definitions & Usages ---
+    /* --- Definitions & Usages --- */
     part def SystemContext {
-        // Usage of standard import
+        /* Usage of standard import */
         part standardPart : Widget;
         
-        // Usage of aliased import
+        /* Usage of aliased element */
         part specialPart : SpecialWidget;
         
-        // Escaped identifier for spaces
+        /* Using the alias defined in the package */
+        alias SW for SpecialWidget;
+        part anotherPart : SW;
+        
+        /* Escaped identifier for spaces */
         attribute 'System ID' : String;
         
-        // Correct Convention: camelCase usage
+        /* Correct Convention: camelCase usage */
         part mainGadget : Gadget;
+        
+        /* Unit reference uses brackets, no quotes needed for special chars */
+        attribute speed : Real [km/h];
     }
 }
 ```

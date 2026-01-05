@@ -35,6 +35,8 @@ def generate_for_theme(theme_key, theme):
         [("   }", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
+    md_blocks = []
+    
     code_1 = """package Cases_1UseCaseDefinition {
     private import ScalarValues::*;
     private import SysML::*;
@@ -50,6 +52,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Use Case Definition", lines, "Functional goals.", theme, full_code=code_1, sheet_name='Cases', wrapper_type='structure')
+    md_blocks.append(("header", "1. Use Case Definition"))
+    md_blocks.append(("text", "Functional goals."))
+    md_blocks.append(("code", code_1))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -81,6 +86,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Test Case (Verification)", lines, "Verifying requirements.", theme, full_code=code_2, sheet_name='Cases', wrapper_type='structure')
+    md_blocks.append(("header", "2. Test Case (Verification)"))
+    md_blocks.append(("text", "Verifying requirements."))
+    md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -108,6 +116,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Analysis Case", lines, "Evaluating properties.", theme, full_code=code_3, sheet_name='Cases', wrapper_type='structure')
+    md_blocks.append(("header", "3. Analysis Case"))
+    md_blocks.append(("text", "Evaluating properties."))
+    md_blocks.append(("code", code_3))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -129,6 +140,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Case Usage", lines, "Instantiating a case.", theme, full_code=code_4, sheet_name='Cases', wrapper_type='structure')
+    md_blocks.append(("header", "4. Case Usage"))
+    md_blocks.append(("text", "Instantiating a case."))
+    md_blocks.append(("code", code_4))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -136,6 +150,9 @@ def generate_for_theme(theme_key, theme):
     svg += utils.draw_legend(WIDTH/2 - 250, HEIGHT - 80, 500, theme)
 
     svg += utils.svg_end()
+
+    if theme_key == 'light':
+        utils.save_markdown("cases_sheet.md", "Cases Cheat Sheet", "Use Cases, Analysis, Verification", md_blocks, subfolder="cheatsheets")
     
     output_dir = os.path.join("..", "output", "svg", theme_key)
     os.makedirs(output_dir, exist_ok=True)

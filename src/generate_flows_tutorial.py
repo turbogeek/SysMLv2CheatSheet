@@ -45,7 +45,7 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     full_code = """package Flows_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     
     item def Fuel;
     
@@ -56,14 +56,14 @@ def generate_for_theme(theme_key, theme):
         part t : Tank;
         part e : Engine;
         
-        // --- Explicit Item Flow ---
-        // Declaring that Fuel moves from Tank to Engine
-        // This implies a connection exists or is abstractly represented
+        /* --- Explicit Item Flow --- */
+        /* Declaring that Fuel moves from Tank to Engine */
+        /* This implies a connection exists or is abstractly represented */
         flow of Fuel from t to e;
         
-        // --- Connector with Flow ---
+        /* --- Connector with Flow --- */
         connect t to e {
-            // Optional property on the flow
+            /* Optional property on the flow */
             flow of Fuel from t to e {
                 attribute rate : Real = 5.0;
             }
@@ -82,7 +82,7 @@ def generate_for_theme(theme_key, theme):
             color = theme.c_normal
             if w in ["part", "def", "item", "flow", "of", "from", "to", "connect", "package", "import"]:
                 color = theme.c_keyword
-            elif w.startswith("//"):
+            elif w.startswith("/*") or w.startswith("//"):
                 color = theme.c_comment
             
             if any(p[1] == theme.c_comment for p in parts):

@@ -1,10 +1,10 @@
 package PartsAndAttributes_Tutorial {
-    import ISQ::*; // Import standard units
+    private import ISQ::*; // Import standard quantities
     
     // --- Definitions ---
     part def Engine {
-        attribute maxThrust : ForceValue;
-        attribute mass : MassValue;
+        attribute maxThrust :> ISQ::force;
+        attribute mass :> ISQ::mass;
     }
     
     part def FuelTank {
@@ -14,7 +14,7 @@ package PartsAndAttributes_Tutorial {
     // --- Composite Definition ---
     part def Spacecraft {
         // Attributes of the spacecraft itself
-        attribute totalMass : MassValue;
+        attribute totalMass :> ISQ::mass;
         attribute callSign : String;
         
         // Parts (Usages)

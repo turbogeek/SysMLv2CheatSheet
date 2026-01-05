@@ -20,7 +20,7 @@ def generate_for_theme(theme_key, theme):
     y += 30
     lines = [
         "The International System of Quantities is built-in.",
-        "• import ISQ::*; : Access standard dimensions like Mass, Length, Time.",
+        "• private import ISQ::*; : Access standard dimensions like Mass, Length, Time.",
         "• Units: [m], [kg], [s], [m/s] are standardized."
     ]
     for line in lines:
@@ -46,31 +46,30 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     full_code = """package DomainLibs_Tutorial {
-    import ISQ::*;
-    import SI::*;
-    import Time::*;
+    private import SI::*;
+    private import Time::*;
     
-    // --- 1. Using ISQ Types ---
+    /* --- 1. Using ISQ Types --- */
     part def MovingObject {
-        attribute mass : MassValue;
-        attribute velocity : SpeedValue;
+        attribute mass :> ISQ::mass;
+        attribute velocity :> ISQ::speed;
         attribute startingTime : TimeInstantValue;
     }
     
     part car : MovingObject {
-        // --- 2. Using Units ---
+        /* --- 2. Using Units --- */
         attribute redefines mass = 1500 [kg];
         attribute redefines velocity = 120 [km/h];
         
-        // --- 3. Time ISO 8601 ---
+        /* --- 3. Time ISO 8601 --- */
         attribute redefines startingTime = "2023-10-27T10:00:00Z";
     }
     
-    // --- 4. Geometry (Shape Library) ---
-    // (Requires Shape library import usually)
-    // part wheel : Cylinder { 
-    //    attribute radius = 30 [cm];
-    // }
+    /* --- 4. Geometry (Shape Library) --- */
+    /* (Requires Shape library import usually) */
+    /* part wheel : Cylinder { */
+    /*    attribute radius = 30 [cm]; */
+    /* } */
 }"""
     
     utils.save_example("DomainLibs_Tutorial.sysml", full_code)
@@ -84,7 +83,7 @@ def generate_for_theme(theme_key, theme):
             color = theme.c_normal
             if w in ["part", "def", "attribute", "redefines", "package", "import"]:
                 color = theme.c_keyword
-            elif w.startswith("//"):
+            elif w.startswith("/*") or w.endswith("*/"):
                 color = theme.c_comment
             elif "[" in w and "]" in w:
                  color = theme.c_string # Units
@@ -123,7 +122,7 @@ def generate_for_theme(theme_key, theme):
     blocks = [
         ("header", "1. ISQ & SI"),
         ("text", "The standard libraries provide types for almost all physical quantities."),
-        ("code", "import ISQ::*;\nimport SI::*;"),
+        ("code", "private import SI::*; /* Publicly imports ISQ */"),
         ("header", "2. Units"),
         ("text", "Units are first-class citizens using square brackets."),
         ("code", "attribute len = 5 [m];"),

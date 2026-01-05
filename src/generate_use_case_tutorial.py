@@ -83,10 +83,9 @@ def generate_for_theme(theme_key, theme):
     
     # Save Example
     full_code = """package AutomatedPickleballServerModel {
-    private import ScalarValues::*;
-    private import SysML::*;
 
-    // --- Definitions ---
+
+    /* --- Definitions --- */
     part def ActorPart;
     use case def TrackPlayerState;
     use case def DetermineNextShot;

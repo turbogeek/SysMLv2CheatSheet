@@ -23,7 +23,8 @@ def generate_for_theme(theme_key, theme):
     lines = [
         "Standard identifiers in SysML v2 are alphanumeric and can include underscores.",
         "They must start with a letter or underscore.",
-        "You can use 'single quotes' to escape any character sequence (e.g., 'My Name')."
+        "You can use 'single quotes' to escape any character sequence (e.g., 'My Name').",
+        "Exception: Units in brackets [ ] do not need quotes (e.g., [km/h])."
     ]
     for line in lines:
         svg += utils.text(50, y, line, 18, theme.text_main)
@@ -53,7 +54,8 @@ def generate_for_theme(theme_key, theme):
     lines = [
         "Imports bring elements from other packages into scope.",
         "• standard import: Transitive (visible to importers of this package).",
-        "• private import: Only visible within this file/package."
+        "• private import: Only visible within this file/package.",
+        "• public import: Exposes imported elements to users of this package (e.g., SI exposes ISQ)."
     ]
     for line in lines:
         svg += utils.text(50, y, line, 18, theme.text_main)
@@ -76,7 +78,7 @@ def generate_for_theme(theme_key, theme):
     # --- Section 5: Aliasing ---
     svg += utils.text(50, y, "5. Aliasing", 24, theme.c_keyword, "bold")
     y += 30
-    svg += utils.text(50, y, "Use 'as' to rename imports, resolving conflicts or shortening names.", 18, theme.text_main)
+    svg += utils.text(50, y, "Use 'alias' to rename elements or shorten long names.", 18, theme.text_main)
     y += 30
 
     # --- Section 6: Full Example ---
@@ -84,7 +86,9 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     full_code = """package Naming_Tutorial {
-    // --- Library Definitions ---
+    private import ScalarValues::*;
+    
+    /* --- Library Definitions --- */
     package StandardLibrary {
         part def Widget;
         part def Gadget;
@@ -92,30 +96,38 @@ def generate_for_theme(theme_key, theme):
     }
     
     package SpecializedLibrary {
-        // Name collision with StandardLibrary
+        /* Name collision with StandardLibrary */
         part def Widget; 
     }
 
-    // --- Imports & Aliasing ---
-    // Public import: 'StandardLibrary' is visible to users of 'Naming_Tutorial'
-    import StandardLibrary::*;
+    /* --- Imports & Aliasing --- */
+    /* Public import: 'StandardLibrary' is visible to users of 'Naming_Tutorial' */
+    /* Real-world example: The 'SI' library has 'public import ISQ::*;' */
+    public import StandardLibrary::*;
     
-    // Private import: Resolving collision with alias
+    /* Private import: Resolving collision with alias */
     private import SpecializedLibrary::Widget as SpecialWidget;
 
-    // --- Definitions & Usages ---
+    /* --- Definitions & Usages --- */
     part def SystemContext {
-        // Usage of standard import
+        /* Usage of standard import */
         part standardPart : Widget;
         
-        // Usage of aliased import
+        /* Usage of aliased element */
         part specialPart : SpecialWidget;
         
-        // Escaped identifier for spaces
+        /* Using the alias defined in the package */
+        alias SW for SpecialWidget;
+        part anotherPart : SW;
+        
+        /* Escaped identifier for spaces */
         attribute 'System ID' : String;
         
-        // Correct Convention: camelCase usage
+        /* Correct Convention: camelCase usage */
         part mainGadget : Gadget;
+        
+        /* Unit reference uses brackets, no quotes needed for special chars */
+        attribute speed : Real [km/h];
     }
 }"""
     
@@ -132,7 +144,7 @@ def generate_for_theme(theme_key, theme):
             color = theme.c_normal
             if w in ["part", "def", "attribute", "package", "import", "private", "as"]:
                 color = theme.c_keyword
-            elif w.startswith("//"):
+            elif w.startswith("/*") or w.endswith("*/"):
                 color = theme.c_comment
             elif w.endswith(";") or w.endswith("{") or w.endswith("}"):
                 color = theme.c_normal
@@ -175,18 +187,18 @@ def generate_for_theme(theme_key, theme):
     # Separate Markdown Generation
     blocks = [
         ("header", "1. Identifiers"),
-        ("text", "Standard identifiers in SysML v2 are alphanumeric and can include underscores. They must start with a letter or underscore. You can use 'single quotes' to escape any character sequence."),
+        ("text", "Standard identifiers in SysML v2 are alphanumeric and can include underscores. They must start with a letter or underscore. You can use 'single quotes' to escape any character sequence. Exception: Units in brackets `[ ]` don't need quotes (e.g., `[km/h]`)."),
         ("header", "2. Naming Conventions"),
         ("list", [
             "**Definitions (PascalCase)**: CamelCase starting with Uppercase. Used for: part defs, action defs, packages.",
             "**Usages (camelCase)**: CamelCase starting with lowercase. Used for: parts, actions, attributes."
         ]),
         ("header", "3. Imports"),
-        ("text", "Imports bring elements from other packages into scope.\n• standard import: Transitive (visible to importers of this package).\n• private import: Only visible within this file/package."),
+        ("text", "Imports bring elements from other packages into scope.\n• standard import: Transitive (publicly exposes imported elements). Example: `SI` libraries publicly import `ISQ` so you get both units and quantities.\n• private import: Only visible within the current package."),
         ("header", "4. Wildcards (* vs **)"),
         ("text", "• *: Shallow import (imports direct children).\n• **: Recursive import (imports everything deeply).\nWarning: Avoid ** in production to prevent namespace pollution!"),
         ("header", "5. Aliasing"),
-        ("text", "Use 'as' to rename imports, resolving conflicts or shortening names."),
+        ("text", "Use `alias` to create short names for long qualified names. Sytnax: `alias <NewName> for <OldName>;`."),
         ("header", "6. Comprehensive Example"),
         ("code", full_code)
     ]

@@ -1,10 +1,10 @@
 package Feature_Tutorial_Model {
-    import ISQ::*;
+    private import ISQ::*;
 
     // --- 1. Base Definitions ---
     part def Engine {
-        attribute horsepower : PowerValue;
-        attribute mass : MassValue;
+        attribute horsepower :> ISQ::power;
+        attribute mass :> ISQ::mass;
     }
 
     part def Wheel;

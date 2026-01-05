@@ -30,6 +30,8 @@ def generate_for_theme(theme_key, theme):
         [("   assign", theme.c_keyword), (" x", theme.c_normal), (" :=", theme.c_normal), (" x + 1", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
+    md_blocks = []
+    
     code_1 = """package WhileLoopExample {
     private import ScalarValues::*;
     action def Main {
@@ -45,6 +47,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. While Loop", lines, "Iterate while condition is true.", theme, full_code=code_1, sheet_name="ActionPatterns", wrapper_type="action")
+    md_blocks.append(("header", "1. While Loop"))
+    md_blocks.append(("text", "Iterate while condition is true."))
+    md_blocks.append(("code", code_1))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -69,6 +74,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. For Loop", lines, "Iterate over a range.", theme, full_code=code_2, sheet_name="ActionPatterns", wrapper_type="action")
+    md_blocks.append(("header", "2. For Loop"))
+    md_blocks.append(("text", "Iterate over a range."))
+    md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -90,7 +98,7 @@ def generate_for_theme(theme_key, theme):
         
         action collectionLoop {
             for p : Power in profile {
-                // body
+                /* body */
             }
         }
         
@@ -111,6 +119,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2b. Loop Variations", lines, "Collections, Until, & Infinite Loops.", theme, full_code=code_2b, sheet_name="ActionPatterns", wrapper_type="action")
+    md_blocks.append(("header", "2b. Loop Variations"))
+    md_blocks.append(("text", "Collections, Until, & Infinite Loops."))
+    md_blocks.append(("code", code_2b))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -137,6 +148,9 @@ def generate_for_theme(theme_key, theme):
     view ExposeExample { expose Main; }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. If / Else", lines, "Conditional execution.", theme, full_code=code_3, sheet_name="ActionPatterns", wrapper_type="action")
+    md_blocks.append(("header", "3. If / Else"))
+    md_blocks.append(("text", "Conditional execution."))
+    md_blocks.append(("code", code_3))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -167,6 +181,9 @@ def generate_for_theme(theme_key, theme):
     view ExposeExample { expose Main; }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Accept Variations", lines, "Waiting for events/conditions.", theme, full_code=code_4, sheet_name="ActionPatterns", wrapper_type="action")
+    md_blocks.append(("header", "4. Accept Variations"))
+    md_blocks.append(("text", "Waiting for events/conditions."))
+    md_blocks.append(("code", code_4))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -190,6 +207,9 @@ def generate_for_theme(theme_key, theme):
     view ExposeExample { expose Main; }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Send Variations", lines, "Named and unnamed sends.", theme, full_code=code_5, sheet_name="ActionPatterns", wrapper_type="action")
+    md_blocks.append(("header", "5. Send Variations"))
+    md_blocks.append(("text", "Named and unnamed sends."))
+    md_blocks.append(("code", code_5))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -203,19 +223,29 @@ def generate_for_theme(theme_key, theme):
     code_6 = """package ActionPatterns_6ControlNodes {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
+    
     action def Main {
-        fork  f1 ;
-        join  j1 ;
-        decide  d1 ;
-        merge  m1 ;
+        /* 1. Fork: Outgoing target mult 1..1 */
+        fork f1;
+        
+        /* 2. Join: Incoming source mult 1..1 */
+        join j1;
+        
+        /* 3. Decide: Outgoing target mult 0..1 (Optional) */
+        decide d1;
+        
+        /* 4. Merge: Incoming source mult 0..1 (Optional) */
+        merge m1;
     }
 
     view ExposeExample {
         expose Main;
     }
 }"""
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "6. Control Nodes", lines, "Flow control points.", theme, full_code=code_6, sheet_name="ActionPatterns", wrapper_type="action")
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "6. Control Nodes", lines, "Rules: Join/Fork (1..1), Merge/Decide (0..1).", theme, full_code=code_6, sheet_name="ActionPatterns", wrapper_type="action")
+    md_blocks.append(("header", "6. Control Nodes"))
+    md_blocks.append(("text", "Rules:\n- **Fork**: Outgoing target [1].\n- **Join**: Incoming source [1].\n- **Decide**: Outgoing target [0..1].\n- **Merge**: Incoming source [0..1]."))
+    md_blocks.append(("code", code_6))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -244,6 +274,9 @@ def generate_for_theme(theme_key, theme):
     view ExposeExample { expose Main; }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "7. Advanced Send", lines, "Binding params & flows.", theme, full_code=code_7, sheet_name="ActionPatterns", wrapper_type="action")
+    md_blocks.append(("header", "7. Advanced Send"))
+    md_blocks.append(("text", "Binding params & flows."))
+    md_blocks.append(("code", code_7))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -251,6 +284,9 @@ def generate_for_theme(theme_key, theme):
     svg += utils.draw_legend(WIDTH/2 - 250, HEIGHT - 80, 500, theme)
 
     svg += utils.svg_end()
+
+    if theme_key == 'light':
+        utils.save_markdown("action_patterns_sheet.md", "Action Patterns Cheat Sheet", "Standard Action Patterns", md_blocks, subfolder="cheatsheets")
     
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "..", "output", "svg", theme_key)

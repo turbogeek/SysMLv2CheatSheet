@@ -1,13 +1,13 @@
 package Analysis_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     
-    // --- 1. Constraint Definition ---
+    /* --- 1. Constraint Definition --- */
     constraint def MassEquation {
         in total : Real;
         in p1 : Real;
         in p2 : Real;
         
-        // The math
+        /* The math */
         total == p1 + p2
     }
     
@@ -16,8 +16,8 @@ package Analysis_Tutorial {
         attribute part1Mass : Real;
         attribute part2Mass : Real;
         
-        // --- 2. Constraint Usage (Parametrics) ---
-        // Binding properties to the equation parameters
+        /* --- 2. Constraint Usage (Parametrics) --- */
+        /* Binding properties to the equation parameters */
         constraint massCheck : MassEquation {
             in total = mass;
             in p1 = part1Mass;
@@ -25,11 +25,11 @@ package Analysis_Tutorial {
         }
     }
     
-    // --- 3. Analysis Case ---
+    /* --- 3. Analysis Case --- */
     analysis def WeightCheck {
         subject system : System;
         
-        // Determining if mass is within limits
+        /* Determining if mass is within limits */
         return result : Boolean = system.mass < 100.0;
     }
 }

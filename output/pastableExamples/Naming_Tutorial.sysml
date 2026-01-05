@@ -1,5 +1,7 @@
 package Naming_Tutorial {
-    // --- Library Definitions ---
+    private import ScalarValues::*;
+    
+    /* --- Library Definitions --- */
     package StandardLibrary {
         part def Widget;
         part def Gadget;
@@ -7,29 +9,37 @@ package Naming_Tutorial {
     }
     
     package SpecializedLibrary {
-        // Name collision with StandardLibrary
+        /* Name collision with StandardLibrary */
         part def Widget; 
     }
 
-    // --- Imports & Aliasing ---
-    // Public import: 'StandardLibrary' is visible to users of 'Naming_Tutorial'
-    import StandardLibrary::*;
+    /* --- Imports & Aliasing --- */
+    /* Public import: 'StandardLibrary' is visible to users of 'Naming_Tutorial' */
+    /* Real-world example: The 'SI' library has 'public import ISQ::*;' */
+    public import StandardLibrary::*;
     
-    // Private import: Resolving collision with alias
+    /* Private import: Resolving collision with alias */
     private import SpecializedLibrary::Widget as SpecialWidget;
 
-    // --- Definitions & Usages ---
+    /* --- Definitions & Usages --- */
     part def SystemContext {
-        // Usage of standard import
+        /* Usage of standard import */
         part standardPart : Widget;
         
-        // Usage of aliased import
+        /* Usage of aliased element */
         part specialPart : SpecialWidget;
         
-        // Escaped identifier for spaces
+        /* Using the alias defined in the package */
+        alias SW for SpecialWidget;
+        part anotherPart : SW;
+        
+        /* Escaped identifier for spaces */
         attribute 'System ID' : String;
         
-        // Correct Convention: camelCase usage
+        /* Correct Convention: camelCase usage */
         part mainGadget : Gadget;
+        
+        /* Unit reference uses brackets, no quotes needed for special chars */
+        attribute speed : Real [km/h];
     }
 }

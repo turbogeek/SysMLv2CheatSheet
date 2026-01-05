@@ -47,34 +47,34 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     full_code = """package PortsInterfaces_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     
-    // --- 1. Interface Definitions ---
-    // Physical connection interface
+    /* --- 1. Interface Definitions --- */
+    /* Physical connection interface */
     interface def PowerInterface {
-        // 'out' means power leaves this port locally
+        /* 'out' means power leaves this port locally */
         out powerLevel : Real;
     }
     
-    // Logical data interface
+    /* Logical data interface */
     interface def DataLink {
-        // flow of messages
+        /* flow of messages */
         in command : String;
         out status : String;
     }
 
-    // --- 2. Component Definitions ---
+    /* --- 2. Component Definitions --- */
     part def Battery {
-        // Provides power (Source)
+        /* Provides power (Source) */
         port pwrPort : PowerInterface;
     }
 
     part def Computer {
-        // Consumes power (Sink)
-        // '~' (Tilde) conjugates the interface: 'out' becomes 'in'
+        /* Consumes power (Sink) */
+        /* '~' (Tilde) conjugates the interface: 'out' becomes 'in' */
         port pwrIn : ~PowerInterface;
         
-        // Data port
+        /* Data port */
         port eth0 : DataLink;
     }
 }"""
@@ -90,7 +90,7 @@ def generate_for_theme(theme_key, theme):
             color = theme.c_normal
             if w in ["part", "def", "interface", "port", "package", "import", "in", "out", "inout"]:
                 color = theme.c_keyword
-            elif w.startswith("//"):
+            elif w.startswith("/*") or w.startswith("//"):
                 color = theme.c_comment
             elif w.startswith("~"):
                  color = theme.c_type # Conjugation

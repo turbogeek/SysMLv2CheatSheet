@@ -32,6 +32,8 @@ def generate_for_theme(theme_key, theme):
         [("   return", theme.c_keyword), (" p", theme.c_normal), (" :", theme.c_normal), (" Power", theme.c_type), (" =", theme.c_normal), (" v * i", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
+    md_blocks = []
+    
     code_1 = """package Calculations_1CalculationDefinition {
     private import ScalarValues::*;
     private import SysML::*;
@@ -45,6 +47,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Calculation Definition", lines, "Reusable math expressions.", theme, full_code=code_1, sheet_name="Calculations", wrapper_type="structure")
+    md_blocks.append(("header", "1. Calculation Definition"))
+    md_blocks.append(("text", "Reusable math expressions."))
+    md_blocks.append(("code", code_1))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -73,6 +78,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Calculation Usage", lines, "Performing a calculation.", theme, full_code=code_2, sheet_name="Calculations", wrapper_type="action")
+    md_blocks.append(("header", "2. Calculation Usage"))
+    md_blocks.append(("text", "Performing a calculation."))
+    md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -106,6 +114,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Constraint Usage", lines, "Applying a constraint.", theme, full_code=code_4, sheet_name="Calculations", wrapper_type="action")
+    md_blocks.append(("header", "4. Constraint Usage"))
+    md_blocks.append(("text", "Applying a constraint."))
+    md_blocks.append(("code", code_4))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -134,6 +145,9 @@ def generate_for_theme(theme_key, theme):
     view ExposeExample { expose Main; }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Assertions", lines, "Enforcing truth.", theme, full_code=code_5, sheet_name="Calculations", wrapper_type="action")
+    md_blocks.append(("header", "5. Assertions"))
+    md_blocks.append(("text", "Enforcing truth."))
+    md_blocks.append(("code", code_5))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -155,6 +169,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Requirements", lines, "Assumptions and requirements.", theme, full_code=code_6, sheet_name="Calculations", wrapper_type="structure")
+    md_blocks.append(("header", "6. Requirements"))
+    md_blocks.append(("text", "Assumptions and requirements."))
+    md_blocks.append(("code", code_6))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -162,6 +179,9 @@ def generate_for_theme(theme_key, theme):
     svg += utils.draw_legend(WIDTH/2 - 250, HEIGHT - 80, 500, theme)
 
     svg += utils.svg_end()
+
+    if theme_key == 'light':
+        utils.save_markdown("calc_sheet.md", "Calculation Cheat Sheet", "Calculations and Constraints", md_blocks, subfolder="cheatsheets")
     
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "..", "output", "svg", theme_key)

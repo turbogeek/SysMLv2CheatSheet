@@ -33,6 +33,8 @@ def generate_for_theme(theme_key, theme):
         [("   state", theme.c_keyword), (" Serving", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
+    md_blocks = []
+    
     code_1 = """package Behavior_1StateDefinition {
     private import ScalarValues::*;
     private import SysML::*;
@@ -44,6 +46,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. State Definition", lines, "States and lifecycle actions.", theme, full_code=code_1, sheet_name="Behavior", wrapper_type="structure")
+    md_blocks.append(("header", "1. State Definition"))
+    md_blocks.append(("text", "States and lifecycle actions."))
+    md_blocks.append(("code", code_1))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -73,6 +78,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Transitions", lines, "Move between states on triggers.", theme, full_code=code_2, sheet_name="Behavior", wrapper_type="state")
+    md_blocks.append(("header", "2. Transitions"))
+    md_blocks.append(("text", "Move between states on triggers."))
+    md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -97,6 +105,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Guards & Effects", lines, "Conditions and actions on transition.", theme, full_code=code_3, sheet_name="Behavior", wrapper_type="state")
+    md_blocks.append(("header", "3. Guards & Effects"))
+    md_blocks.append(("text", "Conditions and actions on transition."))
+    md_blocks.append(("code", code_3))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -120,6 +131,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3b. Internal Transition", lines, "Self-transition pattern.", theme, full_code=code_3b, sheet_name="Behavior", wrapper_type="structure")
+    md_blocks.append(("header", "3b. Internal Transition"))
+    md_blocks.append(("text", "Self-transition pattern."))
+    md_blocks.append(("code", code_3b))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -147,6 +161,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Action Definition", lines, "Reusable behavior spec.", theme, full_code=code_4, sheet_name="Behavior", wrapper_type="structure")
+    md_blocks.append(("header", "4. Action Definition"))
+    md_blocks.append(("text", "Reusable behavior spec."))
+    md_blocks.append(("code", code_4))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -178,6 +195,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Action Usage", lines, "Executing an action.", theme, full_code=code_5, sheet_name="Behavior", wrapper_type="action")
+    md_blocks.append(("header", "5. Action Usage"))
+    md_blocks.append(("text", "Executing an action."))
+    md_blocks.append(("code", code_5))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -205,6 +225,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Use Cases", lines, "High-level user goals.", theme, full_code=code_6, sheet_name="Behavior", wrapper_type="structure")
+    md_blocks.append(("header", "6. Use Cases"))
+    md_blocks.append(("text", "High-level user goals."))
+    md_blocks.append(("code", code_6))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -213,6 +236,9 @@ def generate_for_theme(theme_key, theme):
 
     svg += utils.svg_end()
     
+    if theme_key == 'light':
+        utils.save_markdown("behavior_sheet.md", "Behavior Cheat Sheet", "State Machines and Actions", md_blocks, subfolder="cheatsheets")
+
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "..", "output", "svg", theme_key)
     os.makedirs(output_dir, exist_ok=True)

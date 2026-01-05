@@ -31,6 +31,8 @@ def generate_for_theme(theme_key, theme):
         [("  part", theme.c_keyword), (" engine", theme.c_normal), (" :", theme.c_normal), (" Engine", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
+    md_blocks = []
+    
     code_1 = """package Structure_1PartDefinition {
     private import ScalarValues::*;
     attribute def Mass;
@@ -41,6 +43,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Part Definition", lines, "Defining structural blocks.", theme, full_code=code_1, sheet_name='Structure', wrapper_type='structure')
+    md_blocks.append(("header", "1. Part Definition"))
+    md_blocks.append(("text", "Defining structural blocks."))
+    md_blocks.append(("code", code_1))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -61,6 +66,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Usage & Multiplicity", lines, "Instantiating parts with counts.", theme, full_code=code_2, sheet_name='Structure', wrapper_type='structure')
+    md_blocks.append(("header", "2. Usage & Multiplicity"))
+    md_blocks.append(("text", "Instantiating parts with counts."))
+    md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -83,6 +91,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Attributes", lines, "Data properties of parts.", theme, full_code=code_3, sheet_name='Structure', wrapper_type='structure')
+    md_blocks.append(("header", "3. Attributes"))
+    md_blocks.append(("text", "Data properties of parts."))
+    md_blocks.append(("code", code_3))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -99,6 +110,9 @@ def generate_for_theme(theme_key, theme):
     doc /* Items flow through ports */
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Items", lines, "Things that flow.", theme, full_code=code_5, sheet_name='Structure', wrapper_type='structure')
+    md_blocks.append(("header", "5. Items"))
+    md_blocks.append(("text", "Things that flow."))
+    md_blocks.append(("code", code_5))
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -111,11 +125,14 @@ def generate_for_theme(theme_key, theme):
     ]
     code_6 = """package Structure_6Packages {
     package VehicleModel {
-        import ScalarValues::*;
+        private import ScalarValues::*;
         part car;
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Packages & Imports", lines, "Organizing model elements.", theme, full_code=code_6, sheet_name='Structure', wrapper_type='structure')
+    md_blocks.append(("header", "6. Packages & Imports"))
+    md_blocks.append(("text", "Organizing model elements."))
+    md_blocks.append(("code", code_6))
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -134,6 +151,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "7. Inheritance (:>)", lines, "Specialization of definitions.", theme, full_code=code_7, sheet_name='Structure', wrapper_type='structure')
+    md_blocks.append(("header", "7. Inheritance (:>)"))
+    md_blocks.append(("text", "Specialization of definitions."))
+    md_blocks.append(("code", code_7))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -150,10 +170,16 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "8. Enumerations", lines, "Predefined sets of values.", theme, full_code=code_8, sheet_name='Structure', wrapper_type='structure')
+    md_blocks.append(("header", "8. Enumerations"))
+    md_blocks.append(("text", "Predefined sets of values."))
+    md_blocks.append(("code", code_8))
     svg += card
     cur_y_c2 += h + ROW_GAP
     
     svg += utils.svg_end()
+
+    if theme_key == 'light':
+        utils.save_markdown("structure_sheet.md", "Structure Cheat Sheet", "Parts, Attributes, Packages", md_blocks, subfolder="cheatsheets")
     
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "..", "output", "svg", theme_key)

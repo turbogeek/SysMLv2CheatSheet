@@ -47,41 +47,41 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     full_code = """package Actions_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     
-    // reusable action
+    /* reusable action */
     action def LogStatus { in msg : String; }
 
     action def ProcessData {
-        // Defining steps
+        /* Defining steps */
         action step1;
         action step2;
         action step3;
         
-        // --- Control Flow ---
-        // 'first' implies the entry point
+        /* --- Control Flow --- */
+        /* 'first' implies the entry point */
         first step1;
         
-        // 'then' implies succession (step1 completes before step2 starts)
-        flow from step1 to step2; // explicit
+        /* 'then' implies succession (step1 completes before step2 starts) */
+        flow from step1 to step2; /* explicit */
         
-        // Shorthand for flow:
-        // step2 then step3; 
+        /* Shorthand for flow: */
+        /* step2 then step3;  */ 
         
-        // --- Parallelism ---
+        /* --- Parallelism --- */
         action branchA;
         action branchB;
         
-        // Forking: step3 triggers both branches
+        /* Forking: step3 triggers both branches */
         flow from step3 to branchA;
         flow from step3 to branchB;
         
-        // --- Using Definitions ---
+        /* --- Using Definitions --- */
         action logger : LogStatus {
             in msg = "Processing Complete";
         }
         
-        // Joining: both must finish before logger runs
+        /* Joining: both must finish before logger runs */
         flow from branchA to logger;
         flow from branchB to logger;
     }
@@ -98,7 +98,7 @@ def generate_for_theme(theme_key, theme):
             color = theme.c_normal
             if w in ["action", "def", "flow", "from", "to", "first", "then", "package", "import", "in", "out"]:
                 color = theme.c_keyword
-            elif w.startswith("//"):
+            elif w.startswith("/*") or w.startswith("//"):
                 color = theme.c_comment
             elif "String" in w:
                  color = theme.c_type

@@ -1,8 +1,7 @@
 package AutomatedPickleballServerModel {
-    private import ScalarValues::*;
-    private import SysML::*;
 
-    // --- Definitions ---
+
+    /* --- Definitions --- */
     part def ActorPart;
     use case def TrackPlayerState;
     use case def DetermineNextShot;

@@ -15,37 +15,37 @@ Views present a subset of the model for a specific purpose (the Viewpoint).
 
 ```sysml
 package Viewpoint_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     
-    // The subject
+    /* The subject */
     part def Car {
         attribute mass : Real;
         part engine;
         part wheels;
     }
     
-    // --- 1. Viewpoint Definition ---
+    /* --- 1. Viewpoint Definition --- */
     viewpoint def MassReport {
         doc "A report focusing only on mass properties.";
     }
     
-    // --- 2. View Definition ---
+    /* --- 2. View Definition --- */
     view def MassView {
-        // The subject being viewed
+        /* The subject being viewed */
         in car : Car;
         
-        // --- 3. Exposing Elements ---
-        // Show the car itself
+        /* --- 3. Exposing Elements --- */
+        /* Show the car itself */
         expose car;
         
-        // Show sub-parts
+        /* Show sub-parts */
         expose car.engine;
         
-        // Filter: Only show attributes ending in 'Mass' (conceptual)
-        // filter @Attribute ==> name.endsWith("sw")
+        /* Filter: Only show attributes ending in 'Mass' (conceptual) */
+        /* filter @Attribute ==> name.endsWith("sw") */
     }
     
-    // --- 4. View Usage ---
+    /* --- 4. View Usage --- */
     part myCar : Car;
     
     view report : MassView {

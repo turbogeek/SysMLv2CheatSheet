@@ -33,6 +33,8 @@ def generate_for_theme(theme_key, theme):
         [("requirement", theme.c_keyword), (", ", theme.c_normal), ("use case", theme.c_keyword)],
         [("import", theme.c_keyword), (", ", theme.c_normal), ("alias", theme.c_keyword), (", ", theme.c_normal), ("metadata", theme.c_keyword)]
     ]
+    md_blocks = []
+    
     code_1 = """package Reference_1CommonKeywords {
     doc /*
       package, import, private import
@@ -52,6 +54,9 @@ def generate_for_theme(theme_key, theme):
     */
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Common Keywords", lines, "Core language definitions.", theme, full_code=code_1, sheet_name='Reference', wrapper_type='structure')
+    md_blocks.append(("header", "1. Common Keywords"))
+    md_blocks.append(("text", "Core language definitions."))
+    md_blocks.append(("code", code_1))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -74,6 +79,9 @@ def generate_for_theme(theme_key, theme):
     attribute n : Natural; // 0, 1, * (UnlimitedNatural in v1)
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Primitive Types", lines, "Basic data types.", theme, full_code=code_2, sheet_name='Reference', wrapper_type='structure')
+    md_blocks.append(("header", "2. Primitive Types"))
+    md_blocks.append(("text", "Basic data types."))
+    md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -99,6 +107,9 @@ def generate_for_theme(theme_key, theme):
     */
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Relationships", lines, "Connecting elements.", theme, full_code=code_3, sheet_name='Reference', wrapper_type='structure')
+    md_blocks.append(("header", "3. Relationships"))
+    md_blocks.append(("text", "Connecting elements."))
+    md_blocks.append(("code", code_3))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -123,6 +134,9 @@ def generate_for_theme(theme_key, theme):
     comment about element /* text */
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Comments", lines, "Annotating code.", theme, full_code=code_4, sheet_name='Reference', wrapper_type='structure')
+    md_blocks.append(("header", "4. Comments"))
+    md_blocks.append(("text", "Annotating code."))
+    md_blocks.append(("code", code_4))
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -147,6 +161,9 @@ def generate_for_theme(theme_key, theme):
     */
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Multiplicity", lines, "Cardinality & Ordering.", theme, full_code=code_5, sheet_name='Reference', wrapper_type='structure')
+    md_blocks.append(("header", "5. Multiplicity"))
+    md_blocks.append(("text", "Cardinality & Ordering."))
+    md_blocks.append(("code", code_5))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -164,6 +181,9 @@ def generate_for_theme(theme_key, theme):
     */
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Visibility", lines, "Access control.", theme, full_code=code_6, sheet_name='Reference', wrapper_type='structure')
+    md_blocks.append(("header", "6. Visibility"))
+    md_blocks.append(("text", "Access control."))
+    md_blocks.append(("code", code_6))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -171,6 +191,9 @@ def generate_for_theme(theme_key, theme):
     svg += utils.draw_legend(WIDTH/2 - 250, HEIGHT - 80, 500, theme)
 
     svg += utils.svg_end()
+
+    if theme_key == 'light':
+        utils.save_markdown("reference_sheet.md", "Reference Cheat Sheet", "Keywords and Types", md_blocks, subfolder="cheatsheets")
     
     output_dir = os.path.join("..", "output", "svg", theme_key)
     os.makedirs(output_dir, exist_ok=True)

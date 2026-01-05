@@ -1,28 +1,24 @@
 package StateMachine_Tutorial {
-    import ScalarValues::*;
+    private import SI::*;
     
-    // Define the component containing the machine
+    /* Define the component containing the machine */
     part def TrafficLight {
-        // The machine behavior
+        /* The machine behavior */
         state def LightLogic {
-             // Initial entry point
-             entry; then Red;
-             
-             state Red {
-                 // Transition after time
-                 transition to Green after 20 [ISQ::s];
-             }
-             
-             state Green {
-                 transition to Yellow after 30 [ISQ::s];
-             }
-             
-             state Yellow {
-                 transition to Red after 5 [ISQ::s];
-             }
+            /* Initial entry point */
+            entry;
+            then Red;
+            
+            state Red;
+            state Yellow;
+            state Green;
+            
+            transition Red accept after 20 [SI::s] then Green;
+            transition Green accept after 5 [SI::s] then Yellow;
+            transition Yellow accept after 30 [SI::s] then Red;
         }
-        
-        // Usage of the machine
+        /* Usage of the machine */
         state logic : LightLogic;
     }
+    view StateMachine_Tutorial : DS_Views::SymbolicViews::gv;
 }

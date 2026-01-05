@@ -34,7 +34,7 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     full_code = """package Connections_Tutorial {
-    import PortsInterfaces_Tutorial::*; // Import Battery, Computer
+    private import PortsInterfaces_Tutorial::*; /* Import Battery, Computer */
     
     part def System;
     
@@ -42,15 +42,15 @@ def generate_for_theme(theme_key, theme):
         part battery : Battery;
         part computer : Computer;
         
-        // --- Connection ---
-        // Connecting compatible ports (PowerInterface vs ~PowerInterface)
+        /* --- Connection --- */
+        /* Connecting compatible ports (PowerInterface vs ~PowerInterface) */
         connect battery.pwrPort to computer.pwrIn;
         
-        // --- Binding (Delegation) ---
-        // Exposing the computer's ethernet port to the outside world
+        /* --- Binding (Delegation) --- */
+        /* Exposing the computer's ethernet port to the outside world */
         port externalEth : DataLink;
         
-        // 'binding' means internal eth0 IS the same interaction point as externalEth
+        /* 'binding' means internal eth0 IS the same interaction point as externalEth */
         binding externalEth = computer.eth0;
     }
 }"""
@@ -66,7 +66,7 @@ def generate_for_theme(theme_key, theme):
             color = theme.c_normal
             if w in ["part", "def", "connect", "to", "binding", "package", "import", "port"]:
                 color = theme.c_keyword
-            elif w.startswith("//"):
+            elif w.startswith("/*") or w.startswith("//"):
                 color = theme.c_comment
             elif "=" in w:
                  color = theme.c_type 

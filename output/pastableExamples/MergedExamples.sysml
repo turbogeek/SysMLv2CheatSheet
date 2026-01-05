@@ -257,41 +257,41 @@ package Actions_8Trigger {
 
 // --- Source: Actions_Tutorial.sysml ---
 package Actions_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     
-    // reusable action
+    /* reusable action */
     action def LogStatus { in msg : String; }
 
     action def ProcessData {
-        // Defining steps
+        /* Defining steps */
         action step1;
         action step2;
         action step3;
         
-        // --- Control Flow ---
-        // 'first' implies the entry point
+        /* --- Control Flow --- */
+        /* 'first' implies the entry point */
         first step1;
         
-        // 'then' implies succession (step1 completes before step2 starts)
-        flow from step1 to step2; // explicit
+        /* 'then' implies succession (step1 completes before step2 starts) */
+        flow from step1 to step2; /* explicit */
         
-        // Shorthand for flow:
-        // step2 then step3; 
+        /* Shorthand for flow: */
+        /* step2 then step3;  */ 
         
-        // --- Parallelism ---
+        /* --- Parallelism --- */
         action branchA;
         action branchB;
         
-        // Forking: step3 triggers both branches
+        /* Forking: step3 triggers both branches */
         flow from step3 to branchA;
         flow from step3 to branchB;
         
-        // --- Using Definitions ---
+        /* --- Using Definitions --- */
         action logger : LogStatus {
             in msg = "Processing Complete";
         }
         
-        // Joining: both must finish before logger runs
+        /* Joining: both must finish before logger runs */
         flow from branchA to logger;
         flow from branchB to logger;
     }
@@ -300,33 +300,33 @@ package Actions_Tutorial {
 // --- Source: Allocation_Tutorial.sysml ---
 package Allocation_Tutorial {
     
-    // --- Behavioral / Logical View ---
+    /* --- Behavioral / Logical View --- */
     action def ComputePath;
     
-    // --- Physical / Structural View ---
+    /* --- Physical / Structural View --- */
     part def FlightComputer;
     
     package Deployment {
         part ecu : FlightComputer;
         action plan : ComputePath;
         
-        // Allocate the action (plan) to the hardware (ecu)
-        // Meaning: "The ECU executes the planning action"
+        /* Allocate the action (plan) to the hardware (ecu) */
+        /* Meaning: "The ECU executes the planning action" */
         allocate plan to ecu;
     }
 }
 
 // --- Source: Analysis_Tutorial.sysml ---
 package Analysis_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     
-    // --- 1. Constraint Definition ---
+    /* --- 1. Constraint Definition --- */
     constraint def MassEquation {
         in total : Real;
         in p1 : Real;
         in p2 : Real;
         
-        // The math
+        /* The math */
         total == p1 + p2
     }
     
@@ -335,8 +335,8 @@ package Analysis_Tutorial {
         attribute part1Mass : Real;
         attribute part2Mass : Real;
         
-        // --- 2. Constraint Usage (Parametrics) ---
-        // Binding properties to the equation parameters
+        /* --- 2. Constraint Usage (Parametrics) --- */
+        /* Binding properties to the equation parameters */
         constraint massCheck : MassEquation {
             in total = mass;
             in p1 = part1Mass;
@@ -344,11 +344,11 @@ package Analysis_Tutorial {
         }
     }
     
-    // --- 3. Analysis Case ---
+    /* --- 3. Analysis Case --- */
     analysis def WeightCheck {
         subject system : System;
         
-        // Determining if mass is within limits
+        /* Determining if mass is within limits */
         return result : Boolean = system.mass < 100.0;
     }
 }
@@ -672,7 +672,7 @@ package Connections_4SuccessionFlow {
 
 // --- Source: Connections_Tutorial.sysml ---
 package Connections_Tutorial {
-    import PortsInterfaces_Tutorial::*; // Import Battery, Computer
+    private import PortsInterfaces_Tutorial::*; /* Import Battery, Computer */
     
     part def System;
     
@@ -680,15 +680,15 @@ package Connections_Tutorial {
         part battery : Battery;
         part computer : Computer;
         
-        // --- Connection ---
-        // Connecting compatible ports (PowerInterface vs ~PowerInterface)
+        /* --- Connection --- */
+        /* Connecting compatible ports (PowerInterface vs ~PowerInterface) */
         connect battery.pwrPort to computer.pwrIn;
         
-        // --- Binding (Delegation) ---
-        // Exposing the computer's ethernet port to the outside world
+        /* --- Binding (Delegation) --- */
+        /* Exposing the computer's ethernet port to the outside world */
         port externalEth : DataLink;
         
-        // 'binding' means internal eth0 IS the same interaction point as externalEth
+        /* 'binding' means internal eth0 IS the same interaction point as externalEth */
         binding externalEth = computer.eth0;
     }
 }
@@ -808,13 +808,14 @@ package CoreTypes_Tutorial {
 // --- Source: DataTypes_Tutorial.sysml ---
 package DataTypes_Tutorial {
     import ScalarValues::*;
-    import ISQ::*; 
+    /* Note: ISQ is automatically imported by SI (public import) */
+    private import SI::*;
 
-    // --- 1. Custom Value Definitions ---
-    // Specializing a primitive
+    /* --- 1. Custom Value Definitions --- */
+    /* Specializing a primitive */
     attribute def IDString :> String;
     
-    // Struct for composite data (Kernel level concept often used)
+    /* Struct for composite data (Kernel level concept often used) */
     attribute def Coordinates {
         attribute x : Real;
         attribute y : Real;
@@ -822,20 +823,24 @@ package DataTypes_Tutorial {
     }
 
     part def SensorSystem {
-        // --- 2. Using Primitives ---
+        /* --- 2. Using Primitives --- */
         attribute isActive : Boolean = true;
         attribute firmwareVersion : String = "v1.2.4";
         attribute cycleCount : Integer = 0;
         
-        // --- 3. Using ISQ Units ---
-        // Type checking ensures you can't assign Mass to Length
-        attribute weight : MassValue = 5.5 [kg];
-        attribute scanRange : LengthValue = 150 [m];
+        /* --- 3. Using ISQ Units --- */
+        /* Type checking ensures you can't assign Mass to Length */
+        /* Validating physical properties (Recommended) */
+        attribute weight :> ISQ::mass = 5.5 [kg];
+        attribute scanRange :> ISQ::length = 150 [m];
         
-        // Unit conversion is handled by checks (e.g. [km] -> [m])
-        attribute speed : SpeedValue = 120 [km/h]; 
+        /* Raw value storage (Context-free) */
+        attribute rawData : MassValue = 10.0 [kg];
         
-        // --- 4. Using Custom Types ---
+        /* Unit conversion is handled by checks (e.g. [km] -> [m]) */
+        attribute speed :> ISQ::speed = 120 [km/h]; 
+        
+        /* --- 4. Using Custom Types --- */
         attribute sensorID : IDString = "SENS-001";
         attribute location : Coordinates {
              :>> x = 10.0;
@@ -847,41 +852,108 @@ package DataTypes_Tutorial {
 
 // --- Source: DomainLibs_Tutorial.sysml ---
 package DomainLibs_Tutorial {
-    import ISQ::*;
-    import SI::*;
-    import Time::*;
+    private import SI::*;
+    private import Time::*;
     
-    // --- 1. Using ISQ Types ---
+    /* --- 1. Using ISQ Types --- */
     part def MovingObject {
-        attribute mass : MassValue;
-        attribute velocity : SpeedValue;
+        attribute mass :> ISQ::mass;
+        attribute velocity :> ISQ::speed;
         attribute startingTime : TimeInstantValue;
     }
     
     part car : MovingObject {
-        // --- 2. Using Units ---
+        /* --- 2. Using Units --- */
         attribute redefines mass = 1500 [kg];
         attribute redefines velocity = 120 [km/h];
         
-        // --- 3. Time ISO 8601 ---
+        /* --- 3. Time ISO 8601 --- */
         attribute redefines startingTime = "2023-10-27T10:00:00Z";
     }
     
-    // --- 4. Geometry (Shape Library) ---
-    // (Requires Shape library import usually)
-    // part wheel : Cylinder { 
-    //    attribute radius = 30 [cm];
-    // }
+    /* --- 4. Geometry (Shape Library) --- */
+    /* (Requires Shape library import usually) */
+    /* part wheel : Cylinder { */
+    /*    attribute radius = 30 [cm]; */
+    /* } */
+}
+
+// --- Source: Evaluation_Tutorial.sysml ---
+package Evaluation_Tutorial {
+    private import ScalarValues::*;
+    
+    /* --- 1. Calculations --- */
+    calc def PowerCalc {
+        in force : Real;
+        in velocity : Real;
+        return power : Real = force * velocity;
+    }
+
+    package System {
+        part engine {
+            attribute force : Real = 1000.0;
+            attribute maxPower : Real = 50000.0;
+            
+            /* Using the calculation */
+            attribute currentPower : Real = PowerCalc(force, 25.0);
+        }
+    }
+
+    /* --- 2. Requirements & Constraints --- */
+    requirement def PowerLimit {
+        attribute actualPower : Real;
+        attribute limit : Real;
+        
+        /* Boolean check */
+        require constraint {
+            actualPower <= limit
+        }
+    }
+    
+    part myEngine : System::engine {
+        /* Satisfaction */
+        satisfy requirement checkPower : PowerLimit {
+            attribute :>> actualPower = myEngine.currentPower;
+            attribute :>> limit = myEngine.maxPower;
+        }
+    }
+
+    /* --- 3. Verification Case --- */
+    verification def PowerTest {
+        subject system : System::engine;
+        
+        objective {
+            /* Verify that the requirement is met */
+            verify checkPower {
+                subject = system;
+            }
+        }
+    }
+
+    /* --- 4. Analysis (Trade Study) --- */
+    analysis def Optimization {
+        subject candidates : System::engine [1..*];
+        
+        objective : MaximizeObjective {
+            subject;
+        }
+        
+        /* Define how we measure 'goodness' */
+        calc :>> evaluationFunction {
+            in part cand :> candidates :>> alternative;
+            return :>> result = cand.currentPower;
+        }
+    }
 }
 
 // --- Source: Features_Tutorial.sysml ---
 package Feature_Tutorial_Model {
-    import ISQ::*;
+    private import ISQ::*;
 
     // --- 1. Base Definitions ---
     part def Engine {
-        attribute horsepower : PowerValue;
-        attribute mass : MassValue;
+        attribute horsepower :> ISQ::power;
+        attribute mass :> ISQ::mass;
     }
 
     part def Wheel;
@@ -920,9 +992,53 @@ package Feature_Tutorial_Model {
     }
 }
 
+// --- Source: Filters_Tutorial.sysml ---
+package Filters_Tutorial {
+    private import DS_Views::SymbolicViews;
+    private import Metaobjects::SemanticMetadata;
+    
+    part def HardwareComponent;
+    part def SoftwareComponent;
+    
+    metadata def Critical;
+    
+    part system {
+        part cpu : HardwareComponent;
+        
+        @Critical
+        part os : SoftwareComponent;
+        
+        part driver : SoftwareComponent;
+    }
+    
+    /* --- 1. Filtering by Type --- */
+    view hardwareView : SymbolicViews::gv {
+        expose system::**;
+        
+        /* Only show HardwareComponents */
+        filter hastype HardwareComponent;
+    }
+    
+    /* --- 2. Filtering by Metadata (Stereotypes) --- */
+    view criticalView : SymbolicViews::gv {
+        expose system::**;
+        
+        /* Only show elements tagged as @Critical */
+        filter @Critical;
+    }
+    
+    /* --- 3. Complex Logic --- */
+    view complexView : SymbolicViews::gv {
+        expose system::**;
+        
+        /* Show Software that is NOT Critical */
+        filter hastype SoftwareComponent and not @Critical;
+    }
+}
+
 // --- Source: Flows_Tutorial.sysml ---
 package Flows_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     
     item def Fuel;
     
@@ -933,14 +1049,14 @@ package Flows_Tutorial {
         part t : Tank;
         part e : Engine;
         
-        // --- Explicit Item Flow ---
-        // Declaring that Fuel moves from Tank to Engine
-        // This implies a connection exists or is abstractly represented
+        /* --- Explicit Item Flow --- */
+        /* Declaring that Fuel moves from Tank to Engine */
+        /* This implies a connection exists or is abstractly represented */
         flow of Fuel from t to e;
         
-        // --- Connector with Flow ---
+        /* --- Connector with Flow --- */
         connect t to e {
-            // Optional property on the flow
+            /* Optional property on the flow */
             flow of Fuel from t to e {
                 attribute rate : Real = 5.0;
             }
@@ -1071,37 +1187,46 @@ package Metadata_6Hashtags {
 
 // --- Source: Multiplicity_Tutorial.sysml ---
 package Multiplicity_Tutorial {
+    
     part def Wheel;
+    part def Engine;
     part def Seat;
     part def Passenger;
-    
-    part def Bus {
+
+    part def Car {
+        // --- Defaults ([1]) ---
+        // 'engine' has no brackets, so it is [1] (Exactly one required)
+        part engine : Engine; 
+        
         // --- Exact Constraints ---
-        // Exactly 6 wheels are required
-        part wheels : Wheel [6];
+        // Exactly 4 wheels are required
+        part wheels : Wheel [4];
         
         // --- Optionality ---
-        // A reserved seat may or may not exist (0 or 1)
-        part reservedSeat : Seat [0..1];
+        // A spare tire is optional [0..1]
+        part spareTire : Wheel [0..1];
         
         // --- Collections ---
-        // unique (Default): A specific person can't be in two seats at once (Set)
-        part seats : Seat [20..50]; 
+        // unique (Default): A specific person can't be in two seats (Set)
+        part seats : Seat [5]; 
         
-        // ordered nonunique: Queue of passengers boarding
-        // 'ordered': sequence matters (who is first)
-        // 'nonunique': technically allows duplicates (though confusing for people!)
-        part boardingQueue : Passenger [*] ordered nonunique;
-        
-        // --- Attribute Arrays ---
-        // Recording lap times (Sequence of numbers)
-        attribute lapTimes : ScalarValues::Real [*] ordered;
+        // ordered nonunique: Queue of passengers?
+        // 'ordered': sequence matters
+        part passengerHistory : Passenger [*] ordered nonunique;
+    }
+    
+    // --- Defaults on Actions ---
+    action def Drive {
+        // Default parameter multiplicity is [1]
+        in distance : ScalarValues::Integer; 
     }
 }
 
 // --- Source: Naming_Tutorial.sysml ---
 package Naming_Tutorial {
-    // --- Library Definitions ---
+    private import ScalarValues::*;
+    
+    /* --- Library Definitions --- */
     package StandardLibrary {
         part def Widget;
         part def Gadget;
@@ -1109,41 +1234,49 @@ package Naming_Tutorial {
     }
     
     package SpecializedLibrary {
-        // Name collision with StandardLibrary
+        /* Name collision with StandardLibrary */
         part def Widget; 
     }
 
-    // --- Imports & Aliasing ---
-    // Public import: 'StandardLibrary' is visible to users of 'Naming_Tutorial'
-    import StandardLibrary::*;
+    /* --- Imports & Aliasing --- */
+    /* Public import: 'StandardLibrary' is visible to users of 'Naming_Tutorial' */
+    /* Real-world example: The 'SI' library has 'public import ISQ::*;' */
+    public import StandardLibrary::*;
     
-    // Private import: Resolving collision with alias
+    /* Private import: Resolving collision with alias */
     private import SpecializedLibrary::Widget as SpecialWidget;
 
-    // --- Definitions & Usages ---
+    /* --- Definitions & Usages --- */
     part def SystemContext {
-        // Usage of standard import
+        /* Usage of standard import */
         part standardPart : Widget;
         
-        // Usage of aliased import
+        /* Usage of aliased element */
         part specialPart : SpecialWidget;
         
-        // Escaped identifier for spaces
+        /* Using the alias defined in the package */
+        alias SW for SpecialWidget;
+        part anotherPart : SW;
+        
+        /* Escaped identifier for spaces */
         attribute 'System ID' : String;
         
-        // Correct Convention: camelCase usage
+        /* Correct Convention: camelCase usage */
         part mainGadget : Gadget;
+        
+        /* Unit reference uses brackets, no quotes needed for special chars */
+        attribute speed : Real [km/h];
     }
 }
 
 // --- Source: PartsAndAttributes_Tutorial.sysml ---
 package PartsAndAttributes_Tutorial {
-    import ISQ::*; // Import standard units
+    private import ISQ::*; // Import standard quantities
     
     // --- Definitions ---
     part def Engine {
-        attribute maxThrust : ForceValue;
-        attribute mass : MassValue;
+        attribute maxThrust :> ISQ::force;
+        attribute mass :> ISQ::mass;
     }
     
     part def FuelTank {
@@ -1153,7 +1286,7 @@ package PartsAndAttributes_Tutorial {
     // --- Composite Definition ---
     part def Spacecraft {
         // Attributes of the spacecraft itself
-        attribute totalMass : MassValue;
+        attribute totalMass :> ISQ::mass;
         attribute callSign : String;
         
         // Parts (Usages)
@@ -1238,34 +1371,34 @@ package Patterns_4AbstractvsIndividual {
 
 // --- Source: PortsInterfaces_Tutorial.sysml ---
 package PortsInterfaces_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     
-    // --- 1. Interface Definitions ---
-    // Physical connection interface
+    /* --- 1. Interface Definitions --- */
+    /* Physical connection interface */
     interface def PowerInterface {
-        // 'out' means power leaves this port locally
+        /* 'out' means power leaves this port locally */
         out powerLevel : Real;
     }
     
-    // Logical data interface
+    /* Logical data interface */
     interface def DataLink {
-        // flow of messages
+        /* flow of messages */
         in command : String;
         out status : String;
     }
 
-    // --- 2. Component Definitions ---
+    /* --- 2. Component Definitions --- */
     part def Battery {
-        // Provides power (Source)
+        /* Provides power (Source) */
         port pwrPort : PowerInterface;
     }
 
     part def Computer {
-        // Consumes power (Sink)
-        // '~' (Tilde) conjugates the interface: 'out' becomes 'in'
+        /* Consumes power (Sink) */
+        /* '~' (Tilde) conjugates the interface: 'out' becomes 'in' */
         port pwrIn : ~PowerInterface;
         
-        // Data port
+        /* Data port */
         port eth0 : DataLink;
     }
 }
@@ -1441,9 +1574,9 @@ package Requirements_7TraceRefine {
 
 // --- Source: Requirements_Tutorial.sysml ---
 package Requirements_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     
-    // --- 1. Requirements ---
+    /* --- 1. Requirements --- */
     requirement def PerformanceReq {
         doc /* Textual description */
             "The system shall operate within performance limits.";
@@ -1451,31 +1584,31 @@ package Requirements_Tutorial {
     
     requirement <101> 'Breaking Distance' : PerformanceReq {
         doc "The vehicle must stop within 50 meters from 100km/h.";
-        // Formal constraint
+        /* Formal constraint */
         attribute maxDistance : Real = 50.0;
     }
 
-    // --- 2. Satisfaction (Design) ---
+    /* --- 2. Satisfaction (Design) --- */
     part def BrakeSystem;
     
     part brakes : BrakeSystem {
-        // Asserting that this part satisfies the requirement
+        /* Asserting that this part satisfies the requirement */
         satisfy 'Breaking Distance';
     }
     
-    // --- 3. Verification (Testing) ---
-    // A case to test the requirement
+    /* --- 3. Verification (Testing) --- */
+    /* A case to test the requirement */
     verification def BrakeTest {
-        // The requirement being verified
+        /* The requirement being verified */
         subject req : PerformanceReq;
         
-        // The logic (action) of the test
+        /* The logic (action) of the test */
         action executeTest {
-            // ... test steps ...
+            /* ... test steps ... */
         }
     }
     
-    // Usage of validation
+    /* Usage of validation */
     verification case test1 : BrakeTest {
         verify 'Breaking Distance';
     }
@@ -1606,30 +1739,30 @@ package Shorthand_6Multiplicity {
 
 // --- Source: StateMachine_Tutorial.sysml ---
 package StateMachine_Tutorial {
-    import ScalarValues::*;
+    private import SI::*;
     
-    // Define the component containing the machine
+    /* Define the component containing the machine */
     part def TrafficLight {
-        // The machine behavior
+        /* The machine behavior */
         state def LightLogic {
-             // Initial entry point
+             /* Initial entry point */
              entry; then Red;
              
              state Red {
-                 // Transition after time
-                 transition to Green after 20 [ISQ::s];
+                 /* Transition after time */
+                 transition to Green after 20 [SI::s];
              }
              
              state Green {
-                 transition to Yellow after 30 [ISQ::s];
+                 transition to Yellow after 30 [SI::s];
              }
              
              state Yellow {
-                 transition to Red after 5 [ISQ::s];
+                 transition to Red after 5 [SI::s];
              }
         }
         
-        // Usage of the machine
+        /* Usage of the machine */
         state logic : LightLogic;
     }
 }
@@ -1761,7 +1894,7 @@ package AutomatedPickleballServerModel {
     private import ScalarValues::*;
     private import SysML::*;
 
-    // --- Definitions ---
+    /* --- Definitions --- */
     part def ActorPart;
     use case def TrackPlayerState;
     use case def DetermineNextShot;
@@ -1797,24 +1930,24 @@ package AutomatedPickleballServerModel {
 // --- Source: Variants_Tutorial.sysml ---
 package Variants_Tutorial {
     
-    // abstract definition
+    /* abstract definition */
     part def Engine;
     
-    // --- 1. Variants ---
+    /* --- 1. Variants --- */
     part def V6Engine :> Engine;
     part def V8Engine :> Engine;
     part def ElectricMotor :> Engine;
     
-    // --- 2. Variation Point ---
+    /* --- 2. Variation Point --- */
     part def Car {
-        // 'variation' declares this must be chosen
+        /* 'variation' declares this must be chosen */
         variation part engine : Engine;
     }
     
-    // --- 3. Configuration (Binding) ---
-    // A specific configuration of the Car
+    /* --- 3. Configuration (Binding) --- */
+    /* A specific configuration of the Car */
     part def SportCar :> Car {
-        // Binding the variation point to a specific type
+        /* Binding the variation point to a specific type */
         variant part redefines engine : V8Engine;
     }
     
@@ -1825,41 +1958,161 @@ package Variants_Tutorial {
 
 // --- Source: Viewpoints_Tutorial.sysml ---
 package Viewpoint_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     
-    // The subject
+    /* The subject */
     part def Car {
         attribute mass : Real;
         part engine;
         part wheels;
     }
     
-    // --- 1. Viewpoint Definition ---
+    /* --- 1. Viewpoint Definition --- */
     viewpoint def MassReport {
         doc "A report focusing only on mass properties.";
     }
     
-    // --- 2. View Definition ---
+    /* --- 2. View Definition --- */
     view def MassView {
-        // The subject being viewed
+        /* The subject being viewed */
         in car : Car;
         
-        // --- 3. Exposing Elements ---
-        // Show the car itself
+        /* --- 3. Exposing Elements --- */
+        /* Show the car itself */
         expose car;
         
-        // Show sub-parts
+        /* Show sub-parts */
         expose car.engine;
         
-        // Filter: Only show attributes ending in 'Mass' (conceptual)
-        // filter @Attribute ==> name.endsWith("sw")
+        /* Filter: Only show attributes ending in 'Mass' (conceptual) */
+        /* filter @Attribute ==> name.endsWith("sw") */
     }
     
-    // --- 4. View Usage ---
+    /* --- 4. View Usage --- */
     part myCar : Car;
     
     view report : MassView {
         in car = myCar;
+    }
+}
+
+// --- Source: Views_Sheet_1ViewDefinition.sysml ---
+package Views {
+    part def System;
+    
+    view def ReportView {
+        /* Input parameter for subject */
+        in subject : System;
+    }
+}
+
+// --- Source: Views_Sheet_2ViewUsage.sysml ---
+package Views {
+    part def System;
+    part mySystem : System; 
+    view def ReportView { in subject : System; }
+    
+    /* View Usage */
+    view report : ReportView {
+        in subject = mySystem;
+    }
+}
+
+// --- Source: Views_Sheet_3Viewpoint.sysml ---
+package Views {
+    /* 1. Define specific concern/perspective */
+    viewpoint def SafetyAnalysis {
+        doc "Focus on hazards.";
+    }
+    
+    /* 2. Link view to viewpoint */
+    view def SafetyView {
+        satisfies SafetyAnalysis;
+    }
+}
+
+// --- Source: Views_Sheet_4ExposeContent.sysml ---
+package Views {
+    part def Car { part engine; part wheels[4]; }
+    part myCar : Car;
+    
+    view myView {
+        /* Expose specific element */
+        expose myCar;
+        
+        /* Expose element and all children recursively */
+        expose myCar::**; 
+    }
+}
+
+// --- Source: Views_Sheet_5Filter.sysml ---
+package Views {
+    import ScalarValues::*;
+    part def Car;
+    part myCar : Car;
+    
+    view myView {
+        expose myCar::**;
+        
+        /* Keep only Parts */
+        filter @Part;
+        
+        /* Or exclude specific things (logic depends on library) */
+    }
+}
+
+// --- Source: Views_Sheet_6RenderingStyle.sysml ---
+package Views {
+    /* Assuming standard libraries available */
+    view def MyView {
+        /* Apply visual style */
+        style color = "blue";
+        
+        /* Define table structure */
+        render asTable {
+           /* table details */
+        }
+    }
+}
+
+// --- Source: Views_Tutorial.sysml ---
+package Views_Tutorial {
+    /* Import Cameo View Libraries */
+    private import DS_Views::SymbolicViews;
+    private import CustomTabularViews::*;
+    
+    part def Car;
+    part def Engine;
+    part def Wheel;
+    
+    part myCar : Car {
+        part engine : Engine;
+        part wheels [4] : Wheel;
+    }
+    
+    /* --- 1. Graphical View (Diagram) --- */
+    view carDiagram : SymbolicViews::gv {
+        /* Show the entire car structure */
+        expose myCar;
+        
+        /* You can filter or refine what is shown here */
+        /* (See Filters Tutorial) */
+    }
+    
+    /* --- 2. Tabular View (Table) --- */
+    /* Defining a reusable table structure */
+    view def PartTable :> TabularViews::gt {
+        /* Define columns */
+        render rendering :>> asTable {
+            view :>> 'Declared Name';
+            view :>> 'Owner';
+        }
+    }
+    
+    /* Using the table */
+    view myTable : PartTable {
+        /* Show everything under myCar recursively */
+        expose myCar::**;
     }
 }
 

@@ -16,10 +16,9 @@ In SysML v2, a Use Case is a specialized type of case used to specify the requir
 
 ```sysml
 package AutomatedPickleballServerModel {
-    private import ScalarValues::*;
-    private import SysML::*;
 
-    // --- Definitions ---
+
+    /* --- Definitions --- */
     part def ActorPart;
     use case def TrackPlayerState;
     use case def DetermineNextShot;

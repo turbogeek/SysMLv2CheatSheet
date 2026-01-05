@@ -33,6 +33,8 @@ def generate_for_theme(theme_key, theme):
         [("  ", theme.c_normal), ("f", theme.c_normal), (" =", theme.c_normal), (" m * a", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
+    md_blocks = []
+    
     code_1 = """package Constraints_1ConstraintDefinition {
     private import ScalarValues::*;
     private import SysML::*;
@@ -47,6 +49,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Constraint Definition", lines, "Defining mathematical relationships.", theme, full_code=code_1, sheet_name="Constraints", wrapper_type="structure")
+    md_blocks.append(("header", "1. Constraint Definition"))
+    md_blocks.append(("text", "Defining mathematical relationships."))
+    md_blocks.append(("code", code_1))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -82,6 +87,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Constraint Usage (Assert)", lines, "Enforcing constraints on parts.", theme, full_code=code_2, sheet_name="Constraints", wrapper_type="structure")
+    md_blocks.append(("header", "2. Constraint Usage (Assert)"))
+    md_blocks.append(("text", "Enforcing constraints on parts."))
+    md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -105,6 +113,9 @@ def generate_for_theme(theme_key, theme):
     view ExposeExample { expose Main; }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2b. Inline Assertion", lines, "Simple boolean check.", theme, full_code=code_2b, sheet_name="Constraints", wrapper_type="action")
+    md_blocks.append(("header", "2b. Inline Assertion"))
+    md_blocks.append(("text", "Simple boolean check."))
+    md_blocks.append(("code", code_2b))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -130,6 +141,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. Calculation Definition", lines, "Reusable computation logic.", theme, full_code=code_3, sheet_name="Constraints", wrapper_type="structure")
+    md_blocks.append(("header", "3. Calculation Definition"))
+    md_blocks.append(("text", "Reusable computation logic."))
+    md_blocks.append(("code", code_3))
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -157,6 +171,9 @@ def generate_for_theme(theme_key, theme):
     view ExposeExample { expose Main; }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Calculation Usage", lines, "Invoking calculations.", theme, full_code=code_4, sheet_name="Constraints", wrapper_type="action")
+    md_blocks.append(("header", "4. Calculation Usage"))
+    md_blocks.append(("text", "Invoking calculations."))
+    md_blocks.append(("code", code_4))
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -168,6 +185,9 @@ def generate_for_theme(theme_key, theme):
         [("}", theme.c_normal)]
     ]
     svg += utils.svg_end()
+
+    if theme_key == 'light':
+        utils.save_markdown("constraints_sheet.md", "Constraints Cheat Sheet", "Equations and Assertions", md_blocks, subfolder="cheatsheets")
     
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "..", "output", "svg", theme_key)

@@ -37,6 +37,7 @@ def generate_for_theme(theme_key, theme):
         [("   part", theme.c_keyword), (" betterWheel", theme.c_normal), (" :>>", theme.c_keyword), (" wheel", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
+    md_blocks = []
     
     code_1 = """package 'Example: Taxonomy (Def vs Usage)' {
     private import ScalarValues::*;
@@ -63,6 +64,9 @@ def generate_for_theme(theme_key, theme):
     img_path = os.path.join(base_dir, "..", "Example _SVGs _from _Cameo", "View_ 1. Taxonomy (Def vs Usage).svg")
     
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Taxonomy (Def vs Usage)", lines, "Specialization matches Definitions.", theme, sheet_name='Relationships', wrapper_type='structure', full_code=code_1, image_path=img_path)
+    md_blocks.append(("header", "1. Taxonomy (Def vs Usage)"))
+    md_blocks.append(("text", "Specialization matches Definitions."))
+    md_blocks.append(("code", code_1))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -92,6 +96,9 @@ def generate_for_theme(theme_key, theme):
     
     img_path_2 = os.path.join(base_dir, "..", "Example _SVGs _from _Cameo", "View_ 2. Structural Links.svg")
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Structural Links", lines, "Connecting and Binding usages.", theme, sheet_name='Relationships', wrapper_type='structure', full_code=code_2, image_path=img_path_2)
+    md_blocks.append(("header", "2. Structural Links"))
+    md_blocks.append(("text", "Connecting and Binding usages."))
+    md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -126,6 +133,9 @@ def generate_for_theme(theme_key, theme):
 }"""
     img_path_3 = os.path.join(base_dir, "..", "Example _SVGs _from _Cameo", "View_ 3. Behavioral Flow.svg")
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. Behavioral Flow", lines, "Successions (Time) vs Flows (Data).", theme, sheet_name='Relationships', wrapper_type='structure', full_code=code_3, image_path=img_path_3)
+    md_blocks.append(("header", "3. Behavioral Flow"))
+    md_blocks.append(("text", "Successions (Time) vs Flows (Data)."))
+    md_blocks.append(("code", code_3))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -167,6 +177,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Cross-Cutting", lines, "Traceability and Assertions.", theme, sheet_name='Relationships', wrapper_type='structure', full_code=code_4)
+    md_blocks.append(("header", "4. Cross-Cutting"))
+    md_blocks.append(("text", "Traceability and Assertions."))
+    md_blocks.append(("code", code_4))
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -201,6 +214,9 @@ def generate_for_theme(theme_key, theme):
 }"""
     img_path_5 = os.path.join(base_dir, "..", "Example _SVGs _from _Cameo", "Example__Import_&_Exposure__View__5._Import_&_Exposure.svg")
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "5. Import & Exposure", lines, "Managing namespace visibility.", theme, sheet_name='Relationships', wrapper_type='structure', full_code=code_5, image_path=img_path_5)
+    md_blocks.append(("header", "5. Import & Exposure"))
+    md_blocks.append(("text", "Managing namespace visibility."))
+    md_blocks.append(("code", code_5))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -208,6 +224,9 @@ def generate_for_theme(theme_key, theme):
     svg += utils.draw_legend(WIDTH/2 - 250, HEIGHT - 80, 500, theme)
 
     svg += utils.svg_end()
+
+    if theme_key == 'light':
+        utils.save_markdown("relationships_sheet.md", "Relationships Cheat Sheet", "Structural and Behavioral Relationships", md_blocks, subfolder="cheatsheets")
     
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "..", "output", "svg", theme_key)

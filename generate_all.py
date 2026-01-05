@@ -18,6 +18,7 @@ scripts = [
     "generate_shorthand_sheet.py",
     "generate_states_sheet.py",
     "generate_state_patterns_sheet.py",
+    "generate_views_sheet.py",
     "generate_metadata_sheet.py",
     "generate_use_case_tutorial.py",
     "generate_naming_tutorial.py",
@@ -31,14 +32,18 @@ scripts = [
     "generate_connections_tutorial.py",
     "generate_flows_tutorial.py",
     "generate_actions_tutorial.py",
-    "generate_actions_tutorial.py",
     "generate_state_machines_tutorial.py",
     "generate_allocation_tutorial.py",
     "generate_requirements_tutorial.py",
     "generate_analysis_tutorial.py",
     "generate_viewpoints_tutorial.py",
     "generate_variants_tutorial.py",
-    "generate_domain_libs_tutorial.py"
+    "generate_domain_libs_tutorial.py",
+    "generate_views_tutorial.py",
+    "generate_filters_tutorial.py",
+    "generate_evaluation_tutorial.py",
+    # Aggregation
+    "generate_combined_docs.py"
 ]
 
 # --- Cleanup ---

@@ -47,18 +47,18 @@ def generate_for_theme(theme_key, theme):
     
     full_code = """package Allocation_Tutorial {
     
-    // --- Behavioral / Logical View ---
+    /* --- Behavioral / Logical View --- */
     action def ComputePath;
     
-    // --- Physical / Structural View ---
+    /* --- Physical / Structural View --- */
     part def FlightComputer;
     
     package Deployment {
         part ecu : FlightComputer;
         action plan : ComputePath;
         
-        // Allocate the action (plan) to the hardware (ecu)
-        // Meaning: "The ECU executes the planning action"
+        /* Allocate the action (plan) to the hardware (ecu) */
+        /* Meaning: "The ECU executes the planning action" */
         allocate plan to ecu;
     }
 }"""
@@ -74,7 +74,7 @@ def generate_for_theme(theme_key, theme):
             color = theme.c_normal
             if w in ["allocate", "to", "part", "action", "def", "package"]:
                 color = theme.c_keyword
-            elif w.startswith("//"):
+            elif w.startswith("/*") or w.startswith("//"):
                 color = theme.c_comment
             
             if any(p[1] == theme.c_comment for p in parts):

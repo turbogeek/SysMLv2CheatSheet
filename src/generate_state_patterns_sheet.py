@@ -32,6 +32,8 @@ def generate_for_theme(theme_key, theme):
         [("   exit", theme.c_keyword), (" action", theme.c_keyword), (" :", theme.c_normal), (" logEnd", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
+    md_blocks = []
+    
     code_1 = """package StatePatterns_1EntryDoExit {
     private import ScalarValues::*;
     private import SysML::*;
@@ -45,6 +47,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Entry/Do/Exit", lines, "State lifecycle actions.", theme, full_code=code_1, sheet_name="StatePatterns", wrapper_type="structure")
+    md_blocks.append(("header", "1. Entry/Do/Exit"))
+    md_blocks.append(("text", "State lifecycle actions."))
+    md_blocks.append(("code", code_1))
     svg += card
     cur_y_c1 += h + ROW_GAP
     # --- Card 2: Composite State ---
@@ -71,6 +76,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Composite State", lines, "States within states.", theme, full_code=code_2, sheet_name="StatePatterns", wrapper_type="structure")
+    md_blocks.append(("header", "2. Composite State"))
+    md_blocks.append(("text", "States within states."))
+    md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -91,6 +99,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. Exhibit State", lines, "Part exhibiting a state.", theme, full_code=code_3, sheet_name="StatePatterns", wrapper_type="structure")
+    md_blocks.append(("header", "3. Exhibit State"))
+    md_blocks.append(("text", "Part exhibiting a state."))
+    md_blocks.append(("code", code_3))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -114,6 +125,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Internal Transition", lines, "Transition without state change.", theme, full_code=code_4, sheet_name="StatePatterns", wrapper_type="structure")
+    md_blocks.append(("header", "4. Internal Transition"))
+    md_blocks.append(("text", "Transition without state change."))
+    md_blocks.append(("code", code_4))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -121,6 +135,9 @@ def generate_for_theme(theme_key, theme):
     svg += utils.draw_legend(WIDTH/2 - 250, HEIGHT - 80, 500, theme)
 
     svg += utils.svg_end()
+
+    if theme_key == 'light':
+        utils.save_markdown("state_patterns_sheet.md", "State Patterns Cheat Sheet", "Advanced State Patterns", md_blocks, subfolder="cheatsheets")
     
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "..", "output", "svg", theme_key)

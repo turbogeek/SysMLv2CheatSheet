@@ -31,6 +31,8 @@ def generate_for_theme(theme_key, theme):
         [("   end", theme.c_keyword), (" device", theme.c_normal), (" :", theme.c_normal), (" Device", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
+    md_blocks = []
+    
     code_1 = """package Connections_1ConnectionDefinition {
     private import ScalarValues::*;
     private import SysML::*;
@@ -42,6 +44,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Connection Definition", lines, "Defining connection types.", theme, full_code=code_1, sheet_name='Connections', wrapper_type='structure')
+    md_blocks.append(("header", "1. Connection Definition"))
+    md_blocks.append(("text", "Defining connection types."))
+    md_blocks.append(("code", code_1))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -66,6 +71,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1b. Connection Usage", lines, "Connecting parts.", theme, full_code=code_1b, sheet_name='Connections', wrapper_type='structure')
+    md_blocks.append(("header", "1b. Connection Usage"))
+    md_blocks.append(("text", "Connecting parts."))
+    md_blocks.append(("code", code_1b))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -89,6 +97,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Binding Connector (=)", lines, "Equating two elements.", theme, full_code=code_2, sheet_name='Connections', wrapper_type='structure')
+    md_blocks.append(("header", "2. Binding Connector (=)"))
+    md_blocks.append(("text", "Equating two elements."))
+    md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -111,6 +122,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. Interface Connection", lines, "Flows within interfaces.", theme, full_code=code_3, sheet_name='Connections', wrapper_type='structure')
+    md_blocks.append(("header", "3. Interface Connection"))
+    md_blocks.append(("text", "Flows within interfaces."))
+    md_blocks.append(("code", code_3))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -135,6 +149,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Succession Flow", lines, "Control/Data flow.", theme, full_code=code_4, sheet_name='Connections', wrapper_type='structure')
+    md_blocks.append(("header", "4. Succession Flow"))
+    md_blocks.append(("text", "Control/Data flow."))
+    md_blocks.append(("code", code_4))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -142,6 +159,9 @@ def generate_for_theme(theme_key, theme):
     svg += utils.draw_legend(WIDTH/2 - 250, HEIGHT - 80, 500, theme)
 
     svg += utils.svg_end()
+
+    if theme_key == 'light':
+        utils.save_markdown("connections_sheet.md", "Connections Cheat Sheet", "Connections and Flows", md_blocks, subfolder="cheatsheets")
     
     output_dir = os.path.join("..", "output", "svg", theme_key)
     os.makedirs(output_dir, exist_ok=True)

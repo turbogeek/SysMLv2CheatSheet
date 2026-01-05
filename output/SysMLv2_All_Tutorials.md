@@ -1,0 +1,1451 @@
+# SysML v2 Tutorials: Complete Collection
+
+**Generated on:** 2025-12-19 12:32:55
+
+---
+
+## Table of Contents
+
+- Actions Tutorial
+- Allocation Tutorial
+- Analysis Tutorial
+- Connections Tutorial
+- Coretypes Tutorial
+- Datatypes Tutorial
+- Domainlibs Tutorial
+- Evaluation Tutorial
+- Features Tutorial
+- Filters Tutorial
+- Flows Tutorial
+- Multiplicity Tutorial
+- Naming Tutorial
+- Partsattributes Tutorial
+- Portsinterfaces Tutorial
+- Requirements Tutorial
+- Semanticmetadata Tutorial
+- Statemachine Tutorial
+- Usecase Tutorial
+- Variants Tutorial
+- Viewpoints Tutorial
+- Views Tutorial
+
+---
+
+<div style='page-break-before: always;'></div>
+
+# Actions Tutorial
+
+# Actions & Behavior
+
+*Modeling Activity Diagrams*
+
+## 1. Action Basics
+
+Actions represent distinct steps of behavior.
+• **action def**: A reusable definition.
+• **action**: A usage (step).
+
+## 2. Flows and Control
+
+- **first**: Marks the starting action.
+- **flow**: Explicit succession (`flow from a to b`).
+- **then**: Shorthand succession (`a then b`).
+- **fork/join**: Implicit when multiple flows leave or enter an action.
+
+## 3. Processing Pipeline Example
+
+```sysml
+package Actions_Tutorial {
+    private import ScalarValues::*;
+    
+    /* reusable action */
+    action def LogStatus { in msg : String; }
+
+    action def ProcessData {
+        /* Defining steps */
+        action step1;
+        action step2;
+        action step3;
+        
+        /* --- Control Flow --- */
+        /* 'first' implies the entry point */
+        first step1;
+        
+        /* 'then' implies succession (step1 completes before step2 starts) */
+        flow from step1 to step2; /* explicit */
+        
+        /* Shorthand for flow: */
+        /* step2 then step3;  */ 
+        
+        /* --- Parallelism --- */
+        action branchA;
+        action branchB;
+        
+        /* Forking: step3 triggers both branches */
+        flow from step3 to branchA;
+        flow from step3 to branchB;
+        
+        /* --- Using Definitions --- */
+        action logger : LogStatus {
+            in msg = "Processing Complete";
+        }
+        
+        /* Joining: both must finish before logger runs */
+        flow from branchA to logger;
+        flow from branchB to logger;
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Allocation Tutorial
+
+# Allocation
+
+*Mapping Behavior to Structure*
+
+## 1. Allocation Concept
+
+Allocation maps one model element to another, typically to show realization (e.g., Logical functionality allocated to Physical hardware).
+
+## 2. Syntax
+
+```sysml
+allocate <source> to <target>;
+```
+
+## 3. Deployment Example
+
+```sysml
+package Allocation_Tutorial {
+    
+    /* --- Behavioral / Logical View --- */
+    action def ComputePath;
+    
+    /* --- Physical / Structural View --- */
+    part def FlightComputer;
+    
+    package Deployment {
+        part ecu : FlightComputer;
+        action plan : ComputePath;
+        
+        /* Allocate the action (plan) to the hardware (ecu) */
+        /* Meaning: "The ECU executes the planning action" */
+        allocate plan to ecu;
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Analysis Tutorial
+
+# Analysis & Constraints
+
+*Parametrics and Evaluation*
+
+## 1. Constraints (Parametrics)
+
+Constraints define mathematical equations that govern system properties.
+
+```sysml
+constraint def OhmLaw { in v; in i; in r; v == i * r }
+```
+
+## 2. Analysis Cases
+
+Analysis cases specify the logic for evaluating system performance, often involving solving constraints or running simulations.
+
+## 3. Mass Analysis Example
+
+```sysml
+package Analysis_Tutorial {
+    private import ScalarValues::*;
+    
+    /* --- 1. Constraint Definition --- */
+    constraint def MassEquation {
+        in total : Real;
+        in p1 : Real;
+        in p2 : Real;
+        
+        /* The math */
+        total == p1 + p2
+    }
+    
+    part def System {
+        attribute mass : Real;
+        attribute part1Mass : Real;
+        attribute part2Mass : Real;
+        
+        /* --- 2. Constraint Usage (Parametrics) --- */
+        /* Binding properties to the equation parameters */
+        constraint massCheck : MassEquation {
+            in total = mass;
+            in p1 = part1Mass;
+            in p2 = part2Mass;
+        }
+    }
+    
+    /* --- 3. Analysis Case --- */
+    analysis def WeightCheck {
+        subject system : System;
+        
+        /* Determining if mass is within limits */
+        return result : Boolean = system.mass < 100.0;
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Connections Tutorial
+
+# Connections
+
+*Wiring Parts Together*
+
+## 1. Connection Basics
+
+- **connect a to b**: Standard connection between two endpoints.
+- **binding a = b**: Equivalence connection. Often used for **delegation** (exposing an internal part's port to the boundary of the container).
+
+## 2. Wiring Example
+
+This example shows connecting a Battery to a Computer, and binding the internal Ethernet port to the outside.
+
+```sysml
+package Connections_Tutorial {
+    private import PortsInterfaces_Tutorial::*; /* Import Battery, Computer */
+    
+    part def System;
+    
+    part def PowerSystem :> System {
+        part battery : Battery;
+        part computer : Computer;
+        
+        /* --- Connection --- */
+        /* Connecting compatible ports (PowerInterface vs ~PowerInterface) */
+        connect battery.pwrPort to computer.pwrIn;
+        
+        /* --- Binding (Delegation) --- */
+        /* Exposing the computer's ethernet port to the outside world */
+        port externalEth : DataLink;
+        
+        /* 'binding' means internal eth0 IS the same interaction point as externalEth */
+        binding externalEth = computer.eth0;
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Coretypes Tutorial
+
+# Core Types
+
+*Parts, Items, Attributes, and Enumerations*
+
+## 1. Parts vs Items
+
+SysML v2 distinguishes between physical/logical structure and information/flow.
+• **part**: Has mass, energy, or spatial extent (e.g., Engine, Server).
+• **item**: Represents distinct headers or mass that flows (e.g., Water, DataMessage).
+
+## 2. Attributes & Scalars
+
+Attributes store data values within definitions.
+• **attribute def**: Defines a reusable data type.
+• **attribute**: A usage of a definition holding a value.
+
+## 3. Enumerations
+
+Enumerations define a fixed set of literals. Useful for states, modes, or configuration options.
+
+## 4. Core Types Example
+
+```sysml
+package CoreTypes_Tutorial {
+    import ScalarValues::*;
+    
+    // --- 1. Enumerations ---
+    enum def Status {
+        enum Active;
+        enum Idle;
+        enum Error;
+    }
+
+    // --- 2. Attributes & Scalars ---
+    attribute def MassValue :> Real;
+    
+    // --- 3. Parts (Structure) ---
+    part def StorageTank {
+        attribute capacity : MassValue = 1000.0;
+        attribute currentStatus : Status = Status::Idle;
+    }
+
+    // --- 4. Items (Flow/Substance) ---
+    item def Water;
+    
+    part def WaterSystem {
+        part tank1 : StorageTank;
+        part tank2 : StorageTank;
+        
+        // Items flow or are stored
+        item storedWater : Water;
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Datatypes Tutorial
+
+# Data Types
+
+*Primitives, Values, and Units*
+
+## 1. Standard Primitive Types
+
+SysML v2 provides familiar primitive types in the ScalarValues library:
+• **String**: Textual data.
+• **Integer**: Whole numbers.
+• **Real**: Floating point numbers.
+• **Boolean**: True/False flags.
+
+## 2. ISQ Units (Physical Quantities)
+
+For engineering, using standard quantities is critical. The `SI` library publicly imports `ISQ`, so importing `SI` gives you access to both units (e.g. `[kg]`) and physical quantity types (e.g. `ISQ::mass`).
+
+## 3. Custom Data Types
+
+You can define domain-specific types:
+• **attribute def**: A reusable value type definition.
+• **struct**: A generalized structured data type.
+
+## 4. Data Types and Values Example
+
+```sysml
+package DataTypes_Tutorial {
+    import ScalarValues::*;
+    /* Note: ISQ is automatically imported by SI (public import) */
+    private import SI::*;
+
+    /* --- 1. Custom Value Definitions --- */
+    /* Specializing a primitive */
+    attribute def IDString :> String;
+    
+    /* Struct for composite data (Kernel level concept often used) */
+    attribute def Coordinates {
+        attribute x : Real;
+        attribute y : Real;
+        attribute z : Real;
+    }
+
+    part def SensorSystem {
+        /* --- 2. Using Primitives --- */
+        attribute isActive : Boolean = true;
+        attribute firmwareVersion : String = "v1.2.4";
+        attribute cycleCount : Integer = 0;
+        
+        /* --- 3. Using ISQ Units --- */
+        /* Type checking ensures you can't assign Mass to Length */
+        /* Validating physical properties (Recommended) */
+        attribute weight :> ISQ::mass = 5.5 [kg];
+        attribute scanRange :> ISQ::length = 150 [m];
+        
+        /* Raw value storage (Context-free) */
+        attribute rawData : MassValue = 10.0 [kg];
+        
+        /* Unit conversion is handled by checks (e.g. [km] -> [m]) */
+        attribute speed :> ISQ::speed = 120 [km/h]; 
+        
+        /* --- 4. Using Custom Types --- */
+        attribute sensorID : IDString = "SENS-001";
+        attribute location : Coordinates {
+             :>> x = 10.0;
+             :>> y = 20.0;
+             :>> z = 0.0;
+        }
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Domainlibs Tutorial
+
+# Domain Libraries
+
+*ISQ, SI, and Time*
+
+## 1. ISQ & SI
+
+The standard libraries provide types for almost all physical quantities.
+
+```sysml
+private import SI::*; /* Publicly imports ISQ */
+```
+
+## 2. Units
+
+Units are first-class citizens using square brackets.
+
+```sysml
+attribute len = 5 [m];
+```
+
+## 3. Physics Example
+
+```sysml
+package DomainLibs_Tutorial {
+    private import SI::*;
+    private import Time::*;
+    
+    /* --- 1. Using ISQ Types --- */
+    part def MovingObject {
+        attribute mass :> ISQ::mass;
+        attribute velocity :> ISQ::speed;
+        attribute startingTime : TimeInstantValue;
+    }
+    
+    part car : MovingObject {
+        /* --- 2. Using Units --- */
+        attribute redefines mass = 1500 [kg];
+        attribute redefines velocity = 120 [km/h];
+        
+        /* --- 3. Time ISO 8601 --- */
+        attribute redefines startingTime = "2023-10-27T10:00:00Z";
+    }
+    
+    /* --- 4. Geometry (Shape Library) --- */
+    /* (Requires Shape library import usually) */
+    /* part wheel : Cylinder { */
+    /*    attribute radius = 30 [cm]; */
+    /* } */
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Evaluation Tutorial
+
+# Evaluation
+
+*Calculations and Analysis*
+
+## 1. Evaluation Overview
+
+SysML v2 integrates analysis and verification directly into the model.
+
+## 2. Components
+
+- **calc def**: Defines mathematical functions.
+- **constraint**: Defines boolean rules (often used in Requirements).
+- **verification**: Defines test cases to verify requirements.
+- **analysis**: Defines trade studies to compare alternatives or optimize parameters.
+
+## 3. Evaluation Example
+
+```sysml
+package Evaluation_Tutorial {
+    private import ScalarValues::*;
+    
+    /* --- 1. Calculations --- */
+    calc def PowerCalc {
+        in force : Real;
+        in velocity : Real;
+        return power : Real = force * velocity;
+    }
+
+    package System {
+        part engine {
+            attribute force : Real = 1000.0;
+            attribute maxPower : Real = 50000.0;
+            
+            /* Using the calculation */
+            attribute currentPower : Real = PowerCalc(force, 25.0);
+        }
+    }
+
+    /* --- 2. Requirements & Constraints --- */
+    requirement def PowerLimit {
+        attribute actualPower : Real;
+        attribute limit : Real;
+        
+        /* Boolean check */
+        require constraint {
+            actualPower <= limit
+        }
+    }
+    
+    part myEngine : System::engine {
+        /* Satisfaction */
+        satisfy requirement checkPower : PowerLimit {
+            attribute :>> actualPower = myEngine.currentPower;
+            attribute :>> limit = myEngine.maxPower;
+        }
+    }
+
+    /* --- 3. Verification Case --- */
+    verification def PowerTest {
+        subject system : System::engine;
+        
+        objective {
+            /* Verify that the requirement is met */
+            verify checkPower {
+                subject = system;
+            }
+        }
+    }
+
+    /* --- 4. Analysis (Trade Study) --- */
+    analysis def Optimization {
+        subject candidates : System::engine [1..*];
+        
+        objective : MaximizeObjective {
+            subject;
+        }
+        
+        /* Define how we measure 'goodness' */
+        calc :>> evaluationFunction {
+            in part cand :> candidates :>> alternative;
+            return :>> result = cand.currentPower;
+        }
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Features Tutorial
+
+# Features & Chaining
+
+*Understanding Structure, Behavior, and feature paths*
+
+## 1. What is a Feature?
+
+In SysML v2, almost everything is a Feature. Features describe the characteristics of a defined type. They can be structural (parts, attributes, ports) or behavioral (actions, states).
+
+## 2. Feature Chaining (Dot Notation)
+
+Feature chaining allows you to access deeply nested features without redefining the entire hierarchy. You can 'reach into' a part to constrain or redefine its internal properties using the dot (.) operator.
+
+```sysml
+// Feature Chaining Example
+part :>> engine.mass = 150 [ISQ::kg];
+```
+
+## 3. Modifying Features: Subsets vs Redefines
+
+- **Subsetting (subsets)**: Classifies a feature as a member of a broader set. Both sets exist simultaneously.
+- **Redefinition (redefines)**: Replaces an inherited feature completely. The original definition is hidden.
+
+## 4. Full Example Code
+
+```sysml
+package Feature_Tutorial_Model {
+    private import ISQ::*;
+
+    // --- 1. Base Definitions ---
+    part def Engine {
+        attribute horsepower :> ISQ::power;
+        attribute mass :> ISQ::mass;
+    }
+
+    part def Wheel;
+
+    part def Vehicle {
+        part engine : Engine[1];
+        part wheels : Wheel[4];
+    }
+
+    // --- 2. Subsetting Example ---
+    part def Truck :> Vehicle {
+        // 'front' and 'rear' partition the 'wheels' set
+        part frontWheels[2] subsets wheels;
+        part rearWheels[2] subsets wheels;
+    }
+
+    // --- 3. Redefinition Example ---
+    part def ElectricMotor :> Engine;
+    
+    part def ElectricCar :> Vehicle {
+        // Replace generic Engine with ElectricMotor
+        part redefines engine : ElectricMotor;
+    }
+
+    // --- 4. Feature Chaining & Redeclaration Example ---
+    part def SportsCar :> Vehicle {
+        // Feature Chaining: reaching into 'engine'
+        // Redeclaration (:>>) shorthand for 'redefines' or 'subsets'
+        
+        attribute :>> engine.horsepower = 500 [hp];
+        
+        // This is structurally equivalent to:
+        // part :>> engine {
+        //    attribute :>> horsepower = 500 [hp];
+        // }
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Filters Tutorial
+
+# Filters
+
+*Refining View Content*
+
+## 1. Filters
+
+Filters refine what is shown in a view. They are crucial for creating manageable diagrams from complex models.
+
+## 2. Syntax
+
+- **hastype <Def>**: Checks if an element is a usage of `<Def>`.
+- **@<Meta>**: Checks if an element has specific metadata applied.
+- **and, or, not**: Standard boolean logic.
+
+## 3. Filtering Example
+
+```sysml
+package Filters_Tutorial {
+    private import DS_Views::SymbolicViews;
+    private import Metaobjects::SemanticMetadata;
+    
+    part def HardwareComponent;
+    part def SoftwareComponent;
+    
+    metadata def Critical;
+    
+    part system {
+        part cpu : HardwareComponent;
+        
+        @Critical
+        part os : SoftwareComponent;
+        
+        part driver : SoftwareComponent;
+    }
+    
+    /* --- 1. Filtering by Type --- */
+    view hardwareView : SymbolicViews::gv {
+        expose system::**;
+        
+        /* Only show HardwareComponents */
+        filter hastype HardwareComponent;
+    }
+    
+    /* --- 2. Filtering by Metadata (Stereotypes) --- */
+    view criticalView : SymbolicViews::gv {
+        expose system::**;
+        
+        /* Only show elements tagged as @Critical */
+        filter @Critical;
+    }
+    
+    /* --- 3. Complex Logic --- */
+    view complexView : SymbolicViews::gv {
+        expose system::**;
+        
+        /* Show Software that is NOT Critical */
+        filter hastype SoftwareComponent and not @Critical;
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Flows Tutorial
+
+# Flows
+
+*Moving Items and Data*
+
+## 1. Item Flows
+
+Item flows specify the movement of matter, energy, or data between parts.
+
+## 2. Syntax
+
+```sysml
+flow of <item> from <source> to <target>;
+```
+
+## 3. Fuel Flow Example
+
+```sysml
+package Flows_Tutorial {
+    private import ScalarValues::*;
+    
+    item def Fuel;
+    
+    part def Tank;
+    part def Engine;
+    
+    part def FuelSystem {
+        part t : Tank;
+        part e : Engine;
+        
+        /* --- Explicit Item Flow --- */
+        /* Declaring that Fuel moves from Tank to Engine */
+        /* This implies a connection exists or is abstractly represented */
+        flow of Fuel from t to e;
+        
+        /* --- Connector with Flow --- */
+        connect t to e {
+            /* Optional property on the flow */
+            flow of Fuel from t to e {
+                attribute rate : Real = 5.0;
+            }
+        }
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Multiplicity Tutorial
+
+# Multiplicity
+
+*Cardinality, Collections, and Ordering*
+
+## 1. Basic Multiplicity
+
+Multiplicity constraints specify cardinality.
+• **[1]**: Exactly one.
+• **[0..1]**: Optional.
+• **[*]**: Unbounded.
+
+## 2. Default Multiplicity Rules
+
+Defaults depend on context:
+1. **In Definition**: [1] (Required).
+2. **In Package**: [0..*] (Optional).
+3. **Inheritance**: `subsets` inherits parent constraint.
+
+## 3. Collection Types
+
+• **unique**: Set (Default).
+• **ordered**: Sequence.
+• **nonunique**: Bag.
+
+## 4. Multiplicity Example
+
+```sysml
+package Multiplicity_Tutorial {
+    
+    part def Person;
+    part def Wheel;
+    
+    /* --- 1. Package Context --- */
+    /* Usage directly in package defaults to [0..*] */
+    part looseWheels : Wheel; 
+
+    part def Car {
+        /* --- 2. Definition Context --- */
+        /* Usage in a definition (part/attr/port) defaults to [1] */
+        part engine : Person; /* [1..1] Required */
+        
+        /* --- Explicit Constraints --- */
+        part wheels : Wheel [4]; /* Exactly 4 */
+        
+        /* --- 3. Inheritance --- */
+        /* subsets: inherits parent multiplicity (here [1]) */
+        /* We can constrain it further, or leave it. */
+        part driver subsets engine; 
+        
+        /* --- 4. Collections --- */
+        /* unique (Default): Set */
+        part passengers : Person [0..4]; 
+        
+        /* ordered nonunique: Sequence */
+        attribute lapTimes : ScalarValues::Real [*] ordered nonunique;
+    }
+    
+    action def Drive {
+        /* Default parameter multiplicity is [1] */
+        in distance : ScalarValues::Integer; 
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Naming Tutorial
+
+# Names & Imports
+
+*Identifiers, Conventions, and Package Management*
+
+## 1. Identifiers
+
+Standard identifiers in SysML v2 are alphanumeric and can include underscores. They must start with a letter or underscore. You can use 'single quotes' to escape any character sequence. Exception: Units in brackets `[ ]` don't need quotes (e.g., `[km/h]`).
+
+## 2. Naming Conventions
+
+- **Definitions (PascalCase)**: CamelCase starting with Uppercase. Used for: part defs, action defs, packages.
+- **Usages (camelCase)**: CamelCase starting with lowercase. Used for: parts, actions, attributes.
+
+## 3. Imports
+
+Imports bring elements from other packages into scope.
+• standard import: Transitive (publicly exposes imported elements). Example: `SI` libraries publicly import `ISQ` so you get both units and quantities.
+• private import: Only visible within the current package.
+
+## 4. Wildcards (* vs **)
+
+• *: Shallow import (imports direct children).
+• **: Recursive import (imports everything deeply).
+Warning: Avoid ** in production to prevent namespace pollution!
+
+## 5. Aliasing
+
+Use `alias` to create short names for long qualified names. Sytnax: `alias <NewName> for <OldName>;`.
+
+## 6. Comprehensive Example
+
+```sysml
+package Naming_Tutorial {
+    private import ScalarValues::*;
+    
+    /* --- Library Definitions --- */
+    package StandardLibrary {
+        part def Widget;
+        part def Gadget;
+        attribute def Status;
+    }
+    
+    package SpecializedLibrary {
+        /* Name collision with StandardLibrary */
+        part def Widget; 
+    }
+
+    /* --- Imports & Aliasing --- */
+    /* Public import: 'StandardLibrary' is visible to users of 'Naming_Tutorial' */
+    /* Real-world example: The 'SI' library has 'public import ISQ::*;' */
+    public import StandardLibrary::*;
+    
+    /* Private import: Resolving collision with alias */
+    private import SpecializedLibrary::Widget as SpecialWidget;
+
+    /* --- Definitions & Usages --- */
+    part def SystemContext {
+        /* Usage of standard import */
+        part standardPart : Widget;
+        
+        /* Usage of aliased element */
+        part specialPart : SpecialWidget;
+        
+        /* Using the alias defined in the package */
+        alias SW for SpecialWidget;
+        part anotherPart : SW;
+        
+        /* Escaped identifier for spaces */
+        attribute 'System ID' : String;
+        
+        /* Correct Convention: camelCase usage */
+        part mainGadget : Gadget;
+        
+        /* Unit reference uses brackets, no quotes needed for special chars */
+        attribute speed : Real [km/h];
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Partsattributes Tutorial
+
+# Parts & Attributes
+
+*Defining Structure and Values*
+
+## 1. Definitions vs Usages
+
+SysML v2 clearly separates definitions (types) from usages (instances).
+• **part def**: Defines the blueprint of a structural element.
+• **part**: A specific usage of that blueprint within another structure.
+
+## 2. Attributes and Values
+
+Attributes capture data properties like mass, power, or status. You typically use the standard ISQ library for physical quantities.
+• **attribute def**: Defines a new value type.
+• **attribute**: Holds the actual value.
+
+## 3. Decomposition
+
+Structure is built by nesting parts inside other parts (Composite Structure).
+
+## 4. Spacecraft Example
+
+```sysml
+package PartsAndAttributes_Tutorial {
+    private import ISQ::*; // Import standard quantities
+    
+    // --- Definitions ---
+    part def Engine {
+        attribute maxThrust :> ISQ::force;
+        attribute mass :> ISQ::mass;
+    }
+    
+    part def FuelTank {
+        attribute capacity : VolumeValue;
+    }
+    
+    // --- Composite Definition ---
+    part def Spacecraft {
+        // Attributes of the spacecraft itself
+        attribute totalMass :> ISQ::mass;
+        attribute callSign : String;
+        
+        // Parts (Usages)
+        // Decomposing Spacecraft into subsystems
+        part mainEngine : Engine {
+            // Assigning values to attributes
+            attribute :>> maxThrust = 500 [kN];
+            attribute :>> mass = 1000 [kg];
+        }
+        
+        part reserveEngine : Engine; // Uses defaults if any
+        
+        part fuelSystem {
+            part loxTank : FuelTank;
+            part rp1Tank : FuelTank;
+        }
+    }
+    
+    // --- Concrete Instance ---
+    part myShip : Spacecraft {
+        attribute :>> callSign = "Voyager-1";
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Portsinterfaces Tutorial
+
+# Ports & Interfaces
+
+*Defining Interactions Points*
+
+## 1. Ports
+
+Ports define distinct interaction points on the boundary of a part. They allow you to encapsulate internal structure and only expose specific interfaces.
+
+- **port name : Type**: Basic port declaration.
+- **directed port (in, out, inout)**: Specifies data flow direction.
+
+## 2. Interface Definitions
+
+- **interface def**: Reusable definition of ports/flows.
+- **Conjugation (~)**: Flips the direction of flows (e.g., Plug vs Socket). If an interface has `out pwr`, the conjugated version has `in pwr`.
+
+## 3. Power & Data Example
+
+```sysml
+package PortsInterfaces_Tutorial {
+    private import ScalarValues::*;
+    
+    /* --- 1. Interface Definitions --- */
+    /* Physical connection interface */
+    interface def PowerInterface {
+        /* 'out' means power leaves this port locally */
+        out powerLevel : Real;
+    }
+    
+    /* Logical data interface */
+    interface def DataLink {
+        /* flow of messages */
+        in command : String;
+        out status : String;
+    }
+
+    /* --- 2. Component Definitions --- */
+    part def Battery {
+        /* Provides power (Source) */
+        port pwrPort : PowerInterface;
+    }
+
+    part def Computer {
+        /* Consumes power (Sink) */
+        /* '~' (Tilde) conjugates the interface: 'out' becomes 'in' */
+        port pwrIn : ~PowerInterface;
+        
+        /* Data port */
+        port eth0 : DataLink;
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Requirements Tutorial
+
+# Requirements
+
+*Specifying and Verifying Needs*
+
+## 1. Defining Requirements
+
+Requirements capture the needs of the system.
+
+```sysml
+requirement <id> 'Name' { doc "Description"; }
+```
+
+## 2. Traceability
+
+- **satisfy**: Asserting that a design element (part) meets a requirement.
+- **verify**: Asserting that a test case (verification case) proves a requirement.
+- **refine**: Decomposing a requirement into lower-level details.
+
+## 3. Requirements Example
+
+```sysml
+package Requirements_Tutorial {
+    private import ScalarValues::*;
+    
+    /* --- 1. Requirements --- */
+    requirement def PerformanceReq {
+        doc /* Textual description */
+            "The system shall operate within performance limits.";
+    }
+    
+    requirement <101> 'Breaking Distance' : PerformanceReq {
+        doc "The vehicle must stop within 50 meters from 100km/h.";
+        /* Formal constraint */
+        attribute maxDistance : Real = 50.0;
+    }
+
+    /* --- 2. Satisfaction (Design) --- */
+    part def BrakeSystem;
+    
+    part brakes : BrakeSystem {
+        /* Asserting that this part satisfies the requirement */
+        satisfy 'Breaking Distance';
+    }
+    
+    /* --- 3. Verification (Testing) --- */
+    /* A case to test the requirement */
+    verification def BrakeTest {
+        /* The requirement being verified */
+        subject req : PerformanceReq;
+        
+        /* The logic (action) of the test */
+        action executeTest {
+            /* ... test steps ... */
+        }
+    }
+    
+    /* Usage of validation */
+    verification case test1 : BrakeTest {
+        verify 'Breaking Distance';
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Semanticmetadata Tutorial
+
+# Semantic Metadata
+
+*Domain Specific Language (DSL) Extension*
+
+## 1. Extending SysML with Metadata
+
+Semantic Metadata allows you to define a Domain Specific Language (DSL) on top of SysML. You map your domain vocabulary (e.g., 'Drone', 'Sensor') to standard SysML concepts.
+
+## 2. Mechanics
+
+- **Define Domain Library**: Standard SysML definitions (parts, ports).
+- **Define Metadata**: Mappings using `metadata def` and `specializes SemanticMetadata`.
+- **Use DSL**: Apply metadata with `#metadataName`.
+
+## 3. Drone DSL Example
+
+```sysml
+package DroneDSLinSysML {
+    
+    // --- 1. Domain Library (Vocabulary) ---
+    library package Drone_Library {
+        part def Sensor;
+        part def ImageSensor :> Sensor;
+        part def CollisionSensor :> Sensor;
+        
+        part def Rotor;
+        
+        part def Drone {
+           part rotors : Rotor [1..*];
+           part sensors : Sensor [0..*];
+        }
+    }
+    
+    // --- 2. Metadata Definitions (The Mapping) ---
+    package Drone_Metadata {
+        private import Drone_Library::*;
+        private import Metaobjects::SemanticMetadata;
+        
+        metadata def drone :> SemanticMetadata {
+            :>> baseType = Drone meta SysML::Definition;
+            :> annotatedElement : SysML::Definition;
+        }
+        
+        metadata def rotor :> SemanticMetadata {
+            :>> baseType = Rotor meta SysML::Usage;
+            :> annotatedElement : SysML::Usage;
+        }
+        
+        metadata def cam :> SemanticMetadata {
+            :>> baseType = ImageSensor meta SysML::Usage;
+            :> annotatedElement : SysML::Usage;
+        }
+        
+        metadata def lidar :> SemanticMetadata {
+            :>> baseType = CollisionSensor meta SysML::Usage;
+            :> annotatedElement : SysML::Usage;
+        }
+    }
+    
+    // --- 3. DSL Usage (The Result) ---
+    package Mission_Model {
+        private import Drone_Metadata::*;
+        
+        #drone part def SurveillanceDrone {
+            // Using the DSL vocabulary:
+            #rotor part frontRotors[2];
+            #rotor part rearRotors[2];
+            
+            // Defining sensors using shorthand
+            #cam part mainCamera;
+            #lidar part obstacleAvoider;
+        }
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Statemachine Tutorial
+
+# State Machines
+
+*States, Transitions, and Events*
+
+## 1. State Machine Concepts
+
+State machines define event-driven behavior. A system exists in a 'state' until an event triggers a 'transition'.
+
+## 2. Key Syntax
+
+- **state def**: Defines the state machine structure.
+- **entry/do/exit**: Actions associated with a state.
+- **transition <source> accept <trigger> then <target>**: Defines a transition between states.
+- **accept <event>** / **after <time>**: Triggers for transitions.
+
+## 3. Traffic Light Example
+
+```sysml
+package StateMachine_Tutorial {
+    private import SI::*;
+    
+    /* Define the component containing the machine */
+    part def TrafficLight {
+        /* The machine behavior */
+        state def LightLogic {
+            /* Initial entry point */
+            entry;
+            then Red;
+            
+            state Red;
+            state Yellow;
+            state Green;
+            
+            transition Red accept after 20 [SI::s] then Green;
+            transition Green accept after 5 [SI::s] then Yellow;
+            transition Yellow accept after 30 [SI::s] then Red;
+        }
+        /* Usage of the machine */
+        state logic : LightLogic;
+    }
+    view StateMachine_Tutorial : DS_Views::SymbolicViews::gv;
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Usecase Tutorial
+
+# Use Case Tutorial
+
+*A Conceptual Overview & Example*
+
+In SysML v2, a Use Case is a specialized type of case used to specify the required behavior of a system from the perspective of its external users (actors). It represents a coherent unit of functionality that provides something of value to an actor.
+
+## Key Concepts
+
+- **Use Case Definition (use case def)**: Defines the interaction type, subject, actors, and goal.
+- **Actor**: External entity (person, system) interacting with the subject.
+- **Subject**: The system under design providing the functionality.
+- **Use Case Usage (use case)**: A specific occurrence of a use case definition.
+- **Relationships**: Interaction, Include (reuse), Extend (optional/exceptional behavior).
+
+## Example: Automated Pickleball Server (APS)
+
+```sysml
+package AutomatedPickleballServerModel {
+
+
+    /* --- Definitions --- */
+    part def ActorPart;
+    use case def TrackPlayerState;
+    use case def DetermineNextShot;
+    use case def ServeBall;
+
+    /* --- 1. Define the Actors --- */
+    part def Player :> ActorPart;
+    part def CourtEnvironment :> ActorPart;
+
+    /* --- 2. Define the Subject System --- */
+    part def AutomatedPickleballServer {
+      part aiController;
+      part ballLauncher;
+      part sensorSuite;
+    }
+
+    /* --- 3. Define the Use Cases --- */
+    use case def PlayPracticeSession {
+      subject aps : AutomatedPickleballServer;
+      actor player : Player;
+
+      doc /* The player engages in a practice session where the server
+             serves balls tailored to their skill level. */
+
+      /* This use case INCLUDES other core behaviors */
+      include use case trackPlayer : TrackPlayerState;
+      include use case determineShot : DetermineNextShot;
+      include use case serveBall : ServeBall;
+    }
+}
+
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Variants Tutorial
+
+# Variants
+
+*Product Line Engineering*
+
+## 1. Variation Points
+
+Variation points allow you to define configurable elements in a product line.
+
+## 2. Variants
+
+Variants are the concrete options that can fill a variation point.
+
+## 3. Engine Options Example
+
+```sysml
+package Variants_Tutorial {
+    
+    /* abstract definition */
+    part def Engine;
+    
+    /* --- 1. Variants --- */
+    part def V6Engine :> Engine;
+    part def V8Engine :> Engine;
+    part def ElectricMotor :> Engine;
+    
+    /* --- 2. Variation Point --- */
+    part def Car {
+        /* 'variation' declares this must be chosen */
+        variation part engine : Engine;
+    }
+    
+    /* --- 3. Configuration (Binding) --- */
+    /* A specific configuration of the Car */
+    part def SportCar :> Car {
+        /* Binding the variation point to a specific type */
+        variant part redefines engine : V8Engine;
+    }
+    
+    part def EcoCar :> Car {
+        variant part redefines engine : ElectricMotor;
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Viewpoints Tutorial
+
+# Viewpoints & Views
+
+*Presenting the Model*
+
+## 1. Viewpoints and Views
+
+Views present a subset of the model for a specific purpose (the Viewpoint).
+
+## 2. Expose and Filter
+
+- **expose**: Explicitly includes elements in the view.
+- **filter**: Conditionally excludes elements.
+
+## 3. Mass Report Example
+
+```sysml
+package Viewpoint_Tutorial {
+    private import ScalarValues::*;
+    
+    /* The subject */
+    part def Car {
+        attribute mass : Real;
+        part engine;
+        part wheels;
+    }
+    
+    /* --- 1. Viewpoint Definition --- */
+    viewpoint def MassReport {
+        doc "A report focusing only on mass properties.";
+    }
+    
+    /* --- 2. View Definition --- */
+    view def MassView {
+        /* The subject being viewed */
+        in car : Car;
+        
+        /* --- 3. Exposing Elements --- */
+        /* Show the car itself */
+        expose car;
+        
+        /* Show sub-parts */
+        expose car.engine;
+        
+        /* Filter: Only show attributes ending in 'Mass' (conceptual) */
+        /* filter @Attribute ==> name.endsWith("sw") */
+    }
+    
+    /* --- 4. View Usage --- */
+    part myCar : Car;
+    
+    view report : MassView {
+        in car = myCar;
+    }
+}
+```
+
+
+
+<div style='page-break-before: always;'></div>
+
+# Views Tutorial
+
+# Views
+
+*Visualizing the Model*
+
+## 1. Views Concept
+
+Views provide a way to visualize and present the model. They do not change the model structure but 'expose' parts of it in specific formats (Diagrams, Tables).
+
+## 2. Common View Types
+
+- **SymbolicViews::gv**: Graphical View (Diagram).
+- **TabularViews::gt**: Generic Table.
+- **TabularViews::rt**: Requirements Table.
+
+## 3. Views Example
+
+```sysml
+package Views_Tutorial {
+    /* Import Cameo View Libraries */
+    private import DS_Views::SymbolicViews;
+    private import CustomTabularViews::*;
+    
+    part def Car;
+    part def Engine;
+    part def Wheel;
+    
+    part myCar : Car {
+        part engine : Engine;
+        part wheels [4] : Wheel;
+    }
+    
+    /* --- 1. Graphical View (Diagram) --- */
+    view carDiagram : SymbolicViews::gv {
+        /* Show the entire car structure */
+        expose myCar;
+        
+        /* You can filter or refine what is shown here */
+        /* (See Filters Tutorial) */
+    }
+    
+    /* --- 2. Tabular View (Table) --- */
+    /* Defining a reusable table structure */
+    view def PartTable :> TabularViews::gt {
+        /* Define columns */
+        render rendering :>> asTable {
+            view :>> 'Declared Name';
+            view :>> 'Owner';
+        }
+    }
+    
+    /* Using the table */
+    view myTable : PartTable {
+        /* Show everything under myCar recursively */
+        expose myCar::**;
+    }
+}
+```
+
+
+

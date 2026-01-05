@@ -99,10 +99,10 @@ def generate_sysml_file():
          */
         
         private import ScalarValues::*;
-        private import SysML::*; // Required for Actions::Action::start
-        // private import ISQ::*; // Testing interference
+        private import SysML::*; /* Required for Actions::Action::start */
+        /* private import ISQ::*; // Testing interference */
         
-        // --- Core Actions ---
+        /* --- Events Actions --- */
         action def Calculate {
             in x : Real;
             out y : Real;
@@ -153,11 +153,11 @@ def generate_sysml_file():
         action def A;
         action def B;
 
-        // --- Control Actions ---
+        /* --- Control Actions --- */
         action def ControlFlowDef {
-            // attribute x : Integer; removed
+            /* attribute x : Integer; removed */
             
-            // Simplified to pure control flow to assume validator stability
+            /* Simplified to pure control flow to assume validator stability */
             action step1;
             
             action def DecisionFlow {
@@ -177,24 +177,24 @@ def generate_sysml_file():
         }
         action controlFlow : ControlFlowDef;
         
-        // --- Events Actions ---
+        /* --- Events Actions --- */
         attribute def StartSignal;
         attribute def Message;
         
         action def EventFlow {
             accept start : StartSignal;
             accept msg : Message;
-            // attribute s : StartSignal;
-            // part target;
-            // send s to target;
+            /* attribute s : StartSignal; */
+            /* part target; */
+            /* send s to target; */
             
-            // Explicit usage instantiation
+            /* Explicit usage instantiation */
              attribute s : StartSignal;
              part target;
-             // Simplified send to avoid concatenation issues
-             // send StartSignal( ); 
+             /* Simplified send to avoid concatenation issues */
+             /* send StartSignal( ); */ 
              
-             // Just verifying attribute definition
+             /* Just verifying attribute definition */
              attribute test : StartSignal;
         }
     }
@@ -211,13 +211,13 @@ def generate_sysml_file():
 
         /* 1. Explicit Perform Action */
         part def SystemPart {
-            // Using 'action' usage keyword - these are performed by the part
+            /* Using 'action' usage keyword - these are performed by the part */
             action p1 : Action1;
             action p2 : Action2;
         }
         
         /* 2. Swimlane Allocation */
-        // Actions defined in a workflow, then allocated to parts
+        /* Actions defined in a workflow, then allocated to parts */
         action def Workflow {
             action a1;
             action a2;
@@ -229,7 +229,7 @@ def generate_sysml_file():
         part system : SystemPart;
         
         allocation def WorkflowAlloc {
-            // "Swimlanes" are modeled as allocations of actions to parts
+            /* "Swimlanes" are modeled as allocations of actions to parts */
             allocate Workflow::a1 to user;
             allocate Workflow::a2 to system;
         }

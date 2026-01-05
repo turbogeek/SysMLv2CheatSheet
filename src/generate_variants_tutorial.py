@@ -46,24 +46,24 @@ def generate_for_theme(theme_key, theme):
     
     full_code = """package Variants_Tutorial {
     
-    // abstract definition
+    /* abstract definition */
     part def Engine;
     
-    // --- 1. Variants ---
+    /* --- 1. Variants --- */
     part def V6Engine :> Engine;
     part def V8Engine :> Engine;
     part def ElectricMotor :> Engine;
     
-    // --- 2. Variation Point ---
+    /* --- 2. Variation Point --- */
     part def Car {
-        // 'variation' declares this must be chosen
+        /* 'variation' declares this must be chosen */
         variation part engine : Engine;
     }
     
-    // --- 3. Configuration (Binding) ---
-    // A specific configuration of the Car
+    /* --- 3. Configuration (Binding) --- */
+    /* A specific configuration of the Car */
     part def SportCar :> Car {
-        // Binding the variation point to a specific type
+        /* Binding the variation point to a specific type */
         variant part redefines engine : V8Engine;
     }
     
@@ -83,7 +83,7 @@ def generate_for_theme(theme_key, theme):
             color = theme.c_normal
             if w in ["part", "def", "variation", "variant", "redefines", "package", "import"]:
                 color = theme.c_keyword
-            elif w.startswith("//"):
+            elif w.startswith("/*") or w.endswith("*/"):
                 color = theme.c_comment
             elif ":>" in w:
                  color = theme.c_type

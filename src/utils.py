@@ -8,12 +8,13 @@ import re
 SHOW_COPIABLE_CODE = True
 
 # --- SVG Helpers ---
-def svg_start(w, h, theme):
+def svg_start(w, h, theme, include_script=True):
     svg = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n'
     svg += f'<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg" style="font-family: {theme.font_family}; background-color: {theme.bg_color};">\n'
     
     # Add Script for Clipboard Actions
-    svg += """
+    if include_script:
+        svg += """
     <script type="text/javascript">
     <![CDATA[
     function copyToClipboard(elementId) {
@@ -97,18 +98,51 @@ def save_example(file_name, content):
     file_path = os.path.join(target_dir, file_name)
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(content)
+    validate_sysml_compliance(file_name, content)
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(content)
     return file_path
 
-def save_markdown(file_name, title, subtitle, blocks):
+def validate_sysml_compliance(context, code):
+    """
+    Checks SysML code for compliance with strict project rules:
+    1. No single-line comments (//).
+    2. Explicit strict imports (must be public or private).
+    """
+    errors = []
+    
+    # Check 1: Single Line Comments
+    # We ignore http:// and https://
+    lines = code.split('\n')
+    for i, line in enumerate(lines):
+        if "//" in line:
+            # Simple check to exclude URLs
+            if "http://" not in line and "https://" not in line:
+                errors.append(f"Line {i+1}: Found single-line comment '//'. Use block comments /* ... */ instead.")
+
+    # Check 2: Explicit Imports
+    # Look for 'import ' that is NOT preceded by 'private ' or 'public '
+    # This regex looks for 'import' at the start of semantic usage, ignoring whitespace
+    # We want to catch "    import X" but allow "    private import X"
+    import_pattern = re.compile(r'^\s*import\s+')
+    for i, line in enumerate(lines):
+        if import_pattern.match(line):
+             errors.append(f"Line {i+1}: Found implicit import '{line.strip()}'. Must specify 'public import' or 'private import'.")
+
+    if errors:
+        print(f"\n[WARNING] SysML Compliance Issues in '{context}':")
+        for e in errors:
+            print(f"  - {e}")
+        print("")
+
+def save_markdown(file_name, title, subtitle, blocks, subfolder="tutorials"):
     """
     Saves a markdown tutorial.
     blocks: list of (type, content) tuples.
     types: 'text', 'code', 'header', 'list'
     """
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    target_dir = os.path.join(base_dir, "..", "output", "tutorials")
+    target_dir = os.path.join(base_dir, "..", "output", subfolder)
     os.makedirs(target_dir, exist_ok=True)
     file_path = os.path.join(target_dir, file_name)
     
@@ -125,7 +159,15 @@ def save_markdown(file_name, title, subtitle, blocks):
             for item in content:
                 md_content += f"- {item}\n"
             md_content += "\n"
+        elif block_type == 'image':
+            # content is (path, alt_text)
+            path, alt = content
+            # Ensure relative path for markdown if possible, or just use absolute. 
+            # Markdown usually likes relative paths from the markdown file location.
+            # ../svg/theme/symbols/file.svg
+            md_content += f"![{alt}]({path})\n\n"
         elif block_type == 'code':
+            validate_sysml_compliance(f"{file_name} (Code Block)", content)
             md_content += "```sysml\n"
             md_content += f"{content}\n"
             md_content += "```\n\n"
@@ -147,17 +189,18 @@ def wrap_code(snippet, package_name, wrapper_type="action"):
         
     wrapper = f"package {package_name} {{\n"
     wrapper += "    private import ScalarValues::*;\n"
+    wrapper += "    private import SI::*;\n"
     wrapper += "    private import SysML::*;\n"
     
     if wrapper_type == "action":
-        wrapper += "    // Wrapped Snippet (Action Context)\n"
+        wrapper += "    /* Wrapped Snippet (Action Context) */\n"
         wrapper += "    action def Main {\n"
         # Indent snippet
         indented = "\n".join(["        " + line for line in snippet.split('\n')])
         wrapper += indented
         wrapper += "\n    }\n"
     elif wrapper_type == "state":
-        wrapper += "    // Wrapped Snippet (State Context)\n"
+        wrapper += "    /* Wrapped Snippet (State Context) */\n"
         wrapper += "    state def Main {\n"
         # Indent snippet
         indented = "\n".join(["        " + line for line in snippet.split('\n')])
@@ -165,7 +208,7 @@ def wrap_code(snippet, package_name, wrapper_type="action"):
         wrapper += "\n    }\n"
     else:
         # Structure context (or default)
-        wrapper += "    // Wrapped Snippet (Structure Context)\n"
+        wrapper += "    /* Wrapped Snippet (Structure Context) */\n"
         # Indent snippet
         indented = "\n".join(["    " + line for line in snippet.split('\n')])
         wrapper += indented

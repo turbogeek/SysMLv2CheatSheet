@@ -34,6 +34,8 @@ def generate_for_theme(theme_key, theme):
         [("   state", theme.c_keyword), (" Green", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
+    md_blocks = []
+    
     code_1 = """package States_1StateDefinition {
     private import ScalarValues::*;
     private import SysML::*;
@@ -48,6 +50,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. State Definition", lines, "Defining states and lifecycle actions.", theme, full_code=code_1, sheet_name="States", wrapper_type="structure")
+    md_blocks.append(("header", "1. State Definition"))
+    md_blocks.append(("text", "Defining states and lifecycle actions."))
+    md_blocks.append(("code", code_1))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -72,6 +77,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Transitions", lines, "Moving between states.", theme, full_code=code_2, sheet_name="States", wrapper_type="state")
+    md_blocks.append(("header", "2. Transitions"))
+    md_blocks.append(("text", "Moving between states."))
+    md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -99,6 +107,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Guards & Effects", lines, "Conditions and actions on transition.", theme, full_code=code_3, sheet_name="States", wrapper_type="state")
+    md_blocks.append(("header", "3. Guards & Effects"))
+    md_blocks.append(("text", "Conditions and actions on transition."))
+    md_blocks.append(("code", code_3))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -121,6 +132,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Composite States", lines, "States within states.", theme, full_code=code_4, sheet_name="States", wrapper_type="structure")
+    md_blocks.append(("header", "4. Composite States"))
+    md_blocks.append(("text", "States within states."))
+    md_blocks.append(("code", code_4))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -141,6 +155,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Parallel States", lines, "Concurrency.", theme, full_code=code_5, sheet_name="States", wrapper_type="structure")
+    md_blocks.append(("header", "5. Parallel States"))
+    md_blocks.append(("text", "Concurrency."))
+    md_blocks.append(("code", code_5))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -148,6 +165,9 @@ def generate_for_theme(theme_key, theme):
     svg += utils.draw_legend(WIDTH/2 - 250, HEIGHT - 80, 500, theme)
 
     svg += utils.svg_end()
+
+    if theme_key == 'light':
+        utils.save_markdown("states_sheet.md", "States Cheat Sheet", "State Machines", md_blocks, subfolder="cheatsheets")
     
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "..", "output", "svg", theme_key)

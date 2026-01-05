@@ -31,6 +31,8 @@ def generate_for_theme(theme_key, theme):
         [("  attribute", theme.c_keyword), (" maxResponse", theme.c_normal), (" :", theme.c_normal), (" Time", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
+    md_blocks = []
+    
     code_1 = """package Requirements_1RequirementDefinition {
     private import ScalarValues::*;
     private import SysML::*;
@@ -41,6 +43,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Requirement Definition", lines, "Defining requirement types.", theme, full_code=code_1, sheet_name="Requirements", wrapper_type="structure")
+    md_blocks.append(("header", "1. Requirement Definition"))
+    md_blocks.append(("text", "Defining requirement types."))
+    md_blocks.append(("code", code_1))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -65,6 +70,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Requirement Usage", lines, "Specific requirement instances.", theme, full_code=code_2, sheet_name="Requirements", wrapper_type="structure")
+    md_blocks.append(("header", "2. Requirement Usage"))
+    md_blocks.append(("text", "Specific requirement instances."))
+    md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -87,6 +95,9 @@ def generate_for_theme(theme_key, theme):
     // satisfy req1 by server; // Alternative syntax
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Satisfy", lines, "Design meets requirement.", theme, full_code=code_3, sheet_name="Requirements", wrapper_type="structure")
+    md_blocks.append(("header", "3. Satisfy"))
+    md_blocks.append(("text", "Design meets requirement."))
+    md_blocks.append(("code", code_3))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -107,6 +118,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Verify", lines, "Test case for requirement.", theme, full_code=code_4, sheet_name="Requirements", wrapper_type="structure")
+    md_blocks.append(("header", "4. Verify"))
+    md_blocks.append(("text", "Test case for requirement."))
+    md_blocks.append(("code", code_4))
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -128,6 +142,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Constraint Definition", lines, "Mathematical rules.", theme, full_code=code_5, sheet_name="Requirements", wrapper_type="structure")
+    md_blocks.append(("header", "5. Constraint Definition"))
+    md_blocks.append(("text", "Mathematical rules."))
+    md_blocks.append(("code", code_5))
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -153,6 +170,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Assertions", lines, "Applying constraints.", theme, full_code=code_6, sheet_name="Requirements", wrapper_type="structure")
+    md_blocks.append(("header", "6. Assertions"))
+    md_blocks.append(("text", "Applying constraints."))
+    md_blocks.append(("code", code_6))
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -175,10 +195,16 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "7. Trace & Refine", lines, "Requirement relationships.", theme, full_code=code_7, sheet_name="Requirements", wrapper_type="structure")
+    md_blocks.append(("header", "7. Trace & Refine"))
+    md_blocks.append(("text", "Requirement relationships."))
+    md_blocks.append(("code", code_7))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
     svg += utils.svg_end()
+
+    if theme_key == 'light':
+        utils.save_markdown("requirements_sheet.md", "Requirements Cheat Sheet", "Requirements and Verification", md_blocks, subfolder="cheatsheets")
     
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "..", "output", "svg", theme_key)

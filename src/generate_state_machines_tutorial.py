@@ -35,6 +35,7 @@ def generate_for_theme(theme_key, theme):
     lines = [
         "• entry / do / exit: Actions performed during the state.",
         "• accept: Waits for an event trigger (message, signal).",
+        "• transition <source> accept <trigger> then <target>;",
         "• after: Time-based trigger."
     ]
     for line in lines:
@@ -47,32 +48,28 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     full_code = """package StateMachine_Tutorial {
-    import ScalarValues::*;
+    private import SI::*;
     
-    // Define the component containing the machine
+    /* Define the component containing the machine */
     part def TrafficLight {
-        // The machine behavior
+        /* The machine behavior */
         state def LightLogic {
-             // Initial entry point
-             entry; then Red;
-             
-             state Red {
-                 // Transition after time
-                 transition to Green after 20 [ISQ::s];
-             }
-             
-             state Green {
-                 transition to Yellow after 30 [ISQ::s];
-             }
-             
-             state Yellow {
-                 transition to Red after 5 [ISQ::s];
-             }
+            /* Initial entry point */
+            entry;
+            then Red;
+            
+            state Red;
+            state Yellow;
+            state Green;
+            
+            transition Red accept after 20 [SI::s] then Green;
+            transition Green accept after 5 [SI::s] then Yellow;
+            transition Yellow accept after 30 [SI::s] then Red;
         }
-        
-        // Usage of the machine
+        /* Usage of the machine */
         state logic : LightLogic;
     }
+    view StateMachine_Tutorial : DS_Views::SymbolicViews::gv;
 }"""
     
     utils.save_example("StateMachine_Tutorial.sysml", full_code)
@@ -84,9 +81,9 @@ def generate_for_theme(theme_key, theme):
         words = line.split(' ')
         for w in words:
             color = theme.c_normal
-            if w in ["state", "def", "part", "entry", "then", "transition", "to", "after", "accept", "package", "import"]:
+            if w in ["state", "def", "part", "entry", "then", "transition", "to", "after", "accept", "package", "import", "view", ":"]:
                 color = theme.c_keyword
-            elif w.startswith("//"):
+            elif w.startswith("/*") or w.startswith("//"):
                 color = theme.c_comment
             
             if any(p[1] == theme.c_comment for p in parts):
@@ -127,7 +124,7 @@ def generate_for_theme(theme_key, theme):
         ("list", [
             "**state def**: Defines the state machine structure.",
             "**entry/do/exit**: Actions associated with a state.",
-            "**transition to <state>**: Defines the next state.",
+            "**transition <source> accept <trigger> then <target>**: Defines a transition between states.",
             "**accept <event>** / **after <time>**: Triggers for transitions."
         ]),
         ("header", "3. Traffic Light Example"),

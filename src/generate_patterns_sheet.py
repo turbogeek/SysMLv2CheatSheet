@@ -36,6 +36,8 @@ def generate_for_theme(theme_key, theme):
         [("  }", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
+    md_blocks = []
+    
     code_1 = """package Patterns_1MetadataAnnotations {
     private import ScalarValues::*;
     private import SysML::*;
@@ -51,6 +53,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Metadata (Annotations)", lines, "Tagging elements with data.", theme, full_code=code_1, sheet_name="Patterns", wrapper_type="structure")
+    md_blocks.append(("header", "1. Metadata (Annotations)"))
+    md_blocks.append(("text", "Tagging elements with data."))
+    md_blocks.append(("code", code_1))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -72,6 +77,9 @@ def generate_for_theme(theme_key, theme):
     /* Rendering specific subsets */
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Views", lines, "Visualizing the model.", theme, full_code=code_2, sheet_name="Patterns", wrapper_type="structure")
+    md_blocks.append(("header", "2. Views"))
+    md_blocks.append(("text", "Visualizing the model."))
+    md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -100,6 +108,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. Custom Units (Nano Banana)", lines, "Defining domain-specific units.", theme, full_code=code_3, sheet_name="Patterns", wrapper_type="structure")
+    md_blocks.append(("header", "3. Custom Units (Nano Banana)"))
+    md_blocks.append(("text", "Defining domain-specific units."))
+    md_blocks.append(("code", code_3))
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -126,10 +137,16 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Abstract vs Individual", lines, "Templates vs Concrete instances.", theme, full_code=code_4, sheet_name="Patterns", wrapper_type="structure")
+    md_blocks.append(("header", "4. Abstract vs Individual"))
+    md_blocks.append(("text", "Templates vs Concrete instances."))
+    md_blocks.append(("code", code_4))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
     svg += utils.svg_end()
+
+    if theme_key == 'light':
+        utils.save_markdown("patterns_sheet.md", "Patterns Cheat Sheet", "Reusable Modeling Patterns", md_blocks, subfolder="cheatsheets")
     
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "..", "output", "svg", theme_key)

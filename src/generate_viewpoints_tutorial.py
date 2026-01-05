@@ -47,37 +47,37 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     full_code = """package Viewpoint_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     
-    // The subject
+    /* The subject */
     part def Car {
         attribute mass : Real;
         part engine;
         part wheels;
     }
     
-    // --- 1. Viewpoint Definition ---
+    /* --- 1. Viewpoint Definition --- */
     viewpoint def MassReport {
         doc "A report focusing only on mass properties.";
     }
     
-    // --- 2. View Definition ---
+    /* --- 2. View Definition --- */
     view def MassView {
-        // The subject being viewed
+        /* The subject being viewed */
         in car : Car;
         
-        // --- 3. Exposing Elements ---
-        // Show the car itself
+        /* --- 3. Exposing Elements --- */
+        /* Show the car itself */
         expose car;
         
-        // Show sub-parts
+        /* Show sub-parts */
         expose car.engine;
         
-        // Filter: Only show attributes ending in 'Mass' (conceptual)
-        // filter @Attribute ==> name.endsWith("sw")
+        /* Filter: Only show attributes ending in 'Mass' (conceptual) */
+        /* filter @Attribute ==> name.endsWith("sw") */
     }
     
-    // --- 4. View Usage ---
+    /* --- 4. View Usage --- */
     part myCar : Car;
     
     view report : MassView {
@@ -96,7 +96,7 @@ def generate_for_theme(theme_key, theme):
             color = theme.c_normal
             if w in ["view", "def", "viewpoint", "expose", "filter", "part", "attribute", "package", "import", "in"]:
                 color = theme.c_keyword
-            elif w.startswith("//"):
+            elif w.startswith("/*") or w.endswith("*/"):
                 color = theme.c_comment
             elif w.startswith("\"") or w.startswith("'"):
                  color = theme.c_string

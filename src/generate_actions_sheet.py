@@ -33,6 +33,8 @@ def generate_for_theme(theme_key, theme):
         [("   then", theme.c_keyword), (" strike", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
+    md_blocks = []
+    
     code_1 = """package Actions_1ActionDefinition {
     private import ScalarValues::*;
     private import SysML::*;
@@ -48,6 +50,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Action Definition", lines, "Reusable behavior spec.", theme, full_code=code_1, sheet_name="Actions", wrapper_type="action")
+    md_blocks.append(("header", "1. Action Definition"))
+    md_blocks.append(("text", "Reusable behavior spec."))
+    md_blocks.append(("code", code_1))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -76,6 +81,9 @@ def generate_for_theme(theme_key, theme):
     view ExposeExample { expose Main; }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Action Usage", lines, "Executing an action.", theme, full_code=code_2, sheet_name='Actions', wrapper_type='action')
+    md_blocks.append(("header", "2. Action Usage"))
+    md_blocks.append(("text", "Executing an action."))
+    md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
     
@@ -97,6 +105,9 @@ def generate_for_theme(theme_key, theme):
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Parameters", lines, "Input, Output, Return.", theme, full_code=code_4, sheet_name='Actions', wrapper_type='action')
+    md_blocks.append(("header", "4. Parameters"))
+    md_blocks.append(("text", "Input, Output, Return."))
+    md_blocks.append(("code", code_4))
     svg += card
     cur_y_c2 += h + ROW_GAP
     
@@ -124,6 +135,9 @@ def generate_for_theme(theme_key, theme):
     view ExposeExample { expose Main; }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Send/Accept Signal", lines, "Async communication.", theme, full_code=code_5, sheet_name='Actions', wrapper_type='action')
+    md_blocks.append(("header", "5. Send/Accept Signal"))
+    md_blocks.append(("text", "Async communication."))
+    md_blocks.append(("code", code_5))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -149,6 +163,9 @@ def generate_for_theme(theme_key, theme):
     view ExposeExample { expose Main; }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Succession (first/then)", lines, "Ordering of actions.", theme, full_code=code_6, sheet_name='Actions', wrapper_type='action')
+    md_blocks.append(("header", "6. Succession (first/then)"))
+    md_blocks.append(("text", "Ordering of actions."))
+    md_blocks.append(("code", code_6))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -170,6 +187,9 @@ def generate_for_theme(theme_key, theme):
     view ExposeExample { expose Main; }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "7. Assignment (assign)", lines, "Setting values.", theme, full_code=code_7, sheet_name='Actions', wrapper_type='action')
+    md_blocks.append(("header", "7. Assignment (assign)"))
+    md_blocks.append(("text", "Setting values."))
+    md_blocks.append(("code", code_7))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -193,6 +213,9 @@ def generate_for_theme(theme_key, theme):
     view ExposeExample { expose Main; }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "8. Trigger", lines, "Reacting to events.", theme, full_code=code_8, sheet_name='Actions', wrapper_type='action')
+    md_blocks.append(("header", "8. Trigger"))
+    md_blocks.append(("text", "Reacting to events."))
+    md_blocks.append(("code", code_8))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -200,6 +223,9 @@ def generate_for_theme(theme_key, theme):
     svg += utils.draw_legend(WIDTH/2 - 250, HEIGHT - 80, 500, theme)
 
     svg += utils.svg_end()
+
+    if theme_key == 'light':
+        utils.save_markdown("actions_sheet.md", "Actions Cheat Sheet", "Action Definitions and Flow", md_blocks, subfolder="cheatsheets")
     
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "..", "output", "svg", theme_key)

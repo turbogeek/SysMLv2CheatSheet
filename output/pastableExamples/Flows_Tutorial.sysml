@@ -1,5 +1,5 @@
 package Flows_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     
     item def Fuel;
     
@@ -10,14 +10,14 @@ package Flows_Tutorial {
         part t : Tank;
         part e : Engine;
         
-        // --- Explicit Item Flow ---
-        // Declaring that Fuel moves from Tank to Engine
-        // This implies a connection exists or is abstractly represented
+        /* --- Explicit Item Flow --- */
+        /* Declaring that Fuel moves from Tank to Engine */
+        /* This implies a connection exists or is abstractly represented */
         flow of Fuel from t to e;
         
-        // --- Connector with Flow ---
+        /* --- Connector with Flow --- */
         connect t to e {
-            // Optional property on the flow
+            /* Optional property on the flow */
             flow of Fuel from t to e {
                 attribute rate : Real = 5.0;
             }

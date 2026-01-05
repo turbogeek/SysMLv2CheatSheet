@@ -30,6 +30,8 @@ def generate_for_theme(theme_key, theme):
         [("doc", theme.c_keyword), (" /* Equivalent to: */", theme.c_comment)],
         [("part", theme.c_keyword), (" def", theme.c_keyword), (" Car", theme.c_type), (" specializes", theme.c_keyword), (" Vehicle", theme.c_type), (";", theme.c_normal)]
     ]
+    md_blocks = []
+    
     code_1 = """package Shorthand_1Specialization {
     private import ScalarValues::*;
     private import SysML::*;
@@ -40,6 +42,9 @@ def generate_for_theme(theme_key, theme):
             part  def  Car  specializes  Vehicle ; */
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "1. Specialization (:>)", lines, "Shorthand for 'specializes'.", theme, full_code=code_1, sheet_name="Shorthand", wrapper_type="structure")
+    md_blocks.append(("header", "1. Specialization (:>)"))
+    md_blocks.append(("text", "Shorthand for 'specializes'."))
+    md_blocks.append(("code", code_1))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -59,6 +64,9 @@ def generate_for_theme(theme_key, theme):
             part  engine  subsets  parts ; */
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Subsetting (:>)", lines, "Shorthand for 'subsets'.", theme, full_code=code_2, sheet_name="Shorthand", wrapper_type="structure")
+    md_blocks.append(("header", "2. Subsetting (:>)"))
+    md_blocks.append(("text", "Shorthand for 'subsets'."))
+    md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -78,6 +86,9 @@ package Shorthand_3Redefinition {
     comment about partMass1, partMass2 /* :>> and redefines are equivelnt */
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Redefinition (:>>)", lines, "Shorthand for 'redefines'.", theme, full_code=code_3, sheet_name="Shorthand", wrapper_type="structure")
+    md_blocks.append(("header", "3. Redefinition (:>>)"))
+    md_blocks.append(("text", "Shorthand for 'redefines'."))
+    md_blocks.append(("code", code_3))
     svg += card
     cur_y_c1 += h + ROW_GAP
 
@@ -97,6 +108,9 @@ package Shorthand_3Redefinition {
             port  p  :  conjugated  Interface ; */
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "4. Conjugation (~)", lines, "Shorthand for 'conjugated'.", theme, full_code=code_4, sheet_name="Shorthand", wrapper_type="structure")
+    md_blocks.append(("header", "4. Conjugation (~)"))
+    md_blocks.append(("text", "Shorthand for 'conjugated'."))
+    md_blocks.append(("code", code_4))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -115,6 +129,9 @@ package Shorthand_3Redefinition {
     attribute  z  default  =  3 ;  /* Default Value */
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "5. Feature Values", lines, "Assignment variations.", theme, full_code=code_5, sheet_name="Shorthand", wrapper_type="structure")
+    md_blocks.append(("header", "5. Feature Values"))
+    md_blocks.append(("text", "Assignment variations."))
+    md_blocks.append(("code", code_5))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -133,6 +150,9 @@ package Shorthand_3Redefinition {
     part  opt [0..1] ;  /* 0..1 */
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Multiplicity", lines, "Common shorthands.", theme, full_code=code_6, sheet_name="Shorthand", wrapper_type="structure")
+    md_blocks.append(("header", "6. Multiplicity"))
+    md_blocks.append(("text", "Common shorthands."))
+    md_blocks.append(("code", code_6))
     svg += card
     cur_y_c2 += h + ROW_GAP
 
@@ -140,6 +160,9 @@ package Shorthand_3Redefinition {
     svg += utils.draw_legend(WIDTH/2 - 250, HEIGHT - 80, 500, theme)
 
     svg += utils.svg_end()
+
+    if theme_key == 'light':
+        utils.save_markdown("shorthand_sheet.md", "Shorthand Cheat Sheet", "Syntax Shortcuts", md_blocks, subfolder="cheatsheets")
     
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "..", "output", "svg", theme_key)

@@ -1,12 +1,13 @@
 package DataTypes_Tutorial {
     import ScalarValues::*;
-    import ISQ::*; 
+    /* Note: ISQ is automatically imported by SI (public import) */
+    private import SI::*;
 
-    // --- 1. Custom Value Definitions ---
-    // Specializing a primitive
+    /* --- 1. Custom Value Definitions --- */
+    /* Specializing a primitive */
     attribute def IDString :> String;
     
-    // Struct for composite data (Kernel level concept often used)
+    /* Struct for composite data (Kernel level concept often used) */
     attribute def Coordinates {
         attribute x : Real;
         attribute y : Real;
@@ -14,20 +15,24 @@ package DataTypes_Tutorial {
     }
 
     part def SensorSystem {
-        // --- 2. Using Primitives ---
+        /* --- 2. Using Primitives --- */
         attribute isActive : Boolean = true;
         attribute firmwareVersion : String = "v1.2.4";
         attribute cycleCount : Integer = 0;
         
-        // --- 3. Using ISQ Units ---
-        // Type checking ensures you can't assign Mass to Length
-        attribute weight : MassValue = 5.5 [kg];
-        attribute scanRange : LengthValue = 150 [m];
+        /* --- 3. Using ISQ Units --- */
+        /* Type checking ensures you can't assign Mass to Length */
+        /* Validating physical properties (Recommended) */
+        attribute weight :> ISQ::mass = 5.5 [kg];
+        attribute scanRange :> ISQ::length = 150 [m];
         
-        // Unit conversion is handled by checks (e.g. [km] -> [m])
-        attribute speed : SpeedValue = 120 [km/h]; 
+        /* Raw value storage (Context-free) */
+        attribute rawData : MassValue = 10.0 [kg];
         
-        // --- 4. Using Custom Types ---
+        /* Unit conversion is handled by checks (e.g. [km] -> [m]) */
+        attribute speed :> ISQ::speed = 120 [km/h]; 
+        
+        /* --- 4. Using Custom Types --- */
         attribute sensorID : IDString = "SENS-001";
         attribute location : Coordinates {
              :>> x = 10.0;

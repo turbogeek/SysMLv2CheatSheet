@@ -46,15 +46,15 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     full_code = """package Analysis_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     
-    // --- 1. Constraint Definition ---
+    /* --- 1. Constraint Definition --- */
     constraint def MassEquation {
         in total : Real;
         in p1 : Real;
         in p2 : Real;
         
-        // The math
+        /* The math */
         total == p1 + p2
     }
     
@@ -63,8 +63,8 @@ def generate_for_theme(theme_key, theme):
         attribute part1Mass : Real;
         attribute part2Mass : Real;
         
-        // --- 2. Constraint Usage (Parametrics) ---
-        // Binding properties to the equation parameters
+        /* --- 2. Constraint Usage (Parametrics) --- */
+        /* Binding properties to the equation parameters */
         constraint massCheck : MassEquation {
             in total = mass;
             in p1 = part1Mass;
@@ -72,11 +72,11 @@ def generate_for_theme(theme_key, theme):
         }
     }
     
-    // --- 3. Analysis Case ---
+    /* --- 3. Analysis Case --- */
     analysis def WeightCheck {
         subject system : System;
         
-        // Determining if mass is within limits
+        /* Determining if mass is within limits */
         return result : Boolean = system.mass < 100.0;
     }
 }"""
@@ -92,7 +92,7 @@ def generate_for_theme(theme_key, theme):
             color = theme.c_normal
             if w in ["constraint", "def", "part", "attribute", "analysis", "subject", "return", "package", "import", "in"]:
                 color = theme.c_keyword
-            elif w.startswith("//"):
+            elif w.startswith("/*") or w.endswith("*/"):
                 color = theme.c_comment
             elif "==" in w or "=" in w:
                  color = theme.c_type

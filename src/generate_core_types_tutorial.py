@@ -99,7 +99,7 @@ def generate_for_theme(theme_key, theme):
             color = theme.c_normal
             if w in ["part", "def", "attribute", "item", "enum", "package", "import"]:
                 color = theme.c_keyword
-            elif w.startswith("//"):
+            elif w.startswith("/*") or w.endswith("*/"):
                 color = theme.c_comment
             elif w in ["Active", "Idle", "Error"]:
                 color = theme.c_string

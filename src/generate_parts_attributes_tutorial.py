@@ -34,7 +34,7 @@ def generate_for_theme(theme_key, theme):
     lines = [
         "Attributes capture data properties like mass, power, or status.",
         "You typically use the standard ISQ library for physical quantities.",
-        "• attribute def: Defines a new value type (e.g., MassValue).",
+        "• attribute def: Defines a new value type (e.g., MySpecialMass).",
         "• attribute: Holds the actual value (e.g., mass = 100 [kg])."
     ]
     for line in lines:
@@ -53,12 +53,12 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     full_code = """package PartsAndAttributes_Tutorial {
-    import ISQ::*; // Import standard units
+    private import ISQ::*; // Import standard quantities
     
     // --- Definitions ---
     part def Engine {
-        attribute maxThrust : ForceValue;
-        attribute mass : MassValue;
+        attribute maxThrust :> ISQ::force;
+        attribute mass :> ISQ::mass;
     }
     
     part def FuelTank {
@@ -68,7 +68,7 @@ def generate_for_theme(theme_key, theme):
     // --- Composite Definition ---
     part def Spacecraft {
         // Attributes of the spacecraft itself
-        attribute totalMass : MassValue;
+        attribute totalMass :> ISQ::mass;
         attribute callSign : String;
         
         // Parts (Usages)
@@ -104,7 +104,7 @@ def generate_for_theme(theme_key, theme):
             color = theme.c_normal
             if w in ["part", "def", "attribute", "package", "import"]:
                 color = theme.c_keyword
-            elif w.startswith("//"):
+            elif w.startswith("/*") or w.endswith("*/"):
                 color = theme.c_comment
             elif w.startswith(":>>"):
                  color = theme.c_keyword
