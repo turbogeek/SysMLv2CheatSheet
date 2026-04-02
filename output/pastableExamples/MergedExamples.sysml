@@ -44,7 +44,7 @@ package LoopVariationsExample {
         
         action collectionLoop {
             for p : Power in profile {
-                // body
+                /* body */
             }
         }
         
@@ -120,12 +120,19 @@ package ActionPatterns_5SendVariations {
 package ActionPatterns_6ControlNodes {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
+    
     action def Main {
-        fork  f1 ;
-        join  j1 ;
-        decide  d1 ;
-        merge  m1 ;
+        /* 1. Fork: Outgoing target mult 1..1 */
+        fork f1;
+        
+        /* 2. Join: Incoming source mult 1..1 */
+        join j1;
+        
+        /* 3. Decide: Outgoing target mult 0..1 (Optional) */
+        decide d1;
+        
+        /* 4. Merge: Incoming source mult 0..1 (Optional) */
+        merge m1;
     }
 
     view ExposeExample {
@@ -1188,36 +1195,36 @@ package Metadata_6Hashtags {
 // --- Source: Multiplicity_Tutorial.sysml ---
 package Multiplicity_Tutorial {
     
+    part def Person;
     part def Wheel;
-    part def Engine;
-    part def Seat;
-    part def Passenger;
+    
+    /* --- 1. Package Context --- */
+    /* Usage directly in package defaults to [0..*] */
+    part looseWheels : Wheel; 
 
     part def Car {
-        // --- Defaults ([1]) ---
-        // 'engine' has no brackets, so it is [1] (Exactly one required)
-        part engine : Engine; 
+        /* --- 2. Definition Context --- */
+        /* Usage in a definition (part/attr/port) defaults to [1] */
+        part engine : Person; /* [1..1] Required */
         
-        // --- Exact Constraints ---
-        // Exactly 4 wheels are required
-        part wheels : Wheel [4];
+        /* --- Explicit Constraints --- */
+        part wheels : Wheel [4]; /* Exactly 4 */
         
-        // --- Optionality ---
-        // A spare tire is optional [0..1]
-        part spareTire : Wheel [0..1];
+        /* --- 3. Inheritance --- */
+        /* subsets: inherits parent multiplicity (here [1]) */
+        /* We can constrain it further, or leave it. */
+        part driver subsets engine; 
         
-        // --- Collections ---
-        // unique (Default): A specific person can't be in two seats (Set)
-        part seats : Seat [5]; 
+        /* --- 4. Collections --- */
+        /* unique (Default): Set */
+        part passengers : Person [0..4]; 
         
-        // ordered nonunique: Queue of passengers?
-        // 'ordered': sequence matters
-        part passengerHistory : Passenger [*] ordered nonunique;
+        /* ordered nonunique: Sequence */
+        attribute lapTimes : ScalarValues::Real [*] ordered nonunique;
     }
     
-    // --- Defaults on Actions ---
     action def Drive {
-        // Default parameter multiplicity is [1]
+        /* Default parameter multiplicity is [1] */
         in distance : ScalarValues::Integer; 
     }
 }
@@ -1745,26 +1752,22 @@ package StateMachine_Tutorial {
     part def TrafficLight {
         /* The machine behavior */
         state def LightLogic {
-             /* Initial entry point */
-             entry; then Red;
-             
-             state Red {
-                 /* Transition after time */
-                 transition to Green after 20 [SI::s];
-             }
-             
-             state Green {
-                 transition to Yellow after 30 [SI::s];
-             }
-             
-             state Yellow {
-                 transition to Red after 5 [SI::s];
-             }
+            /* Initial entry point */
+            entry;
+            then Red;
+            
+            state Red;
+            state Yellow;
+            state Green;
+            
+            transition Red accept after 20 [SI::s] then Green;
+            transition Green accept after 5 [SI::s] then Yellow;
+            transition Yellow accept after 30 [SI::s] then Red;
         }
-        
         /* Usage of the machine */
         state logic : LightLogic;
     }
+    view StateMachine_Tutorial : DS_Views::SymbolicViews::gv;
 }
 
 // --- Source: StatePatterns_1EntryDoExit.sysml ---
@@ -1891,8 +1894,7 @@ package States_5ParallelStates {
 
 // --- Source: UseCaseTutorial_APS.sysml ---
 package AutomatedPickleballServerModel {
-    private import ScalarValues::*;
-    private import SysML::*;
+
 
     /* --- Definitions --- */
     part def ActorPart;

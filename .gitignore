@@ -1,3 +1,13 @@
 Specifications/
 __pycache__/
 *.pyc
+
+# Binary snapshots
+*.mdszip
+
+
+# Binary snapshots
+*.mdszip
+*.mdzip
+*.zip
+

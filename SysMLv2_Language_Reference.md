@@ -6,9 +6,16 @@ Systems Modeling Language (SysML) v2.0 is an OMG standard for model-based system
 
 ## Core Concepts
 
+### Key things to remener
+
+NEVER use single lne comments because in the SysMLvw language these are not persisted to the model and are lost.
+The only reason to use public is when the element is to be used everywehre because a public is part of the world view. It is better to use the defaualt (no public or private) so that a user in another package is forced to import.
+The only reason to use private is when the element is truely not usable or redefinable outside of a context of the package it lives, which in SysMLv2 is rare as we care less about this in engineering than is in software where we don't trust fellow programmers.
+
 ### Definition and Usage Pattern
 
 The fundamental pattern in SysML v2 is the **definition-usage** relationship:
+
 - **Definitions** classify things (types, templates)
 - **Usages** apply definitions in specific contexts (instances, applications)
 
@@ -30,8 +37,9 @@ package VehicleSystem {
 ```
 
 **Key Features:**
+
 - Provide namespaces for organizing models
-- Support imports (public/private)
+- Support imports. Always prefer `private import PackageName::*;` to avoid polluting the namespace of other packages that import yours.
 - Can be filtered by element kind
 - Enable model library organization
 
@@ -53,6 +61,7 @@ part def Vehicle {
 ```
 
 **Key Features:**
+
 - Typed by primitive types or attribute definitions
 - Always referential (ref)
 - Can have feature values (=, :=, default)
@@ -77,6 +86,7 @@ enum def Priority :> Integer {
 ```
 
 **Key Features:**
+
 - Cannot specialize other enumerations
 - Can specialize attribute definitions
 - Support literal values
@@ -107,6 +117,7 @@ snapshot def SystemSnapshot :> System;
 ```
 
 **Key Features:**
+
 - Have lifetimes (temporal extent)
 - May have spatial extent
 - Support time slices (portions of lifetime)
@@ -128,6 +139,7 @@ part def FuelTank {
 ```
 
 **Key Features:**
+
 - Passive (acted upon)
 - Identifiable objects
 - May have spatial extent
@@ -151,6 +163,7 @@ part vehicle1 : Vehicle {
 ```
 
 **Key Features:**
+
 - Active (can perform actions)
 - Compositional structure
 - Support multiplicity
@@ -179,6 +192,7 @@ part def Engine {
 ```
 
 **Key Features:**
+
 - Define interaction points
 - Have directional features (in/out/inout)
 - Support conjugation (direction reversal)
@@ -203,6 +217,7 @@ first action1 then action2;
 ```
 
 **Key Features:**
+
 - Binary relationships with ends
 - Support binding (equality)
 - Support succession (ordering)
@@ -220,6 +235,7 @@ interface def FuelingInterface {
 ```
 
 **Key Features:**
+
 - All ends must be ports
 - Define interaction protocols
 - Often use conjugated ports
@@ -238,6 +254,7 @@ allocate function1 to component1;
 ```
 
 **Key Features:**
+
 - Assert target realizes source intent
 - Support traceability
 - Map across abstraction levels
@@ -249,6 +266,7 @@ allocate function1 to component1;
 ### 2.1 Flows and Messages (7.16)
 
 **Messages** - Abstract instantaneous transfers:
+
 ```sysml
 message of ControlSignal
     from controller.sendControl
@@ -256,17 +274,20 @@ message of ControlSignal
 ```
 
 **Streaming Flows** - Continuous transfers:
+
 ```sysml
 flow fuelFlow : FuelFlow of fuel : Fuel
     from tank.fuelOut to engine.fuelIn;
 ```
 
 **Succession Flows** - Ordered item transfers:
+
 ```sysml
 succession flow focus.image to shoot.image;
 ```
 
 **Key Features:**
+
 - Three types: messages, streaming, succession
 - Connect occurrences for transfer
 - Can specify items/values transferred
@@ -297,6 +318,7 @@ action def TakePicture {
 ```
 
 **Control Nodes:**
+
 ```sysml
 fork fork1;
 first fork1 then action1;
@@ -314,11 +336,13 @@ merge merge1;
 ```
 
 **Send Actions:**
+
 ```sysml
 send payload via signalPort to destination;
 ```
 
 **Accept Actions:**
+
 ```sysml
 accept reading : SensorReading via controller;
 accept when level > threshold;
@@ -327,16 +351,19 @@ accept after 30 [s];
 ```
 
 **Assignment Actions:**
+
 ```sysml
 assign vehicle.position := vehicle.position + vehicle.velocity * deltaT;
 ```
 
 **Terminate Actions:**
+
 ```sysml
 terminate process;
 ```
 
 **If Actions:**
+
 ```sysml
 if selectedSensor != null {
     assign reading := selectedSensor.reading;
@@ -346,6 +373,7 @@ if selectedSensor != null {
 ```
 
 **Loop Actions:**
+
 ```sysml
 // While loop
 while t < endTime {
@@ -360,6 +388,7 @@ for i in 1..n {
 ```
 
 **Key Features:**
+
 - Parameters (in, out, inout)
 - Control flow (succession, fork, join, decide, merge)
 - Data flow (flows between actions)
@@ -369,23 +398,23 @@ for i in 1..n {
 
 ### 2.3 States (7.18)
 
-States represent conditions under which actions execute.
+States represent conditions under which actions execute.  
 
 ```sysml
 state def OperationalStates {
     entry;
-    then off;
+    then off; /* shorthand of the the two lines is equivelent of 'transition 'un-named transition' first entry then off;' */
 
     state off;
     state starting;
     state on;
 
-    transition off_to_on
-        first off
-        accept TurnOn via commPort
-        if isEnabled
-        do action powerUp : PowerUp;
-        then on;
+    transition off_to_on /* name of transition */
+        first off /* transitioning from state*/
+        accept TurnOn via commPort/* event */
+        if isEnabled /* guard */
+        do action powerUp : PowerUp; /* do action aka effect */
+        then on /* transition to state*/; 
 }
 
 // State with actions
@@ -400,6 +429,7 @@ state def Exercising {
 ```
 
 **Parallel States:**
+
 ```sysml
 state def VehicleStates parallel {
     state operationalStates : OperationalStates;
@@ -408,6 +438,7 @@ state def VehicleStates parallel {
 ```
 
 **Exhibit States:**
+
 ```sysml
 part def Vehicle {
     exhibit state operatingState references VehicleStates::operating;
@@ -415,6 +446,7 @@ part def Vehicle {
 ```
 
 **Key Features:**
+
 - Entry, do, exit actions
 - Transitions with triggers (accept), guards (if), effects (do)
 - Parallel states for concurrency
@@ -440,6 +472,7 @@ calc hypotenuse : Pythagorean {
 ```
 
 **Key Features:**
+
 - Pure functions (no side effects)
 - Return results
 - Support mathematical expressions
@@ -464,6 +497,7 @@ constraint vehicleMassLimit : MassLimit {
 ```
 
 **Assert Constraints:**
+
 ```sysml
 assert constraint positiveValue {
     value > 0;
@@ -476,6 +510,7 @@ not assert constraint {
 ```
 
 **Key Features:**
+
 - Boolean predicates
 - Can be asserted (must be true)
 - Support logical operators
@@ -509,7 +544,10 @@ requirement vehicleMaxMass : MaximumMass {
 ```
 
 **Subjects, Actors, Stakeholders:**
+
 ```sysml
+// NOTE: `actor` and `stakeholder` are USAGE keywords, not definition keywords.
+// The types they reference must be defined as `part def` or `item def` (e.g., `part def Person;`).
 requirement def BrakingRequirement {
     subject vehicle : Vehicle;
     actor environment : DrivingEnvironment;
@@ -521,6 +559,7 @@ requirement def BrakingRequirement {
 ```
 
 **Concerns:**
+
 ```sysml
 concern def SafetyConcern {
     subject system : System;
@@ -534,6 +573,7 @@ requirement def SafetyRequirement {
 ```
 
 **Satisfy Requirements:**
+
 ```sysml
 satisfy requirement vehicleMaxMass by vehicle1;
 
@@ -547,6 +587,7 @@ not satisfy vehicleMaxMass by vehicle2;
 ```
 
 **Key Features:**
+
 - Subject (what is constrained)
 - Assumed constraints (preconditions)
 - Required constraints (postconditions)
@@ -577,6 +618,7 @@ case def FaultRecovery {
 ```
 
 **Key Features:**
+
 - Subject (what is analyzed/verified/used)
 - Objective (requirement to satisfy)
 - Actors (external participants)
@@ -604,6 +646,7 @@ analysis def FuelEconomyAnalysis {
 ```
 
 **Key Features:**
+
 - Subject is analyzed
 - Objective concerns the result
 - Returns analysis results
@@ -628,6 +671,7 @@ verification def MaxMassVerification {
 ```
 
 **Key Features:**
+
 - Subject is verified
 - Objective requirement subject = case subject
 - Verifies requirement satisfaction
@@ -652,6 +696,7 @@ use case def PurchaseItem {
 ```
 
 **Key Features:**
+
 - Focus on actor interactions
 - Include/extend relationships
 - Specify system usage scenarios
@@ -676,6 +721,7 @@ view def OperatorView : OperatorViewpoint {
 ```
 
 **Key Features:**
+
 - Viewpoints are requirements
 - Views satisfy viewpoints
 - Frame stakeholder concerns
@@ -703,6 +749,7 @@ part criticalComponent : Component;
 ```
 
 **Key Features:**
+
 - Annotate model elements
 - Custom metadata definitions
 - Support tool integration
@@ -793,6 +840,7 @@ SysML v2 includes standard model libraries:
 - **Analysis Libraries** (trade studies, verification, etc.)
 
 Standard imports:
+
 ```sysml
 import ScalarValues::*;
 import ISQ::*;
@@ -934,6 +982,7 @@ The SysML v2 metamodel defines:
 - **Well-Formedness Rules**: Validity constraints
 
 Key metamodel concepts:
+
 - All elements are features
 - Features can be types or usages
 - Relationships: specialization, redefinition, subsetting, typing, featuring
@@ -956,3 +1005,14 @@ SysML v2 provides a comprehensive, rigorous language for systems modeling with:
 - **Extensibility**: Metadata and library mechanisms
 
 The language supports model-based systems engineering from requirements through design, analysis, and verification.
+
+## Modeling Conventions & Best Practices (Custom Additions)
+
+- **Library Packages:** Always use library package (e.g., library package 'Requirement Templates') to house reusable templates and definitions (def). Place usages (e.g.,
+equirement) in actual model context packages.
+- **Requirement Definitions vs. Usages:**
+equirement def elements should act as reusable abstractions and be relegated to library package. The specific statement/instance of a requirement should be an element usage (
+equirement) typed by a definition.
+- **Actions and States:** In a similar vein, ction def or state def define the flows/behavioral blocks. The usage ction or state sits inside the concrete parts that exhibit or execute them.
+- **Views Placement:** Tables and tree views should be placed *directly within the package they are documenting* rather than grouped externally.
+- **Structure Visualization:** For packages featuring structure or dependencies, leverage DS_Views::SymbolicViewsByExpression::TreeView (tree view) using expose PackageName::** to automatically evaluate and display elements.
