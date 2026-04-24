@@ -58,7 +58,16 @@ Whether you are a human learning the syntax or teaching an AI, you can access th
 **⚠️ IMPORTANT: Do not edit the files in the `output/` directory directly!**  
 All files in `output/` (including `skill.md`) are generated automatically. If you edit them, your changes will be overwritten.
 
-### How to Correct or Update Content:
+### How to Correct or Update Content Using AI:
+If you find a missing feature, typo, or want to expand the cheat sheets, you should instruct your AI agent (Antigravity or Claude) to directly modify the source Python files.
+
+**Example Prompt for Antigravity/Claude:**
+> *"Antigravity, I need to add a new section on 'Custom Tables' to the tutorial. Please look inside the `src/` directory, create a new `generate_custom_tables.py` script based on the examples in `E:\_Documents\_SysMLV2\_ExampleV2Models\SysMLv2 Features Overview`, add it to `generate_all.py`, and run the build script."*
+
+Or for a correction:
+> *"Claude, there is a typo in the Behavior Sheet. Please find `src/generate_behavior_sheet.py`, fix the typo in the markdown string, and run `generate_all.py`."*
+
+**Manual Updating Steps:**
 1. **Update the Reference Rules**: Edit `SysMLv2_Language_Reference.md` directly.
 2. **Update a Cheat Sheet or Tutorial**: Locate the corresponding Python generator script in the `src/` directory (e.g., `src/generate_behavior_sheet.py`). Open the file and update the markdown strings or python logic inside it.
 3. **Add a New Cheat Sheet**: 

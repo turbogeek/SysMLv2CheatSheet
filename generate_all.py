@@ -42,6 +42,7 @@ scripts = [
     "generate_views_tutorial.py",
     "generate_filters_tutorial.py",
     "generate_evaluation_tutorial.py",
+    "generate_cameo_features_tutorial.py",
     # Aggregation
     "generate_combined_docs.py"
 ]
