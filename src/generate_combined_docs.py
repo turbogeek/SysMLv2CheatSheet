@@ -77,5 +77,36 @@ def main():
     else:
         print(f"Warning: Cheat sheets directory not found: {cheatsheets_dir}")
 
+    # 3. Combine into a single skill.md
+    skill_out = os.path.join(output_base, "skill.md")
+    reference_file = os.path.join(base_dir, "..", "SysMLv2_Language_Reference.md")
+    print(f"Combining everything into {skill_out}...")
+    try:
+        with open(skill_out, 'w', encoding='utf-8') as outfile:
+            outfile.write("# SysML v2 AI Agent Skill / Comprehensive Reference\n\n")
+            outfile.write(f"**Generated on:** {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+            outfile.write("---\n\n")
+            
+            # Add Language Reference
+            if os.path.exists(reference_file):
+                with open(reference_file, 'r', encoding='utf-8') as ref_in:
+                    outfile.write(ref_in.read())
+                    outfile.write("\n\n---\n\n")
+            
+            # Add Cheat Sheets
+            if os.path.exists(cheatsheets_out):
+                with open(cheatsheets_out, 'r', encoding='utf-8') as cs_in:
+                    outfile.write(cs_in.read())
+                    outfile.write("\n\n---\n\n")
+            
+            # Add Tutorials
+            if os.path.exists(tutorials_out):
+                with open(tutorials_out, 'r', encoding='utf-8') as tut_in:
+                    outfile.write(tut_in.read())
+                    outfile.write("\n\n")
+        print(f"Successfully created {skill_out}")
+    except Exception as e:
+        print(f"Error creating skill.md: {e}")
+
 if __name__ == "__main__":
     main()
