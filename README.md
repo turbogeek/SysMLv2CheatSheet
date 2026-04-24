@@ -75,10 +75,11 @@ Or for a correction:
    - Add your new script to the `scripts` list inside `src/generate_all.py`.
 
 ### Generating the Updates
-To manually regenerate all markdown files and the `skill.md` file:
+If you need help configuring your machine to run the scripts, please see the **[Python Environment Setup Guide](Python_Environment_Setup.md)**.
+
+To manually regenerate all markdown files and the `skill.md` file, run the master script from the root of the repository:
 
 ```bash
-cd src
 python generate_all.py
 ```
 
