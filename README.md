@@ -53,8 +53,19 @@ Whether you are a human learning the syntax or teaching an AI, you can access th
 - [Domain Libraries](output/tutorials/domain_libs_tutorial.md)
 - *(Browse the `output/tutorials/` folder for the full list)*
 
-## 🛠️ Building the Docs
+## 🛠️ Editing and Building the Docs
 
+**⚠️ IMPORTANT: Do not edit the files in the `output/` directory directly!**  
+All files in `output/` (including `skill.md`) are generated automatically. If you edit them, your changes will be overwritten.
+
+### How to Correct or Update Content:
+1. **Update the Reference Rules**: Edit `SysMLv2_Language_Reference.md` directly.
+2. **Update a Cheat Sheet or Tutorial**: Locate the corresponding Python generator script in the `src/` directory (e.g., `src/generate_behavior_sheet.py`). Open the file and update the markdown strings or python logic inside it.
+3. **Add a New Cheat Sheet**: 
+   - Create a new `generate_your_topic_sheet.py` in the `src/` folder.
+   - Add your new script to the `scripts` list inside `src/generate_all.py`.
+
+### Generating the Updates
 To manually regenerate all markdown files and the `skill.md` file:
 
 ```bash
@@ -62,4 +73,4 @@ cd src
 python generate_all.py
 ```
 
-*(Note: A pre-commit hook is set up to automatically run this script when you commit, so your files will always be up to date in the repository.)*
+*(Note: A pre-commit hook is set up to automatically run this script when you commit. Just making the changes to the `src/` files and committing will automatically rebuild the `output/` folder and `skill.md` for you!)*
