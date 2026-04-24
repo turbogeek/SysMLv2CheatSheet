@@ -64,6 +64,13 @@ for script in scripts:
     except Exception as e:
         print(f"Error running {script}: {e}")
 
+# --- Methodology Generation ---
+print("Generating Methodology Templates...")
+try:
+    subprocess.run(["py", "generate_all.py"], check=True, cwd="src_methodology")
+except Exception as e:
+    print(f"Error running methodology generator: {e}")
+
 # --- Merge Logic ---
 print("Merging examples...")
 output_dir = os.path.join("output", "pastableExamples")
