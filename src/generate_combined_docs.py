@@ -78,7 +78,9 @@ def main():
         print(f"Warning: Cheat sheets directory not found: {cheatsheets_dir}")
 
     # 3. Combine into a single skill.md
-    skill_out = os.path.join(output_base, "skill.md")
+    llm_skills_dir = os.path.join(base_dir, "..", "LLM_skills")
+    os.makedirs(llm_skills_dir, exist_ok=True)
+    skill_out = os.path.join(llm_skills_dir, "skill.md")
     reference_file = os.path.join(base_dir, "..", "SysMLv2_Language_Reference.md")
     print(f"Combining everything into {skill_out}...")
     try:

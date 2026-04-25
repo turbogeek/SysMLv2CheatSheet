@@ -27,8 +27,8 @@ def main():
         "generate_skill.py"
     ]
     
-    # Ensure output_methodology directory exists in the root
-    os.makedirs('output_methodology', exist_ok=True)
+    # Ensure LLM_Assets directory exists in the root
+    os.makedirs('LLM_Assets', exist_ok=True)
 
     print("Generating SE Methodology Templates...")
     for script in scripts:

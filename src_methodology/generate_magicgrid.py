@@ -66,8 +66,8 @@ This template uses the MagicGrid framework (often used with Cameo/MagicDraw) to 
 **LLM Instruction:** When generating a SysMLv2 model from this MagicGrid template, maintain strict separation between Problem (Context), Solution (Logical), and Implementation (Physical) elements. Ensure robust traceability using `satisfy` (Implementation/Solution -> Problem) and `allocate` (Implementation -> Solution) relationships.
 """
     
-    os.makedirs(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'output_methodology'), exist_ok=True)
-    with open(os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'output_methodology'), 'magicgrid_template.md'), 'w') as f:
+    os.makedirs(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'LLM_Assets'), exist_ok=True)
+    with open(os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'LLM_Assets'), 'magicgrid_template.md'), 'w') as f:
         f.write(content)
         
 if __name__ == '__main__':

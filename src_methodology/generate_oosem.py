@@ -70,8 +70,8 @@ This template gathers information structured around the core OOSEM phases. Fill 
 **LLM Instruction:** When generating SysMLv2 from this template, utilize block-based decomposition (`part def` and `part`) to emphasize the object-oriented structure. Ensure that logical behaviors (actions/states) are explicitly allocated to physical parts.
 """
     
-    os.makedirs(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'output_methodology'), exist_ok=True)
-    with open(os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'output_methodology'), 'oosem_template.md'), 'w') as f:
+    os.makedirs(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'LLM_Assets'), exist_ok=True)
+    with open(os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'LLM_Assets'), 'oosem_template.md'), 'w') as f:
         f.write(content)
         
 if __name__ == '__main__':

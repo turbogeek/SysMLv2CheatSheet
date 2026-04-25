@@ -1,7 +1,4 @@
-import os
-
-def generate():
-    content = """# SysMLv2 Systems Engineering Methodology Skill
+# SysMLv2 Systems Engineering Methodology Skill
     
 This skill file equips AI Agents (like Antigravity, Claude, ChatGPT) with the knowledge of how to guide a user through standard Systems Engineering methodologies (INCOSE, OOSEM, MagicGrid) and subsequently translate that gathered knowledge into a robust SysMLv2 model.
 
@@ -31,11 +28,3 @@ This skill file equips AI Agents (like Antigravity, Claude, ChatGPT) with the kn
 *   **Behavior Allocation:** Ensure that `action def`s (behaviors) are explicitly performed by structural elements (using `perform` or by nesting them within the `part def`).
 *   **Scalar Value Imports:** Any use of scalar values like `Real`, `Integer`, `String`, or `Boolean` must include a private import, e.g., `private import ScalarValues::Real;` or `private import ScalarValues::*;`.
 *   **Views and Layouts:** Always generate a `Views` package including tables and various view types. Ensure you use the `expose` parameter to auto-display the context. Furthermore, always apply `EssentialElementsFilter` and `NonStandardLibraryElementFilter` to custom views to ensure proper layout generation.
-"""
-    
-    os.makedirs(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'LLM_skills'), exist_ok=True)
-    with open(os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'LLM_skills'), 'methodology_skill.md'), 'w') as f:
-        f.write(content)
-        
-if __name__ == '__main__':
-    generate()

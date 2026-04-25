@@ -74,8 +74,8 @@ This template is designed to gather information according to the standard INCOSE
 **LLM Instruction:** When processing this file, ensure that every requirement listed in Section 3 has a corresponding `satisfy` relationship from an architectural element in Section 4 or 5.
 """
     
-    os.makedirs(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'output_methodology'), exist_ok=True)
-    with open(os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'output_methodology'), 'incose_template.md'), 'w') as f:
+    os.makedirs(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'LLM_Assets'), exist_ok=True)
+    with open(os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'LLM_Assets'), 'incose_template.md'), 'w') as f:
         f.write(content)
         
 if __name__ == '__main__':

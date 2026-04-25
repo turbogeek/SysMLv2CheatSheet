@@ -1,6 +1,6 @@
 # SysML v2 AI Agent Skill / Comprehensive Reference
 
-**Generated on:** 2026-04-24 16:58:23
+**Generated on:** 2026-04-25 17:21:20
 
 ---
 
@@ -12,11 +12,12 @@ Systems Modeling Language (SysML) v2.0 is an OMG standard for model-based system
 
 ## Core Concepts
 
-### Key things to remener
+### Key things to remember
 
-NEVER use single lne comments because in the SysMLvw language these are not persisted to the model and are lost.
-The only reason to use public is when the element is to be used everywehre because a public is part of the world view. It is better to use the defaualt (no public or private) so that a user in another package is forced to import.
-The only reason to use private is when the element is truely not usable or redefinable outside of a context of the package it lives, which in SysMLv2 is rare as we care less about this in engineering than is in software where we don't trust fellow programmers.
+NEVER use single line comments `//` in the SysMLv2 language because these are not persisted to the model and are lost.
+The only reason to use `public` is when the element is to be used everywhere because a `public` is part of the world view. It is better to use the default (no `public` or `private`) so that a user in another package is forced to import.
+The only reason to use `private` is when the element is truly not usable or redefinable outside of a context of the package it lives, which in SysMLv2 is rare as we care less about this in engineering than is in software where we don't trust fellow programmers.
+When importing, the import must be prefixed with `public` , `private` or `protected` with 'private' being the default import accessibility specified (for example `private import ScalarValues::*;`).
 
 ### Definition and Usage Pattern
 
@@ -37,7 +38,7 @@ Packages organize model elements into namespaces.
 
 ```sysml
 package VehicleSystem {
-    import ScalarValues::*;
+    private import ScalarValues::*; // Or explicitly: private import ScalarValues::Real;
     // Package members
 }
 ```
@@ -46,6 +47,7 @@ package VehicleSystem {
 
 - Provide namespaces for organizing models
 - Support imports. Always prefer `private import PackageName::*;` to avoid polluting the namespace of other packages that import yours.
+- **CRITICAL RULE:** Any use of scalar values (like `Real`, `Integer`, `String`, `Boolean`) must be accompanied by an import, e.g., `private import ScalarValues::Real;` or `private import ScalarValues::*;`.
 - Can be filtered by element kind
 - Enable model library organization
 
@@ -248,7 +250,7 @@ interface def FuelingInterface {
 
 ### 1.10 Allocations (7.15)
 
-Allocations map elements across system structures.
+Allocations map elements across system structures. **Crucially, allocation only works between usages, not definitions.**
 
 ```sysml
 allocation def Deployment {
@@ -256,7 +258,18 @@ allocation def Deployment {
     end target : Component;
 }
 
-allocate function1 to component1;
+// Ensure you allocate between specific usages (e.g., parts), not defs:
+part def LogicalSystem {
+    part func : Function;
+}
+part def PhysicalSystem {
+    part comp : Component;
+}
+
+part logicalUsage : LogicalSystem;
+part physicalUsage : PhysicalSystem;
+
+allocate physicalUsage.comp to logicalUsage.func;
 ```
 
 **Key Features:**
@@ -264,6 +277,7 @@ allocate function1 to component1;
 - Assert target realizes source intent
 - Support traceability
 - Map across abstraction levels
+- **Must be applied between usages, not definitions**
 
 ---
 
@@ -529,23 +543,37 @@ not assert constraint {
 ### 3.1 Requirements (7.21)
 
 Requirements specify stakeholder-imposed constraints.
+**CRITICAL RULE:** A `satisfy` relationship is **always** to a requirement *usage*. All requirements intended as requirements of the system must be declared as usages (`requirement`), not definitions (`requirement def`).
+
+Use a `requirement def` ONLY when creating a specific *kind* or *type* of requirement (e.g., PerformanceRequirement, SafetyRequirement).
 
 ```sysml
-requirement def MaximumMass {
-    doc /* The actual mass shall be less than or equal to the required mass. */
-
-    subject vehicle : Vehicle;
-    attribute massActual : MassValue;
-    attribute massRequired : MassValue;
-
-    assume constraint { massRequired > 0[kg] }
-    require constraint { massActual <= massRequired }
+// Define requirement types (Defs)
+package <RT> RequirementTypes {
+    requirement def PerformanceRequirement {
+        doc /* A requirement that requires a specific metric to be met. */
+    }
+    requirement def SafetyRequirement {
+        doc /* A requirement that mandates a safety condition. */
+    }
 }
 
-requirement vehicleMaxMass : MaximumMass {
-    subject vehicle = myVehicle;
-    :>> massActual = vehicle.totalMass;
-    :>> massRequired = 2000[kg];
+// Instantiate actual system requirements (Usages)
+package Requirements {
+    // Use the <'ID'> shortcut syntax for the ID and provide a short name
+    requirement <'REQ-PERF-01'> 'Minimum System MTBF' : RT::PerformanceRequirement {
+        doc /* The system shall have a mean time between failures of greater than 5 years. */
+        attribute MTBF : Time::Iso8601DateTimeStructure; 
+        attribute MTBF_target : Time::Iso8601DateTimeStructure = 5[Time::Iso8601DateTimeStructure::year];
+
+        require constraint {
+            MTBF >= MTBF_target
+        }
+    }
+    
+    requirement <'REQ-SAFE-01'> 'Max Temperature' : RT::SafetyRequirement {
+        doc /* The external chassis temperature shall not exceed 45°C. */
+    }
 }
 ```
 
@@ -709,20 +737,49 @@ use case def PurchaseItem {
 
 ### 3.6 Views and Viewpoints (7.26)
 
-Viewpoints frame stakeholder concerns; views satisfy viewpoints.
+Viewpoints frame stakeholder concerns; views satisfy viewpoints. It is highly recommended to use the `expose` keyword along with predefined standard views and filters (such as `EssentialElementsFilter` and `NonStandardLibraryElementFilter`) to ensure views layout properly.
 
 ```sysml
-viewpoint def OperatorViewpoint {
-    stakeholder operator : Person;
-    frame concern operationalConcerns;
-
-    require constraint {
-        doc /* View must show operational status. */
+package BV BaseViews {
+    doc /* A set of reusable views. These form the base of the zoo of views and are intended to be the starting point for the creation of new views. For example, the partDefTableView is a filtered and constrained table of parts. It inherits from the generic table and adds a default filter of parts.  */
+    private import DS_Views::SymbolicViewsByExpression::*;
+    private import DS_Views::TabularViews::*;
+    private import SysML::Systems::*;
+    
+ /* A set of reusable views. These form the base of the zoo. This also serves as training and laboratory for the views */
+    
+    view partsView : UsagesNestedView, EssentialElementsFilter, NonStandardLibraryElementFilter;
+    view partsTreeView : TreeView, EssentialElementsFilter, NonStandardLibraryElementFilter {
+        filter @PartDefinition;
+        filter @PartUsage;
+    }
+    view actionsTreeView : ActionsTreeView, EssentialElementsFilter, NonStandardLibraryElementFilter;
+    view actionsNestedView : ActionsNestedView, EssentialElementsFilter, NonStandardLibraryElementFilter;
+    view 'parts&PortsNestedView' : 'Parts&PortsNestedView', EssentialElementsFilter, NonStandardLibraryElementFilter;
+    view requirementsTreeView : RequirementsTreeView, EssentialElementsFilter, NonStandardLibraryElementFilter;
+    view statesNestedView : StatesNestedView, EssentialElementsFilter, NonStandardLibraryElementFilter;
+    
+    view partsTableView : gt, EssentialElementsFilter, NonStandardLibraryElementFilter {
+        filter @PartUsage;
+    }
+    view partDefTableView : gt, EssentialElementsFilter, NonStandardLibraryElementFilter {
+        filter @PartDefinition;
+    }
+    view requirementTableTableView : rt, EssentialElementsFilter, NonStandardLibraryElementFilter {
+        filter @RequirementUsage;
+    }
+    view portDefTableView : gt, EssentialElementsFilter, NonStandardLibraryElementFilter {
+        filter @PortDefinition;
     }
 }
 
-view def OperatorView : OperatorViewpoint {
-    // View members exposing relevant information
+package Examples {
+    view partsViewOfRoadVehicle :> BV::partsView {
+        expose Tests::Structure::RoadVehicle::**;
+    }
+    view partsViewOfRoadVehicleTreeView :> BV::partsTreeView {
+        expose Tests::Structure::RoadVehicle::**;
+    }
 }
 ```
 
@@ -732,6 +789,8 @@ view def OperatorView : OperatorViewpoint {
 - Views satisfy viewpoints
 - Frame stakeholder concerns
 - Organize information presentation
+- Use `expose` to auto-display the context within a view.
+- Always use `EssentialElementsFilter` and `NonStandardLibraryElementFilter` with base views to aid in ensuring that views with an expose statement do not include details that are not relivent to the stakeholders. In other words, it's often better to start with a filtered view rather than a base view.
 
 ---
 
@@ -1028,7 +1087,7 @@ equirement) typed by a definition.
 
 # SysML v2 Cheat Sheets: Complete Collection
 
-**Generated on:** 2026-04-24 16:58:23
+**Generated on:** 2026-04-25 17:21:20
 
 ---
 
@@ -2843,7 +2902,7 @@ style color = "red";
 
 # SysML v2 Tutorials: Complete Collection
 
-**Generated on:** 2026-04-24 16:58:23
+**Generated on:** 2026-04-25 17:21:20
 
 ---
 
