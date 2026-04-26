@@ -1,0 +1,4 @@
+I want you to create an INCOSE discovery document and then a requirements document and then a logical SysMLv2 model and then a physical SysMLv2 model of a simple alarm clock. The alarm clock should be able to display the time, set an alarm, and sound an alarm when the alarm is set. Read and apply the rules in `LLM_skills/skill.md`, follow the process in `LLM_skills/methodology_skill.md`, and use the template in `LLM_Assets/incose_template.md`. Also add some helpful tables and views in the model. Use the MagicGrid process to create packages for Concept Exploration, Concept Definition, Logical Design, and Physical Design.
+
+Use the ".\Prompt Examples Outputs\Simple Alarm Clock" package for the plan, incose template, and the sysml model 
+

@@ -4,10 +4,10 @@
 
 ## 1. Defining Requirements
 
-Requirements capture the needs of the system.
+Requirements capture the needs of the system. Note: Always use requirement usages for actual project requirements, and doc /* ... */ for shall statements.
 
 ```sysml
-requirement <id> 'Name' { doc "Description"; }
+requirement <'REQ-ID'> 'Name' : RequirementType { doc /* Description */; }
 ```
 
 ## 2. Traceability
@@ -28,8 +28,8 @@ package Requirements_Tutorial {
             "The system shall operate within performance limits.";
     }
     
-    requirement <101> 'Breaking Distance' : PerformanceReq {
-        doc "The vehicle must stop within 50 meters from 100km/h.";
+    requirement <'REQ-101'> 'Breaking Distance' : PerformanceReq {
+        doc /* The vehicle must stop within 50 meters from 100km/h. */
         /* Formal constraint */
         attribute maxDistance : Real = 50.0;
     }

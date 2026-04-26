@@ -7,8 +7,8 @@ package Requirements_Tutorial {
             "The system shall operate within performance limits.";
     }
     
-    requirement <101> 'Breaking Distance' : PerformanceReq {
-        doc "The vehicle must stop within 50 meters from 100km/h.";
+    requirement <'REQ-101'> 'Breaking Distance' : PerformanceReq {
+        doc /* The vehicle must stop within 50 meters from 100km/h. */
         /* Formal constraint */
         attribute maxDistance : Real = 50.0;
     }

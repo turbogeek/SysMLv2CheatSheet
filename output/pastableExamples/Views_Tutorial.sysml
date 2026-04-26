@@ -1,8 +1,16 @@
 package Views_Tutorial {
     /* Import Cameo View Libraries */
     private import DS_Views::SymbolicViews;
-    private import CustomTabularViews::*;
+    private import DS_Views::TabularViews;
+    private import SysML::Systems::*;
     
+    package <BV> BaseViews {
+        view partsTreeView : TreeView, EssentialElementsFilter, NonStandardLibraryElementFilter {
+            filter @PartDefinition;
+            filter @PartUsage;
+        }
+    }
+
     part def Car;
     part def Engine;
     part def Wheel;
@@ -13,7 +21,7 @@ package Views_Tutorial {
     }
     
     /* --- 1. Graphical View (Diagram) --- */
-    view carDiagram : SymbolicViews::gv {
+    view carDiagram : SymbolicViews::gv, EssentialElementsFilter, NonStandardLibraryElementFilter {
         /* Show the entire car structure */
         expose myCar;
         

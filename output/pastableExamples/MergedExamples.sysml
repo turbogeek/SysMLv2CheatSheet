@@ -814,9 +814,10 @@ package CoreTypes_Tutorial {
 
 // --- Source: DataTypes_Tutorial.sysml ---
 package DataTypes_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     /* Note: ISQ is automatically imported by SI (public import) */
     private import SI::*;
+    private import MeasurementReferences::ConversionByPrefix;
 
     /* --- 1. Custom Value Definitions --- */
     /* Specializing a primitive */
@@ -828,14 +829,25 @@ package DataTypes_Tutorial {
         attribute y : Real;
         attribute z : Real;
     }
+    
+    /* --- 2. Custom Units --- */
+    package ProjectUnits {
+        attribute <ms> millisecond : DurationUnit {
+            :>> unitConversion : ConversionByPrefix {
+                :>> prefix = milli;
+                :>> referenceUnit = s;
+            }
+        }
+        attribute <'mm/h'> 'millimetre per hour' : SpeedUnit = mm / h;
+    }
 
     part def SensorSystem {
-        /* --- 2. Using Primitives --- */
+        /* --- 3. Using Primitives --- */
         attribute isActive : Boolean = true;
         attribute firmwareVersion : String = "v1.2.4";
         attribute cycleCount : Integer = 0;
         
-        /* --- 3. Using ISQ Units --- */
+        /* --- 4. Using ISQ Units --- */
         /* Type checking ensures you can't assign Mass to Length */
         /* Validating physical properties (Recommended) */
         attribute weight :> ISQ::mass = 5.5 [kg];
@@ -847,7 +859,7 @@ package DataTypes_Tutorial {
         /* Unit conversion is handled by checks (e.g. [km] -> [m]) */
         attribute speed :> ISQ::speed = 120 [km/h]; 
         
-        /* --- 4. Using Custom Types --- */
+        /* --- 5. Using Custom Types --- */
         attribute sensorID : IDString = "SENS-001";
         attribute location : Coordinates {
              :>> x = 10.0;
@@ -1589,8 +1601,8 @@ package Requirements_Tutorial {
             "The system shall operate within performance limits.";
     }
     
-    requirement <101> 'Breaking Distance' : PerformanceReq {
-        doc "The vehicle must stop within 50 meters from 100km/h.";
+    requirement <'REQ-101'> 'Breaking Distance' : PerformanceReq {
+        doc /* The vehicle must stop within 50 meters from 100km/h. */
         /* Formal constraint */
         attribute maxDistance : Real = 50.0;
     }
@@ -1802,10 +1814,9 @@ package StatePatterns_2CompositeState {
 package StatePatterns_3ExhibitState {
     private import ScalarValues::*;
     private import SysML::*;
-    package VehicleStates { state operating; }
+    state def VehicleStates { state operating; }
     part def Vehicle {
-       exhibit state opState
-          references VehicleStates::operating;
+       exhibit state opState : VehicleStates;
     }
 }
 
@@ -2081,8 +2092,16 @@ package Views {
 package Views_Tutorial {
     /* Import Cameo View Libraries */
     private import DS_Views::SymbolicViews;
-    private import CustomTabularViews::*;
+    private import DS_Views::TabularViews;
+    private import SysML::Systems::*;
     
+    package <BV> BaseViews {
+        view partsTreeView : TreeView, EssentialElementsFilter, NonStandardLibraryElementFilter {
+            filter @PartDefinition;
+            filter @PartUsage;
+        }
+    }
+
     part def Car;
     part def Engine;
     part def Wheel;
@@ -2093,7 +2112,7 @@ package Views_Tutorial {
     }
     
     /* --- 1. Graphical View (Diagram) --- */
-    view carDiagram : SymbolicViews::gv {
+    view carDiagram : SymbolicViews::gv, EssentialElementsFilter, NonStandardLibraryElementFilter {
         /* Show the entire car structure */
         expose myCar;
         

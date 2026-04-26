@@ -227,7 +227,7 @@ first action1 then action2;
 
 ### 1.9 Interfaces (7.14)
 
-Interfaces are connections where all ends are ports.
+Interfaces are connections where all ends are port usages.
 
 ```sysml
 interface def FuelingInterface {
@@ -244,15 +244,29 @@ interface def FuelingInterface {
 
 ### 1.10 Allocations (7.15)
 
-Allocations map elements across system structures. **Crucially, allocation only works between usages, not definitions.**
+Allocations are used to show that one element is realized by another. For example, a logical function can be allocated to a physical component. Allocations map elements across system structures and must apply between usages, not definitions. Allocations are generally an untyped usage unless you are implementing a pattern.
 
 ```sysml
-allocation def Deployment {
-    end source : Function;
-    end target : Component;
+/* Here we are using the allocation to map from logical to physical domains */
+package LogicalSystem {
+    part def PowerSource;
+    part power: PowerSource;
 }
+package PhysicalSystem {
+    part def Battery;
+    part battery : Battery;
+}
+package LogicalToPhysicalAllocation {
+    
+    allocation power : Allocation {
+        end source : LogicalSystem::power;
+        end target : PhysicalSystem::battery;
+    }
 
-// Ensure you allocate between specific usages (e.g., parts), not defs:
+}
+```
+
+Ensure you allocate between specific usages (e.g., parts), not defs:
 part def LogicalSystem {
     part func : Function;
 }
@@ -1075,3 +1089,470 @@ equirement) typed by a definition.
 - **Actions and States:** In a similar vein, ction def or state def define the flows/behavioral blocks. The usage ction or state sits inside the concrete parts that exhibit or execute them.
 - **Views Placement:** Tables and tree views should be placed *directly within the package they are documenting* rather than grouped externally.
 - **Structure Visualization:** For packages featuring structure or dependencies, leverage DS_Views::SymbolicViewsByExpression::TreeView (tree view) using expose PackageName::** to automatically evaluate and display elements.
+
+
+---
+
+# Exhibit states
+
+Exhibited states are defined in a part definition or part usage and are used to model the states of a part.  The syntax is `exhibit state <name> : <state machine>`.
+
+Example of exhibiting states:
+
+```sysml
+state def OperationalStates {
+    entry;
+    then off;
+    state off;
+    state starting;
+    state on;
+    transition off_to_on
+        first off
+        accept TurnOn via commPort
+        if isEnabled
+        do action powerUp : PowerUp
+        then on;
+}
+part  Vehicle {
+    exhibit state operatingState : OperationalStates;
+}
+\\n
+# Requirements and Analysis
+
+## Requirements
+
+Requirements specify stakeholder-imposed constraints. Note that requirements are documented using the same syntax as other definitions and usages. The main difference is the intent. The definition of a requirement is a requirement that specifies a constraint that is a template for a kind of requirement, a pattern of a requirement. A usage of a requirement is a requirement of a specific type that specifies the ID, a name that is a summary of the shall statement, and the required constraint, measured and targeted values and or condition and acceptance criteria.
+Example of a requirement definition
+
+```sysml
+package <RT> RequirementTypes {
+    requirement def PerformanceRequirement {
+        doc /* A requirement that requires a specific metric to be met. */
+    }
+}
+`\\n
+Example of a requirement usage
+```sysml
+package Requirements {
+    requirement <'REQ-PERF-02'> 'Coil MTBF' : RT::PerformanceRequirement {
+            doc /* The induction coil assembly shall have a Mean Time Between Failures (MTBF) of at least 10,000 cooking cycles. */
+            attribute coilMTBFCycles : Real;
+            attribute coilMTBFCycles_target : Real = 10000.0;
+            require constraint {
+                coilMTBFCycles >= coilMTBFCycles_target
+            }
+        }
+        requirement <'REQ-PERF-03'> 'Energy Efficiency' : RT::PerformanceRequirement {
+            doc /* The system shall convert at least 85% of drawn electrical energy into heat at the cooking surface. */
+            attribute energyEfficiency : Real;
+            attribute energyEfficiency_target : Real = 0.85;
+            require constraint {
+                energyEfficiency >= energyEfficiency_target
+            }
+        }
+}
+```
+
+# Verification Definitions
+
+# Views and Viewpoints
+
+Views present structured subsets of the model. Prefer reusable base views and derived concrete views, and place concrete views near the packages they document when practical.
+
+Example:
+
+```sysml
+verification def MaxMassVerification {
+    subject testVehicle : Vehicle;
+
+    objective massRequirement : MaximumMass {
+        subject vehicle = testVehicle;
+    }
+}
+```
+
+# Critical Authoring Constraints
+
+## Never invent syntax patterns when a standard pattern is known
+
+When generating SysMLv2, prefer a known library/example-backed syntax pattern over an improvised one. If a construct is not clearly supported by the reference pattern in the skill or provided libraries, do not guess. Use a simpler, clearly valid pattern instead.
+
+Examples:
+
+- Do not invent unit names if they are not present in the imported libraries.
+- Do not invent typed quantity names unless they are defined in a project or standard library.
+- Do not invent interface endpoint paths that have not been explicitly declared.
+- Do not invent view patterns when a project-specific BaseViews pattern exists.
+
+## Requirements must always use the full requirement usage pattern
+
+All actual system requirements shall be requirement usages, not definitions.
+
+Required pattern:
+
+```sysml
+requirement <'REQ-ID'> 'Short Name' : RequirementType {
+    doc /* Full shall statement. */
+}
+```
+
+Rules:
+
+- The ID must use the < 'ID' > form.
+- The short name must be a concise summary of the requirement.
+- The doc comment must contain the authoritative full “shall” statement.
+- Do not omit the short name.
+- Do not replace the shall statement with the short name.
+- Do not create actual project/system requirements as requirement def.
+
+## allocate, satisfy, and verify must connect usages only.
+
+Never connect definitions in
+
+- allocate
+- satisfy
+- verify
+
+## Only connect usages
+
+Correct:
+
+```sysml
+part logicalDrone : LogicalDrone;
+part physicalDrone : PhysicalDrone;
+
+allocate physicalDrone.camera to logicalDrone.detect;
+satisfy someRequirement by logicalDrone.detect;
+```
+
+Incorrect:
+
+```sysml
+allocate CameraModule to TargetDetectionSystem;
+satisfy PerformanceRequirement by TargetDetectionSystem;
+verify PerformanceRequirement;
+```
+
+### Interface ends must reference actual port usages
+
+All interface def ends and interface usages must terminate on ports, not on parts unless those ends are explicitly part ends in a connection definition.
+
+Rules:
+
+- If an interface end is end port, the referenced target must be a port usage.
+- Do not bind an end port to a part usage.
+- If a logical subsystem needs to participate in an interface, that logical subsystem must explicitly declare the corresponding port.
+
+Correct:
+
+```sysml
+part def TargetDetectionSystem {
+    port videoIn : ~VideoDataPort;
+}
+
+interface videoFromCamera : VideoDataInterface {
+    end port source = physicalDrone.cameraOut;
+    end port sink = logicalDrone.detect.videoIn;
+}
+```
+
+Incorrect:
+
+```sysml
+interface videoFromCamera : VideoDataInterface {
+    end port source = physicalDrone.cameraOut;
+    end port sink = logicalDrone.detect;
+}
+```
+
+## Quantitative attributes must be explicitly typed
+
+Do not emit:
+
+```sysml
+attribute minEndurance = 20 [min];
+```
+
+Use:
+
+```sysml
+attribute minEndurance : DurationValue = 20 [min];
+```
+
+Rules:
+
+- Every quantitative attribute shall have an explicit type/kind.
+- Use standard library quantity kinds if known and available.
+- If the exact quantity kind is project-specific or uncertain, define a project value type first, then use it consistently.
+- Do not leave engineering values as untyped attribute = value [unit].
+
+## Units must exist in an imported library or be defined explicitly
+
+Do not assume a unit symbol exists.
+
+Rules:
+
+- Before using a unit, verify that it exists in the imported libraries or define it in a project unit package.
+- If a project-specific or missing prefixed unit is needed, define it using the same pattern as the SI library.
+- If a unit requires ConversionByPrefix, explicitly import:
+
+```sysml
+private import MeasurementReferences::ConversionByPrefix;
+```
+
+Good example:
+
+```sysml
+package ProjectUnits {
+    private import SI::;
+    private import MeasurementReferences::ConversionByPrefix;
+
+    attribute <ms> millisecond : DurationUnit {
+        :>> unitConversion : ConversionByPrefix {
+            :>> prefix = milli;
+            :>> referenceUnit = s;
+        }
+    }
+
+    attribute <'mm/h'> 'millimetre per hour' : SpeedUnit = mm / h;
+}
+```
+
+## Use the project’s exact view architecture when provided
+
+If the project provides a view pattern, follow it exactly.
+
+If a project-specific BaseViews pattern exists, use:
+
+- reusable base views in a BaseViews package
+- derived concrete views using :>
+- EssentialElementsFilter
+- NonStandardLibraryElementFilter
+- expose ...::
+
+Do not improvise alternate view structures if a project example has been supplied.
+
+Place concrete views near the packages they document
+When possible, concrete tree/table views should be placed in or near the package they document, not only in a single global view package.
+
+Preferred:
+
+```sysml
+package Requirements {
+    package Views {
+        view requirementsTree :> Model::Views::BV::requirementsTreeView {
+            expose Requirements::;
+        }
+    }
+}
+```
+
+## doc comments must use exact SysML comment form
+
+Always use:
+
+```sysml
+doc /* ... */
+```
+
+### Rules
+
+- Do not use single-line comments (two forward slashes).
+- Use normal block comments only where documentation semantics are not intended.
+- use doc /*...*/ for requirement shall statements.
+- Always use a doc comment to describe the contents of a package, part, port, interface definition, attribute, value, use case, analysis, or state, except when it is obvious or already documented somewhere else via a doc comment of the definition used.
+- Always use a doc comment to describe the contents of a view.
+
+## Be careful with keyword-sensitive syntax
+
+Do not casually substitute similar-looking forms for actual SysMLv2 syntax.
+
+Examples:
+
+- frame is a SysMLv2 keyword and must be used deliberately and correctly.
+- references has a specific meaning and must not be used as a substitute for typed usage syntax.
+- exhibit state syntax must follow known valid patterns.
+- to aid in accidentally creating non-keywords, use domain specific names and use camel case.
+- For definitions, start with a capital letter and convert to lower camel case for usages of that definition, For example, if the definition is `TargetDetectionSystem`, the usage should be `targetDetectionSystem`.
+
+## If the project or skill provides a correct example, mirror that example
+
+## Prefer library package separation between defs and usages
+
+Use library packages for reusable definitions:
+
+- requirement def
+- part def
+- port def
+- interface def
+- analysis def
+- state def
+- action def
+
+## Use non-library/model-context packages for usages
+
+- requirement
+- part
+- state
+- verification
+- analysis
+- interface usages / connections / allocations
+
+## This separation should be preserved unless the user explicitly wants a flatter structure
+
+## Add a pre-output validation checklist
+
+Before returning SysMLv2, validate:
+
+- Are all real requirements usages, not defs?
+- Do all requirement usages use < 'ID' > 'Short Name' and doc /*... shall ...*/?
+- Do allocate, satisfy, and verify only connect usages?
+- Does every interface endpoint resolve to an actual declared port?
+- Are all engineering-valued attributes typed?
+- Does every unit used exist in imported libraries or project units?
+- Are imports explicit and syntactically correct?
+- Are comments using doc /*...*/ where intended?
+- Do views follow the provided BaseViews pattern, if one exists?
+- Is the output a single coherent file if the user requested a single file?
+
+If any answer is “no”, revise before returning.
+
+## When the user provides project conventions, those override generic style
+
+If the user provides:
+
+- a known BaseViews package pattern,
+- a units library excerpt,
+- a preferred requirement style,
+- a correct example of state exhibition,
+- a preferred package structure,
+
+then the generated model should conform to those conventions, even if a more generic pattern would also be valid.
+
+Examples:
+
+- If the user provides a ProjectUnits example, use that exact style.
+- If the user corrects exhibit-state syntax, use that syntax consistently thereafter.
+- If the user provides a BaseViews pattern, stop improvising alternative view structures.
+
+# Do not solve uncertainty by introducing weak placeholder abstractions
+
+Avoid papering over uncertainty with vague project-local placeholders when a stronger standard-typed pattern is expected.
+
+Examples:
+
+- Do not create vague ValueTypes unless necessary; prefer explicit standard quantity kinds when available and known.
+ If you do create project-local quantity types, explain that they are project abstractions and keep them consistent.
+- Do not create structure that obscures whether an element is a definition or a usage.
+
+# Canonical examples to follow
+
+## Requirement usage
+
+```sysml
+requirement <'SYS-PER-002'> 'Maximum Tracking Latency' : PerformanceRequirement {
+    doc /* The system shall update target tracks with end-to-end latency not greater than 50 [ms]. */
+    attribute maxTrackingLatency : DurationValue = 50 [ms];
+}
+```
+
+Project units
+
+```sysml
+package ProjectUnits {
+    private import SI::;
+    private import MeasurementReferences::ConversionByPrefix;
+
+    doc /* Project-specific units added where the standard SI library does not already provide the needed named unit. */
+
+    attribute <ms> millisecond : DurationUnit {
+        :>> unitConversion : ConversionByPrefix {
+            :>> prefix = milli;
+            :>> referenceUnit = s;
+        }
+    }
+
+    attribute <'mm/h'> 'millimetre per hour' : SpeedUnit = mm / h;
+}
+```
+
+Exhibit state
+
+```sysml
+part def Vehicle {
+    exhibit state missionState : Behavior::DroneLifecycleStates;
+}
+```
+
+Interface endpoint
+
+```sysml
+part def TargetDetectionSystem {
+    port videoIn : ~VideoDataPort;
+}
+
+interface videoFromCamera : VideoDataInterface {
+    end port source = physicalDrone.cameraOut;
+    end port sink = logicalDrone.detect.videoIn;
+}
+```
+
+Base views
+
+```sysml
+package <BV> BaseViews {
+    private import DS_Views::SymbolicViewsByExpression::*;
+    private import DS_Views::TabularViews::*;
+    private import SysML::Systems::*;
+
+    view partsView : UsagesNestedView, EssentialElementsFilter, NonStandardLibraryElementFilter;
+    view partsTreeView : TreeView, EssentialElementsFilter, NonStandardLibraryElementFilter {
+        filter @PartDefinition;
+        filter @PartUsage;
+    }
+    view requirementsTreeView : RequirementsTreeView, EssentialElementsFilter, NonStandardLibraryElementFilter;
+}
+```
+
+# Why these additions matter
+
+They directly target the errors that kept recurring:
+
+- malformed comments,
+- weak requirement formatting,
+- wrong unit assumptions,
+- missing imports,
+- interface endpoints on nonexistent ports,
+- usage/definition confusion,
+- wrong exhibit-state syntax,
+- drifting away from project-specific view conventions.
+
+These are not just “nice to have” style notes — they are failure-prevention rules.
+
+# Best Practices
+
+- Use definitions as reusable templates and usages for concrete model content.
+- Keep actual requirements as usages.
+- Type everything that carries engineering meaning.
+- Use only units that exist in imported libraries or explicit project units.
+- Use ports for interactions and ensure interface ends point to ports.
+- Separate structure and behavior.
+- Place concrete views within or near the packages they document.
+- Preserve user-provided project conventions.
+- Validate usage-vs-definition discipline before returning output.
+- When in doubt, use the simpler known-valid pattern rather than guessing.
+
+## Summary
+
+This skill is intended to produce SysMLv2 that is:
+-syntactically disciplined,
+-traceability-correct,
+-tool-friendly,
+-explicit about units and quantities,
+-explicit about usage vs definition,
+-aligned to project-specific conventions when provided.
+ The highest-priority rules
+
+- The highest-priority rule is: do not guess when a valid pattern is available or when uncertainty remains.
+- If there is a question, ask.
+- If there is a conflict between rules, ask.

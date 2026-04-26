@@ -84,18 +84,16 @@ def generate_for_theme(theme_key, theme):
 
     # --- Card 3: Exhibit State ---
     lines = [
-        [("part", theme.c_keyword), (" def", theme.c_keyword), (" Vehicle", theme.c_type), (" {", theme.c_normal)],
-        [("   exhibit", theme.c_keyword), (" state", theme.c_keyword), (" opState", theme.c_normal)],
-        [("      references", theme.c_keyword), (" VehicleStates::operating", theme.c_type), (";", theme.c_normal)],
+        [("part", theme.c_keyword), (" ", theme.c_normal), ("def", theme.c_keyword), (" Vehicle", theme.c_type), (" {", theme.c_normal)],
+        [("   exhibit", theme.c_keyword), (" state", theme.c_keyword), (" opState", theme.c_normal), (" :", theme.c_normal), (" VehicleStates", theme.c_type), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
     code_3 = """package StatePatterns_3ExhibitState {
     private import ScalarValues::*;
     private import SysML::*;
-    package VehicleStates { state operating; }
+    state def VehicleStates { state operating; }
     part def Vehicle {
-       exhibit state opState
-          references VehicleStates::operating;
+       exhibit state opState : VehicleStates;
     }
 }"""
     card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "3. Exhibit State", lines, "Part exhibiting a state.", theme, full_code=code_3, sheet_name="StatePatterns", wrapper_type="structure")

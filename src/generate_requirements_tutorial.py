@@ -55,8 +55,8 @@ def generate_for_theme(theme_key, theme):
             "The system shall operate within performance limits.";
     }
     
-    requirement <101> 'Breaking Distance' : PerformanceReq {
-        doc "The vehicle must stop within 50 meters from 100km/h.";
+    requirement <'REQ-101'> 'Breaking Distance' : PerformanceReq {
+        doc /* The vehicle must stop within 50 meters from 100km/h. */
         /* Formal constraint */
         attribute maxDistance : Real = 50.0;
     }
@@ -136,8 +136,8 @@ def generate_for_theme(theme_key, theme):
     # Separate Markdown Generation
     blocks = [
         ("header", "1. Defining Requirements"),
-        ("text", "Requirements capture the needs of the system."),
-        ("code", "requirement <id> 'Name' { doc \"Description\"; }"),
+        ("text", "Requirements capture the needs of the system. Note: Always use requirement usages for actual project requirements, and doc /* ... */ for shall statements."),
+        ("code", "requirement <'REQ-ID'> 'Name' : RequirementType { doc /* Description */; }"),
         ("header", "2. Traceability"),
         ("list", [
             "**satisfy**: Asserting that a design element (part) meets a requirement.",

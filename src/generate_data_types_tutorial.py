@@ -63,9 +63,10 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     full_code = """package DataTypes_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     /* Note: ISQ is automatically imported by SI (public import) */
     private import SI::*;
+    private import MeasurementReferences::ConversionByPrefix;
 
     /* --- 1. Custom Value Definitions --- */
     /* Specializing a primitive */
@@ -77,14 +78,25 @@ def generate_for_theme(theme_key, theme):
         attribute y : Real;
         attribute z : Real;
     }
+    
+    /* --- 2. Custom Units --- */
+    package ProjectUnits {
+        attribute <ms> millisecond : DurationUnit {
+            :>> unitConversion : ConversionByPrefix {
+                :>> prefix = milli;
+                :>> referenceUnit = s;
+            }
+        }
+        attribute <'mm/h'> 'millimetre per hour' : SpeedUnit = mm / h;
+    }
 
     part def SensorSystem {
-        /* --- 2. Using Primitives --- */
+        /* --- 3. Using Primitives --- */
         attribute isActive : Boolean = true;
         attribute firmwareVersion : String = "v1.2.4";
         attribute cycleCount : Integer = 0;
         
-        /* --- 3. Using ISQ Units --- */
+        /* --- 4. Using ISQ Units --- */
         /* Type checking ensures you can't assign Mass to Length */
         /* Validating physical properties (Recommended) */
         attribute weight :> ISQ::mass = 5.5 [kg];
@@ -96,7 +108,7 @@ def generate_for_theme(theme_key, theme):
         /* Unit conversion is handled by checks (e.g. [km] -> [m]) */
         attribute speed :> ISQ::speed = 120 [km/h]; 
         
-        /* --- 4. Using Custom Types --- */
+        /* --- 5. Using Custom Types --- */
         attribute sensorID : IDString = "SENS-001";
         attribute location : Coordinates {
              :>> x = 10.0;
@@ -164,7 +176,7 @@ def generate_for_theme(theme_key, theme):
         ("header", "2. ISQ Units (Physical Quantities)"),
         ("text", "For engineering, using standard quantities is critical. The `SI` library publicly imports `ISQ`, so importing `SI` gives you access to both units (e.g. `[kg]`) and physical quantity types (e.g. `ISQ::mass`)."),
         ("header", "3. Custom Data Types"),
-        ("text", "You can define domain-specific types:\n• **attribute def**: A reusable value type definition.\n• **struct**: A generalized structured data type."),
+        ("text", "You can define domain-specific types:\n• **attribute def**: A reusable value type definition.\n• **struct**: A generalized structured data type.\n• **ProjectUnits**: Explicitly define derived units or use `ConversionByPrefix`."),
         ("header", "4. Data Types and Values Example"),
         ("code", full_code)
     ]
