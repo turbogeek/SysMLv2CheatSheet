@@ -22,6 +22,23 @@ The fundamental pattern in SysML v2 is the **definition-usage** relationship:
 
 This pattern applies throughout the language for all major constructs.
 
+### Reserved Words to Avoid
+
+You must never use these reserved words as element names:
+`about`, `abstract`, `accept`, `action`, `actor`, `after`, `alias`, `all`, `allocate`, `allocation`, `analysis`, `and`, `as`, `assert`, `assign`, `assume`, `at`, `attribute`, `bind`, `binding`, `by`, `calc`, `case`, `comment`, `concern`, `connect`, `connection`, `constant`, `constraint`, `crosses`, `decide`, `def`, `default`, `defined`, `dependency`, `derived`, `do`, `doc`, `else`, `end`, `entry`, `enum`, `event`, `exhibit`, `exit`, `expose`, `false`, `filter`, `first`, `flow`, `for`, `fork`, `frame`, `from`, `hastype`, `if`, `implies`, `import`, `in`, `include`, `individual`, `inout`, `interface`, `istype`, `item`, `join`, `language`, `library`, `locale`, `loop`, `merge`, `message`, `meta`, `metadata`, `nonunique`, `not`, `null`, `objective`, `occurrence`, `of`, `or`, `ordered`, `out`, `package`, `parallel`, `part`, `perform`, `port`, `private`, `protected`, `public`, `redefines`, `ref`, `references`, `render`, `rendering`, `rep`, `require`, `requirement`, `return`, `satisfy`, `send`, `snapshot`, `specializes`, `stakeholder`, `standard`, `state`, `subject`, `subsets`, `succession`, `terminate`, `then`, `timeslice`, `to`, `transition`, `true`, `until`, `use`, `variant`, `variation`, `verification`, `verify`, `via`, `view`, `viewpoint`, `when`, `while`, `xor`
+
+When you need to use concepts like "standard", "type", "default", "interface", etc., use alternative names like `communicationStandard`, `dataType`, `defaultValue`, `commInterface`, `busInterface`, etc.
+
+**Common Reserved Word Alternatives:**
+- `standard` → `communicationStandard`, `protocolStandard`
+- `type` → `dataType`, `elementType`, `messageType`
+- `default` → `defaultValue`, `defaultSetting`
+- `interface` → `commInterface`, `busInterface`, `portInterface`
+- `connection` → use as keyword only, not as attribute name
+- `state` → `currentState`, `systemState` (when used as attribute)
+- **`event` → `buttonEvent`, `userEvent`, `signalEvent`** (CRITICAL - very common mistake as parameter name)
+- **`port` → `portNumber`, `tcpPort`, `commPort`** (CRITICAL - conflicts with `port` keyword when used as attribute name)
+
 ---
 
 ## 1. STRUCTURAL MODELING
