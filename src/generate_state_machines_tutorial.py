@@ -34,9 +34,10 @@ def generate_for_theme(theme_key, theme):
     y += 30
     lines = [
         "• entry / do / exit: Actions performed during the state.",
-        "• accept: Waits for an event trigger (message, signal).",
-        "• transition <source> accept <trigger> then <target>;",
-        "• after: Time-based trigger."
+        "• transition first <source> accept <trigger> if <guard> do <action> then <target>;",
+        "• **CRITICAL**: Guards must use `if` (not `where`).",
+        "• **CRITICAL**: Transitions can only have one source state. No `or` logic allowed. Write separate transitions.",
+        "• **CRITICAL**: Actions called via `do` must be defined in the same block to access block properties."
     ]
     for line in lines:
         svg += utils.text(50, y, line, 18, theme.text_main)
@@ -52,6 +53,9 @@ def generate_for_theme(theme_key, theme):
     
     /* Define the component containing the machine */
     part def TrafficLight {
+        /* Local actions defined in part scope can access part attributes */
+        action def LogStatus;
+        
         /* The machine behavior */
         state def LightLogic {
             /* Initial entry point */
@@ -62,9 +66,10 @@ def generate_for_theme(theme_key, theme):
             state Yellow;
             state Green;
             
-            transition Red accept after 20 [SI::s] then Green;
-            transition Green accept after 5 [SI::s] then Yellow;
-            transition Yellow accept after 30 [SI::s] then Red;
+            transition redToGreen first Red accept after 20 [SI::s] then Green;
+            transition greenToYellow first Green accept after 5 [SI::s] then Yellow;
+            /* Using if-guard and do-action */
+            transition yellowToRed first Yellow accept after 30 [SI::s] if true do action log : LogStatus then Red;
         }
         /* Usage of the machine */
         state logic : LightLogic;
@@ -124,8 +129,10 @@ def generate_for_theme(theme_key, theme):
         ("list", [
             "**state def**: Defines the state machine structure.",
             "**entry/do/exit**: Actions associated with a state.",
-            "**transition <source> accept <trigger> then <target>**: Defines a transition between states.",
-            "**accept <event>** / **after <time>**: Triggers for transitions."
+            "**transition first <source> accept <trigger> if <guard> do <action> then <target>**: Full transition syntax.",
+            "**Rule**: Guards must use `if`, not `where`.",
+            "**Rule**: A transition can only have ONE source state. You cannot use `or` in the `first` clause.",
+            "**Rule**: Actions used inside a state machine (e.g. `do action`) should be defined in the surrounding part so they can access the part's attributes."
         ]),
         ("header", "3. Traffic Light Example"),
         ("code", full_code)

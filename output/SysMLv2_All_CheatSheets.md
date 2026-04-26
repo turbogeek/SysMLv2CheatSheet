@@ -1,6 +1,6 @@
 # SysML v2 Cheat Sheets: Complete Collection
 
-**Generated on:** 2026-04-26 15:06:22
+**Generated on:** 2026-04-26 15:16:42
 
 ---
 
@@ -794,7 +794,7 @@ package Connections_1bConnectionUsage {
 
 ## 2. Binding Connector (=)
 
-Equating two elements.
+Equating elements. **CRITICAL**: No array indices are allowed (e.g. `a[1] = b[1]` is invalid).
 
 ```sysml
 package Connections_2BindingConnector {
@@ -806,6 +806,8 @@ package Connections_2BindingConnector {
        part a : A;
        part b : B;
        bind a.p1 = b.p2;
+       /* CRITICAL: No array indices allowed! Bind multiple items directly: */
+       /* bind a.ports = b.ports; */
     }
 }
 ```
@@ -1492,7 +1494,7 @@ package Requirements_1RequirementDefinition {
 
 ## 2. Requirement Usage
 
-Specific requirement instances.
+Specific requirement instances using `<'ID'> 'Name' : Type`.
 
 ```sysml
 package Requirements_2RequirementUsage {
@@ -1501,9 +1503,8 @@ package Requirements_2RequirementUsage {
     attribute def Time;
     attribute ms;
     requirement def Performance { attribute maxResponse : Time; }
-    requirement req1 : Performance {
+    requirement <'REQ-001'> 'Fast' : Performance {
       doc /* Response < 10ms */
-      attribute id = "REQ-001";
       attribute maxResponse = 10 [ms];
     }
 }
@@ -1560,9 +1561,9 @@ package Requirements_5ConstraintDefinition {
 }
 ```
 
-## 6. Assertions
+## 6. Assert Constraint
 
-Applying constraints.
+Applying constraints directly. **CRITICAL**: No semicolon at the end of the constraint block.
 
 ```sysml
 package Requirements_6Assertions {
@@ -1570,11 +1571,10 @@ package Requirements_6Assertions {
     private import SysML::*;
     attribute def Mass;
     attribute kg;
-    constraint def CheckMass { in m : Mass; m <= 1000[kg] }
     part car {
       attribute mass : Mass;
-      assert constraint CheckMass {
-        in m = mass;
+      require constraint {
+        mass <= 1000 [kg]
       }
     }
 }
@@ -1835,7 +1835,7 @@ package States_2Transitions {
 
 ## 3. Guards & Effects
 
-Conditions and actions on transition.
+Conditions and actions on transition. **CRITICAL**: Use `if` for guards, not `where`. Transitions can only have one source state (no `or` in `first`). Actions must be defined in the same block.
 
 ```sysml
 package States_3GuardsEffects {
@@ -2051,8 +2051,11 @@ view myView {
 ## 5. Filter
 
 ```sysml
-filter @Part; /* Keep only parts */
+filter @PartUsage; /* Keep only parts */
+filter @AllocationUsage; /* Keep allocations */
 ```
+
+**CRITICAL**: Always filter by Usage (e.g. `@PartUsage`, `@AllocationUsage`), not by Definition.
 
 ## 6. Rendering
 

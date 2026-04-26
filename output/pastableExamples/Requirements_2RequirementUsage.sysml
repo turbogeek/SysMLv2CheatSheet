@@ -4,9 +4,8 @@ package Requirements_2RequirementUsage {
     attribute def Time;
     attribute ms;
     requirement def Performance { attribute maxResponse : Time; }
-    requirement req1 : Performance {
+    requirement <'REQ-001'> 'Fast' : Performance {
       doc /* Response < 10ms */
-      attribute id = "REQ-001";
       attribute maxResponse = 10 [ms];
     }
 }

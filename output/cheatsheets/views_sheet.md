@@ -44,8 +44,11 @@ view myView {
 ## 5. Filter
 
 ```sysml
-filter @Part; /* Keep only parts */
+filter @PartUsage; /* Keep only parts */
+filter @AllocationUsage; /* Keep allocations */
 ```
+
+**CRITICAL**: Always filter by Usage (e.g. `@PartUsage`, `@AllocationUsage`), not by Definition.
 
 ## 6. Rendering
 

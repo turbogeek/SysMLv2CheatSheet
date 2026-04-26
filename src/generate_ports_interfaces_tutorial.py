@@ -35,7 +35,9 @@ def generate_for_theme(theme_key, theme):
     lines = [
         "Interfaces define the contract for interaction (what flows in/out).",
         "• interface def: Reusable definition of ports/flows.",
-        "• Conjugation (~): Flips the direction of flows (e.g., Plug vs Socket)."
+        "• Conjugation (~): Flips the direction of flows (e.g., Plug vs Socket).",
+        "  **CRITICAL**: `end` items within an interface MUST be ports, not parts.",
+        "  **CRITICAL**: Use `flow a to b;` internally, do not use `from` or `of`."
     ]
     for line in lines:
         svg += utils.text(50, y, line, 18, theme.text_main)
@@ -58,9 +60,12 @@ def generate_for_theme(theme_key, theme):
     
     /* Logical data interface */
     interface def DataLink {
-        /* flow of messages */
-        in command : String;
-        out status : String;
+        /* end definitions MUST be typed by a port (if complex) or left untyped */
+        end source;
+        end target;
+        /* flow of messages inside the interface */
+        flow source to target;
+        /* CRITICAL: do not use 'from' or 'of' inside interface flows */
     }
 
     /* --- 2. Component Definitions --- */
@@ -138,7 +143,9 @@ def generate_for_theme(theme_key, theme):
         ("header", "2. Interface Definitions"),
         ("list", [
             "**interface def**: Reusable definition of ports/flows.",
-            "**Conjugation (~)**: Flips the direction of flows (e.g., Plug vs Socket). If an interface has `out pwr`, the conjugated version has `in pwr`."
+            "**Conjugation (~)**: Flips the direction of flows (e.g., Plug vs Socket). If an interface has `out pwr`, the conjugated version has `in pwr`.",
+            "**Rule**: The `end` properties inside an interface must be ports (or untyped), never parts.",
+            "**Rule**: Define internal flows using `flow source to target;` without `from` or `of` keywords."
         ]),
         ("header", "3. Power & Data Example"),
         ("code", full_code)

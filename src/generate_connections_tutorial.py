@@ -21,8 +21,11 @@ def generate_for_theme(theme_key, theme):
     lines = [
         "Connections link ports or parts together to enable interaction.",
         "• connect a to b; : A generic connection.",
-        "• binding a = b; : Equivalence (a IS b, or they are wired directly).",
-        "  Useful for exposing internal ports to external boundaries."
+        "• bind a = b; : Equivalence (a IS b, or they are wired directly).",
+        "  Useful for exposing internal ports to external boundaries.",
+        "  **CRITICAL**: Bindings must use '=' (never 'to').",
+        "  **CRITICAL**: Bindings cannot use array indices (e.g. a[1] = b[1] is invalid).",
+        "  To bind multiple parts, declare parts individually or bind the multi-part as a whole."
     ]
     for line in lines:
         svg += utils.text(50, y, line, 18, theme.text_main)
@@ -50,8 +53,14 @@ def generate_for_theme(theme_key, theme):
         /* Exposing the computer's ethernet port to the outside world */
         port externalEth : DataLink;
         
-        /* 'binding' means internal eth0 IS the same interaction point as externalEth */
-        binding externalEth = computer.eth0;
+        /* 'bind' means internal eth0 IS the same interaction point as externalEth */
+        /* MUST use '=' and NOT 'to' */
+        bind externalEth = computer.eth0;
+        
+        /* --- Multiplicity Binding --- */
+        /* Array indices are forbidden in bindings. */
+        /* You can bind a single source to a multi-part target directly without indices: */
+        /* bind battery.pwrOut = computers.pwrIn; */
     }
 }"""
     
@@ -106,7 +115,9 @@ def generate_for_theme(theme_key, theme):
         ("header", "1. Connection Basics"),
         ("list", [
             "**connect a to b**: Standard connection between two endpoints.",
-            "**binding a = b**: Equivalence connection. Often used for **delegation** (exposing an internal part's port to the boundary of the container)."
+            "**bind a = b**: Equivalence connection. Often used for **delegation** (exposing an internal part's port to the boundary of the container).",
+            "**Rule**: Bindings must always use `=` instead of `to`.",
+            "**Rule**: Bindings cannot contain array indices or multiplicity ranges (e.g. `bind a[1] = b[1]` is invalid). Bind parts individually or as a complete multi-part instead."
         ]),
         ("header", "2. Wiring Example"),
         ("text", "This example shows connecting a Battery to a Computer, and binding the internal Ethernet port to the outside."),

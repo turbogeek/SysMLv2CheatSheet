@@ -9,6 +9,10 @@ package Views_Tutorial {
             filter @PartDefinition;
             filter @PartUsage;
         }
+        view allocationTableView : rt, EssentialElementsFilter, NonStandardLibraryElementFilter {
+            /* CRITICAL: use @AllocationUsage, not @Allocation */
+            filter @AllocationUsage;
+        }
     }
 
     part def Car;

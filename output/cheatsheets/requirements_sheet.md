@@ -20,7 +20,7 @@ package Requirements_1RequirementDefinition {
 
 ## 2. Requirement Usage
 
-Specific requirement instances.
+Specific requirement instances using `<'ID'> 'Name' : Type`.
 
 ```sysml
 package Requirements_2RequirementUsage {
@@ -29,9 +29,8 @@ package Requirements_2RequirementUsage {
     attribute def Time;
     attribute ms;
     requirement def Performance { attribute maxResponse : Time; }
-    requirement req1 : Performance {
+    requirement <'REQ-001'> 'Fast' : Performance {
       doc /* Response < 10ms */
-      attribute id = "REQ-001";
       attribute maxResponse = 10 [ms];
     }
 }
@@ -88,9 +87,9 @@ package Requirements_5ConstraintDefinition {
 }
 ```
 
-## 6. Assertions
+## 6. Assert Constraint
 
-Applying constraints.
+Applying constraints directly. **CRITICAL**: No semicolon at the end of the constraint block.
 
 ```sysml
 package Requirements_6Assertions {
@@ -98,11 +97,10 @@ package Requirements_6Assertions {
     private import SysML::*;
     attribute def Mass;
     attribute kg;
-    constraint def CheckMass { in m : Mass; m <= 1000[kg] }
     part car {
       attribute mass : Mass;
-      assert constraint CheckMass {
-        in m = mass;
+      require constraint {
+        mass <= 1000 [kg]
       }
     }
 }

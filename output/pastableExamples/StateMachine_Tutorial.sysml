@@ -3,6 +3,9 @@ package StateMachine_Tutorial {
     
     /* Define the component containing the machine */
     part def TrafficLight {
+        /* Local actions defined in part scope can access part attributes */
+        action def LogStatus;
+        
         /* The machine behavior */
         state def LightLogic {
             /* Initial entry point */
@@ -13,9 +16,10 @@ package StateMachine_Tutorial {
             state Yellow;
             state Green;
             
-            transition Red accept after 20 [SI::s] then Green;
-            transition Green accept after 5 [SI::s] then Yellow;
-            transition Yellow accept after 30 [SI::s] then Red;
+            transition redToGreen first Red accept after 20 [SI::s] then Green;
+            transition greenToYellow first Green accept after 5 [SI::s] then Yellow;
+            /* Using if-guard and do-action */
+            transition yellowToRed first Yellow accept after 30 [SI::s] if true do action log : LogStatus then Red;
         }
         /* Usage of the machine */
         state logic : LightLogic;

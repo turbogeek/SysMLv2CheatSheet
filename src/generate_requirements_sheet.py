@@ -51,9 +51,8 @@ def generate_for_theme(theme_key, theme):
     
     # --- Card 2: Requirement Usage ---
     lines = [
-        [("requirement", theme.c_keyword), (" req1", theme.c_normal), (" :", theme.c_normal), (" Performance", theme.c_type), (" {", theme.c_normal)],
+        [("requirement", theme.c_keyword), (" <'REQ-001'>", theme.c_string), (" 'Fast'", theme.c_string), (" :", theme.c_normal), (" Performance", theme.c_type), (" {", theme.c_normal)],
         [("  doc", theme.c_keyword), (" /* Response < 10ms */", theme.c_comment)],
-        [("  id", theme.c_keyword), (" \"REQ-001\"", theme.c_string), (";", theme.c_normal)],
         [("  maxResponse", theme.c_normal), (" =", theme.c_normal), (" 10", theme.c_string), (" [ms]", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
@@ -63,15 +62,14 @@ def generate_for_theme(theme_key, theme):
     attribute def Time;
     attribute ms;
     requirement def Performance { attribute maxResponse : Time; }
-    requirement req1 : Performance {
+    requirement <'REQ-001'> 'Fast' : Performance {
       doc /* Response < 10ms */
-      attribute id = "REQ-001";
       attribute maxResponse = 10 [ms];
     }
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Requirement Usage", lines, "Specific requirement instances.", theme, full_code=code_2, sheet_name="Requirements", wrapper_type="structure")
     md_blocks.append(("header", "2. Requirement Usage"))
-    md_blocks.append(("text", "Specific requirement instances."))
+    md_blocks.append(("text", "Specific requirement instances using `<'ID'> 'Name' : Type`."))
     md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP
@@ -151,9 +149,9 @@ def generate_for_theme(theme_key, theme):
     # --- Card 6: Assertions ---
     lines = [
         [("part", theme.c_keyword), (" car", theme.c_normal), (" {", theme.c_normal)],
-        [("  assert", theme.c_keyword), (" constraint", theme.c_keyword), (" CheckMass", theme.c_type), (" {", theme.c_normal)],
-        [("    in", theme.c_keyword), (" m", theme.c_normal), (" =", theme.c_normal), (" mass", theme.c_normal), (";", theme.c_normal)],
-        [("  }", theme.c_normal)],
+        [("  require", theme.c_keyword), (" constraint", theme.c_keyword), (" {", theme.c_normal)],
+        [("    mass <= 1000 [kg]", theme.c_normal)],
+        [("  }", theme.c_normal), (" /* CRITICAL: No semicolon */", theme.c_comment)],
         [("}", theme.c_normal)]
     ]
     code_6 = """package Requirements_6Assertions {
@@ -161,17 +159,16 @@ def generate_for_theme(theme_key, theme):
     private import SysML::*;
     attribute def Mass;
     attribute kg;
-    constraint def CheckMass { in m : Mass; m <= 1000[kg] }
     part car {
       attribute mass : Mass;
-      assert constraint CheckMass {
-        in m = mass;
+      require constraint {
+        mass <= 1000 [kg]
       }
     }
 }"""
-    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Assertions", lines, "Applying constraints.", theme, full_code=code_6, sheet_name="Requirements", wrapper_type="structure")
-    md_blocks.append(("header", "6. Assertions"))
-    md_blocks.append(("text", "Applying constraints."))
+    card, h = utils.draw_card(col2_x, cur_y_c2, COL_WIDTH, "6. Assert Constraint", lines, "Applying constraints without semicolons.", theme, full_code=code_6, sheet_name="Requirements", wrapper_type="structure")
+    md_blocks.append(("header", "6. Assert Constraint"))
+    md_blocks.append(("text", "Applying constraints directly. **CRITICAL**: No semicolon at the end of the constraint block."))
     md_blocks.append(("code", code_6))
     svg += card
     cur_y_c2 += h + ROW_GAP

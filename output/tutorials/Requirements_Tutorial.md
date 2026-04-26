@@ -14,7 +14,7 @@ requirement <'REQ-ID'> 'Name' : RequirementType { doc /* Description */; }
 
 - **satisfy**: Asserting that a design element (part) meets a requirement.
 - **verify**: Asserting that a test case (verification case) proves a requirement.
-- **refine**: Decomposing a requirement into lower-level details.
+- **require constraint { ... }**: Adding formal constraints inside requirements. **CRITICAL**: Do NOT place a semicolon at the end of the constraint block.
 
 ## 3. Requirements Example
 
@@ -30,8 +30,13 @@ package Requirements_Tutorial {
     
     requirement <'REQ-101'> 'Breaking Distance' : PerformanceReq {
         doc /* The vehicle must stop within 50 meters from 100km/h. */
-        /* Formal constraint */
+        /* Formal attributes */
         attribute maxDistance : Real = 50.0;
+        attribute actualDistance : Real;
+        /* Formal constraint (CRITICAL: no semicolon after constraint block) */
+        require constraint {
+            actualDistance <= maxDistance
+        }
     }
 
     /* --- 2. Satisfaction (Design) --- */

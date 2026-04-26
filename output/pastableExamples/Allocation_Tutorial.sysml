@@ -6,11 +6,12 @@ package Allocation_Tutorial {
     /* --- Physical / Structural View --- */
     part def FlightComputer;
     
-    package Deployment {
+    /* Create a dedicated package for allocations between usages */
+    package AllocationContext {
         part ecu : FlightComputer;
         action plan : ComputePath;
         
-        /* Allocate the action (plan) to the hardware (ecu) */
+        /* Allocate the action usage (plan) to the hardware usage (ecu) */
         /* Meaning: "The ECU executes the planning action" */
         allocate plan to ecu;
     }

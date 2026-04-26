@@ -15,7 +15,13 @@ package Connections_Tutorial {
         /* Exposing the computer's ethernet port to the outside world */
         port externalEth : DataLink;
         
-        /* 'binding' means internal eth0 IS the same interaction point as externalEth */
-        binding externalEth = computer.eth0;
+        /* 'bind' means internal eth0 IS the same interaction point as externalEth */
+        /* MUST use '=' and NOT 'to' */
+        bind externalEth = computer.eth0;
+        
+        /* --- Multiplicity Binding --- */
+        /* Array indices are forbidden in bindings. */
+        /* You can bind a single source to a multi-part target directly without indices: */
+        /* bind battery.pwrOut = computers.pwrIn; */
     }
 }

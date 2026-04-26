@@ -108,7 +108,7 @@ def generate_for_theme(theme_key, theme):
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Guards & Effects", lines, "Conditions and actions on transition.", theme, full_code=code_3, sheet_name="States", wrapper_type="state")
     md_blocks.append(("header", "3. Guards & Effects"))
-    md_blocks.append(("text", "Conditions and actions on transition."))
+    md_blocks.append(("text", "Conditions and actions on transition. **CRITICAL**: Use `if` for guards, not `where`. Transitions can only have one source state (no `or` in `first`). Actions must be defined in the same block."))
     md_blocks.append(("code", code_3))
     svg += card
     cur_y_c1 += h + ROW_GAP

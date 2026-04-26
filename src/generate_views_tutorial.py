@@ -57,6 +57,10 @@ def generate_for_theme(theme_key, theme):
             filter @PartDefinition;
             filter @PartUsage;
         }
+        view allocationTableView : rt, EssentialElementsFilter, NonStandardLibraryElementFilter {
+            /* CRITICAL: use @AllocationUsage, not @Allocation */
+            filter @AllocationUsage;
+        }
     }
 
     part def Car;
@@ -150,7 +154,8 @@ def generate_for_theme(theme_key, theme):
         ("list", [
             "**SymbolicViews::gv**: Graphical View (Diagram).",
             "**TabularViews::gt**: Generic Table.",
-            "**TabularViews::rt**: Requirements Table."
+            "**TabularViews::rt**: Requirements Table.",
+            "**CRITICAL**: When filtering for allocations or satisfies, filter by the usage (e.g., `@AllocationUsage`), not the definition (e.g., `@Allocation`)."
         ]),
         ("header", "3. Views Example"),
         ("code", full_code)

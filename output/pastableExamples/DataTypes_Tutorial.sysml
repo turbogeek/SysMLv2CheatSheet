@@ -51,5 +51,11 @@ package DataTypes_Tutorial {
              :>> y = 20.0;
              :>> z = 0.0;
         }
+        
+        /* Information units require ISQInformation */
+        attribute memorySize :> ISQInformation::storageCapacity = 64 [ISQInformation::GB];
+        
+        /* Battery capacity */
+        attribute batteryCapacity :> ISQ::electricCharge = 1500 [ProjectUnits::mAh];
     }
 }

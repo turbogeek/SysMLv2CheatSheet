@@ -5,7 +5,9 @@
 ## 1. Connection Basics
 
 - **connect a to b**: Standard connection between two endpoints.
-- **binding a = b**: Equivalence connection. Often used for **delegation** (exposing an internal part's port to the boundary of the container).
+- **bind a = b**: Equivalence connection. Often used for **delegation** (exposing an internal part's port to the boundary of the container).
+- **Rule**: Bindings must always use `=` instead of `to`.
+- **Rule**: Bindings cannot contain array indices or multiplicity ranges (e.g. `bind a[1] = b[1]` is invalid). Bind parts individually or as a complete multi-part instead.
 
 ## 2. Wiring Example
 
@@ -29,8 +31,14 @@ package Connections_Tutorial {
         /* Exposing the computer's ethernet port to the outside world */
         port externalEth : DataLink;
         
-        /* 'binding' means internal eth0 IS the same interaction point as externalEth */
-        binding externalEth = computer.eth0;
+        /* 'bind' means internal eth0 IS the same interaction point as externalEth */
+        /* MUST use '=' and NOT 'to' */
+        bind externalEth = computer.eth0;
+        
+        /* --- Multiplicity Binding --- */
+        /* Array indices are forbidden in bindings. */
+        /* You can bind a single source to a multi-part target directly without indices: */
+        /* bind battery.pwrOut = computers.pwrIn; */
     }
 }
 ```

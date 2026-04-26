@@ -44,7 +44,7 @@ package States_2Transitions {
 
 ## 3. Guards & Effects
 
-Conditions and actions on transition.
+Conditions and actions on transition. **CRITICAL**: Use `if` for guards, not `where`. Transitions can only have one source state (no `or` in `first`). Actions must be defined in the same block.
 
 ```sysml
 package States_3GuardsEffects {

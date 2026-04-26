@@ -11,6 +11,7 @@ Views provide a way to visualize and present the model. They do not change the m
 - **SymbolicViews::gv**: Graphical View (Diagram).
 - **TabularViews::gt**: Generic Table.
 - **TabularViews::rt**: Requirements Table.
+- **CRITICAL**: When filtering for allocations or satisfies, filter by the usage (e.g., `@AllocationUsage`), not the definition (e.g., `@Allocation`).
 
 ## 3. Views Example
 
@@ -25,6 +26,10 @@ package Views_Tutorial {
         view partsTreeView : TreeView, EssentialElementsFilter, NonStandardLibraryElementFilter {
             filter @PartDefinition;
             filter @PartUsage;
+        }
+        view allocationTableView : rt, EssentialElementsFilter, NonStandardLibraryElementFilter {
+            /* CRITICAL: use @AllocationUsage, not @Allocation */
+            filter @AllocationUsage;
         }
     }
 

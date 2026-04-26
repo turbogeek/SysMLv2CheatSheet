@@ -130,7 +130,10 @@ def generate_for_theme(theme_key, theme):
         expose myCar::**;
         
         /* Keep only Parts */
-        filter @Part;
+        filter @PartUsage;
+        
+        /* Keep only Allocations (CRITICAL: use Usage, not Definition) */
+        filter @AllocationUsage;
         
         /* Or exclude specific things (logic depends on library) */
     }
@@ -210,7 +213,8 @@ view mySafetyView { satisfy 'sa'; }"""),
 }"""),
             
             ("header", "5. Filter"),
-            ("code", """filter @Part; /* Keep only parts */"""),
+            ("code", """filter @PartUsage; /* Keep only parts */\nfilter @AllocationUsage; /* Keep allocations */"""),
+            ("text", "**CRITICAL**: Always filter by Usage (e.g. `@PartUsage`, `@AllocationUsage`), not by Definition."),
             
             ("header", "6. Rendering"),
             ("code", """render asTable { ... }

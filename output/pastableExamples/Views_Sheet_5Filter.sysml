@@ -7,7 +7,10 @@ package Views {
         expose myCar::**;
         
         /* Keep only Parts */
-        filter @Part;
+        filter @PartUsage;
+        
+        /* Keep only Allocations (CRITICAL: use Usage, not Definition) */
+        filter @AllocationUsage;
         
         /* Or exclude specific things (logic depends on library) */
     }

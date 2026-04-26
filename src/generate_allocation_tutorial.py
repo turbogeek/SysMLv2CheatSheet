@@ -21,8 +21,9 @@ def generate_for_theme(theme_key, theme):
     lines = [
         "Allocation maps one model element to another to show realization or deployment.",
         "Common uses:",
-        "• Logical to Physical (Software Part -> Hardware CPU).",
-        "• Behavior to Structure (Action -> Part executing it)."
+        "• Logical to Physical (Logical Part Usage -> Physical Part Usage).",
+        "• Behavior to Structure (Action Usage -> Part Usage executing it).",
+        "**CRITICAL**: Allocations must happen between usages (instances), NOT definitions."
     ]
     for line in lines:
         svg += utils.text(50, y, line, 18, theme.text_main)
@@ -53,11 +54,12 @@ def generate_for_theme(theme_key, theme):
     /* --- Physical / Structural View --- */
     part def FlightComputer;
     
-    package Deployment {
+    /* Create a dedicated package for allocations between usages */
+    package AllocationContext {
         part ecu : FlightComputer;
         action plan : ComputePath;
         
-        /* Allocate the action (plan) to the hardware (ecu) */
+        /* Allocate the action usage (plan) to the hardware usage (ecu) */
         /* Meaning: "The ECU executes the planning action" */
         allocate plan to ecu;
     }
@@ -110,7 +112,7 @@ def generate_for_theme(theme_key, theme):
     # Separate Markdown Generation
     blocks = [
         ("header", "1. Allocation Concept"),
-        ("text", "Allocation maps one model element to another, typically to show realization (e.g., Logical functionality allocated to Physical hardware)."),
+        ("text", "Allocation maps one model element to another, typically to show realization (e.g., Logical functionality allocated to Physical hardware). **CRITICAL**: Allocations must happen between usages (instances), NOT definitions. Use a dedicated `AllocationContext` package to hold the instances and their allocations."),
         ("header", "2. Syntax"),
         ("code", "allocate <source> to <target>;"),
         ("header", "3. Deployment Example"),

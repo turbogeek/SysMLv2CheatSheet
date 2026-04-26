@@ -10,9 +10,12 @@ package PortsInterfaces_Tutorial {
     
     /* Logical data interface */
     interface def DataLink {
-        /* flow of messages */
-        in command : String;
-        out status : String;
+        /* end definitions MUST be typed by a port (if complex) or left untyped */
+        end source;
+        end target;
+        /* flow of messages inside the interface */
+        flow source to target;
+        /* CRITICAL: do not use 'from' or 'of' inside interface flows */
     }
 
     /* --- 2. Component Definitions --- */

@@ -1,6 +1,6 @@
 # SysML v2 Tutorials: Complete Collection
 
-**Generated on:** 2026-04-26 15:06:22
+**Generated on:** 2026-04-26 15:16:42
 
 ---
 
@@ -110,7 +110,7 @@ package Actions_Tutorial {
 
 ## 1. Allocation Concept
 
-Allocation maps one model element to another, typically to show realization (e.g., Logical functionality allocated to Physical hardware).
+Allocation maps one model element to another, typically to show realization (e.g., Logical functionality allocated to Physical hardware). **CRITICAL**: Allocations must happen between usages (instances), NOT definitions. Use a dedicated `AllocationContext` package to hold the instances and their allocations.
 
 ## 2. Syntax
 
@@ -129,11 +129,12 @@ package Allocation_Tutorial {
     /* --- Physical / Structural View --- */
     part def FlightComputer;
     
-    package Deployment {
+    /* Create a dedicated package for allocations between usages */
+    package AllocationContext {
         part ecu : FlightComputer;
         action plan : ComputePath;
         
-        /* Allocate the action (plan) to the hardware (ecu) */
+        /* Allocate the action usage (plan) to the hardware usage (ecu) */
         /* Meaning: "The ECU executes the planning action" */
         allocate plan to ecu;
     }
@@ -215,7 +216,9 @@ package Analysis_Tutorial {
 ## 1. Connection Basics
 
 - **connect a to b**: Standard connection between two endpoints.
-- **binding a = b**: Equivalence connection. Often used for **delegation** (exposing an internal part's port to the boundary of the container).
+- **bind a = b**: Equivalence connection. Often used for **delegation** (exposing an internal part's port to the boundary of the container).
+- **Rule**: Bindings must always use `=` instead of `to`.
+- **Rule**: Bindings cannot contain array indices or multiplicity ranges (e.g. `bind a[1] = b[1]` is invalid). Bind parts individually or as a complete multi-part instead.
 
 ## 2. Wiring Example
 
@@ -239,8 +242,14 @@ package Connections_Tutorial {
         /* Exposing the computer's ethernet port to the outside world */
         port externalEth : DataLink;
         
-        /* 'binding' means internal eth0 IS the same interaction point as externalEth */
-        binding externalEth = computer.eth0;
+        /* 'bind' means internal eth0 IS the same interaction point as externalEth */
+        /* MUST use '=' and NOT 'to' */
+        bind externalEth = computer.eth0;
+        
+        /* --- Multiplicity Binding --- */
+        /* Array indices are forbidden in bindings. */
+        /* You can bind a single source to a multi-part target directly without indices: */
+        /* bind battery.pwrOut = computers.pwrIn; */
     }
 }
 ```
@@ -326,14 +335,14 @@ SysML v2 provides familiar primitive types in the ScalarValues library:
 
 ## 2. ISQ Units (Physical Quantities)
 
-For engineering, using standard quantities is critical. The `SI` library publicly imports `ISQ`, so importing `SI` gives you access to both units (e.g. `[kg]`) and physical quantity types (e.g. `ISQ::mass`).
+For engineering, using standard quantities is critical. The `SI` library publicly imports `ISQ`. Use `ISQ::mass`, `ISQ::electricCharge`, and `ISQInformation::storageCapacity` for proper type definitions.
 
 ## 3. Custom Data Types
 
 You can define domain-specific types:
 • **attribute def**: A reusable value type definition.
 • **struct**: A generalized structured data type.
-• **ProjectUnits**: Explicitly define derived units or use `ConversionByPrefix`.
+• **ProjectUnits**: Explicitly define derived units or use `ConversionByPrefix` (e.g. for `mAh`).
 
 ## 4. Data Types and Values Example
 
@@ -391,6 +400,12 @@ package DataTypes_Tutorial {
              :>> y = 20.0;
              :>> z = 0.0;
         }
+        
+        /* Information units require ISQInformation */
+        attribute memorySize :> ISQInformation::storageCapacity = 64 [ISQInformation::GB];
+        
+        /* Battery capacity */
+        attribute batteryCapacity :> ISQ::electricCharge = 1500 [ProjectUnits::mAh];
     }
 }
 ```
@@ -986,6 +1001,8 @@ Ports define distinct interaction points on the boundary of a part. They allow y
 
 - **interface def**: Reusable definition of ports/flows.
 - **Conjugation (~)**: Flips the direction of flows (e.g., Plug vs Socket). If an interface has `out pwr`, the conjugated version has `in pwr`.
+- **Rule**: The `end` properties inside an interface must be ports (or untyped), never parts.
+- **Rule**: Define internal flows using `flow source to target;` without `from` or `of` keywords.
 
 ## 3. Power & Data Example
 
@@ -1002,9 +1019,12 @@ package PortsInterfaces_Tutorial {
     
     /* Logical data interface */
     interface def DataLink {
-        /* flow of messages */
-        in command : String;
-        out status : String;
+        /* end definitions MUST be typed by a port (if complex) or left untyped */
+        end source;
+        end target;
+        /* flow of messages inside the interface */
+        flow source to target;
+        /* CRITICAL: do not use 'from' or 'of' inside interface flows */
     }
 
     /* --- 2. Component Definitions --- */
@@ -1046,7 +1066,7 @@ requirement <'REQ-ID'> 'Name' : RequirementType { doc /* Description */; }
 
 - **satisfy**: Asserting that a design element (part) meets a requirement.
 - **verify**: Asserting that a test case (verification case) proves a requirement.
-- **refine**: Decomposing a requirement into lower-level details.
+- **require constraint { ... }**: Adding formal constraints inside requirements. **CRITICAL**: Do NOT place a semicolon at the end of the constraint block.
 
 ## 3. Requirements Example
 
@@ -1062,8 +1082,13 @@ package Requirements_Tutorial {
     
     requirement <'REQ-101'> 'Breaking Distance' : PerformanceReq {
         doc /* The vehicle must stop within 50 meters from 100km/h. */
-        /* Formal constraint */
+        /* Formal attributes */
         attribute maxDistance : Real = 50.0;
+        attribute actualDistance : Real;
+        /* Formal constraint (CRITICAL: no semicolon after constraint block) */
+        require constraint {
+            actualDistance <= maxDistance
+        }
     }
 
     /* --- 2. Satisfaction (Design) --- */
@@ -1193,8 +1218,10 @@ State machines define event-driven behavior. A system exists in a 'state' until 
 
 - **state def**: Defines the state machine structure.
 - **entry/do/exit**: Actions associated with a state.
-- **transition <source> accept <trigger> then <target>**: Defines a transition between states.
-- **accept <event>** / **after <time>**: Triggers for transitions.
+- **transition first <source> accept <trigger> if <guard> do <action> then <target>**: Full transition syntax.
+- **Rule**: Guards must use `if`, not `where`.
+- **Rule**: A transition can only have ONE source state. You cannot use `or` in the `first` clause.
+- **Rule**: Actions used inside a state machine (e.g. `do action`) should be defined in the surrounding part so they can access the part's attributes.
 
 ## 3. Traffic Light Example
 
@@ -1204,6 +1231,9 @@ package StateMachine_Tutorial {
     
     /* Define the component containing the machine */
     part def TrafficLight {
+        /* Local actions defined in part scope can access part attributes */
+        action def LogStatus;
+        
         /* The machine behavior */
         state def LightLogic {
             /* Initial entry point */
@@ -1214,9 +1244,10 @@ package StateMachine_Tutorial {
             state Yellow;
             state Green;
             
-            transition Red accept after 20 [SI::s] then Green;
-            transition Green accept after 5 [SI::s] then Yellow;
-            transition Yellow accept after 30 [SI::s] then Red;
+            transition redToGreen first Red accept after 20 [SI::s] then Green;
+            transition greenToYellow first Green accept after 5 [SI::s] then Yellow;
+            /* Using if-guard and do-action */
+            transition yellowToRed first Yellow accept after 30 [SI::s] if true do action log : LogStatus then Red;
         }
         /* Usage of the machine */
         state logic : LightLogic;
@@ -1422,6 +1453,7 @@ Views provide a way to visualize and present the model. They do not change the m
 - **SymbolicViews::gv**: Graphical View (Diagram).
 - **TabularViews::gt**: Generic Table.
 - **TabularViews::rt**: Requirements Table.
+- **CRITICAL**: When filtering for allocations or satisfies, filter by the usage (e.g., `@AllocationUsage`), not the definition (e.g., `@Allocation`).
 
 ## 3. Views Example
 
@@ -1436,6 +1468,10 @@ package Views_Tutorial {
         view partsTreeView : TreeView, EssentialElementsFilter, NonStandardLibraryElementFilter {
             filter @PartDefinition;
             filter @PartUsage;
+        }
+        view allocationTableView : rt, EssentialElementsFilter, NonStandardLibraryElementFilter {
+            /* CRITICAL: use @AllocationUsage, not @Allocation */
+            filter @AllocationUsage;
         }
     }
 

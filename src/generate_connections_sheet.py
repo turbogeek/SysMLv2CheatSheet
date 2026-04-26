@@ -83,6 +83,8 @@ def generate_for_theme(theme_key, theme):
         [("   part", theme.c_keyword), (" a", theme.c_normal), (" :", theme.c_normal), (" A", theme.c_type), (";", theme.c_normal)],
         [("   part", theme.c_keyword), (" b", theme.c_normal), (" :", theme.c_normal), (" B", theme.c_type), (";", theme.c_normal)],
         [("   bind", theme.c_keyword), (" a.p1", theme.c_normal), (" =", theme.c_normal), (" b.p2", theme.c_normal), (";", theme.c_normal)],
+        [("   doc", theme.c_keyword), (" /* Arrays lack indices: */", theme.c_comment)],
+        [("   bind", theme.c_keyword), (" a.ports", theme.c_normal), (" =", theme.c_normal), (" b.ports", theme.c_normal), (";", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
     code_2 = """package Connections_2BindingConnector {
@@ -94,11 +96,13 @@ def generate_for_theme(theme_key, theme):
        part a : A;
        part b : B;
        bind a.p1 = b.p2;
+       /* CRITICAL: No array indices allowed! Bind multiple items directly: */
+       /* bind a.ports = b.ports; */
     }
 }"""
-    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Binding Connector (=)", lines, "Equating two elements.", theme, full_code=code_2, sheet_name='Connections', wrapper_type='structure')
+    card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "2. Binding Connector (=)", lines, "Equating elements (no array indices).", theme, full_code=code_2, sheet_name='Connections', wrapper_type='structure')
     md_blocks.append(("header", "2. Binding Connector (=)"))
-    md_blocks.append(("text", "Equating two elements."))
+    md_blocks.append(("text", "Equating elements. **CRITICAL**: No array indices are allowed (e.g. `a[1] = b[1]` is invalid)."))
     md_blocks.append(("code", code_2))
     svg += card
     cur_y_c1 += h + ROW_GAP

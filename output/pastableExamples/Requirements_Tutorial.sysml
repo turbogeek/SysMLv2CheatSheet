@@ -9,8 +9,13 @@ package Requirements_Tutorial {
     
     requirement <'REQ-101'> 'Breaking Distance' : PerformanceReq {
         doc /* The vehicle must stop within 50 meters from 100km/h. */
-        /* Formal constraint */
+        /* Formal attributes */
         attribute maxDistance : Real = 50.0;
+        attribute actualDistance : Real;
+        /* Formal constraint (CRITICAL: no semicolon after constraint block) */
+        require constraint {
+            actualDistance <= maxDistance
+        }
     }
 
     /* --- 2. Satisfaction (Design) --- */

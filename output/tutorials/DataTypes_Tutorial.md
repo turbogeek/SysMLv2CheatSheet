@@ -12,14 +12,14 @@ SysML v2 provides familiar primitive types in the ScalarValues library:
 
 ## 2. ISQ Units (Physical Quantities)
 
-For engineering, using standard quantities is critical. The `SI` library publicly imports `ISQ`, so importing `SI` gives you access to both units (e.g. `[kg]`) and physical quantity types (e.g. `ISQ::mass`).
+For engineering, using standard quantities is critical. The `SI` library publicly imports `ISQ`. Use `ISQ::mass`, `ISQ::electricCharge`, and `ISQInformation::storageCapacity` for proper type definitions.
 
 ## 3. Custom Data Types
 
 You can define domain-specific types:
 • **attribute def**: A reusable value type definition.
 • **struct**: A generalized structured data type.
-• **ProjectUnits**: Explicitly define derived units or use `ConversionByPrefix`.
+• **ProjectUnits**: Explicitly define derived units or use `ConversionByPrefix` (e.g. for `mAh`).
 
 ## 4. Data Types and Values Example
 
@@ -77,6 +77,12 @@ package DataTypes_Tutorial {
              :>> y = 20.0;
              :>> z = 0.0;
         }
+        
+        /* Information units require ISQInformation */
+        attribute memorySize :> ISQInformation::storageCapacity = 64 [ISQInformation::GB];
+        
+        /* Battery capacity */
+        attribute batteryCapacity :> ISQ::electricCharge = 1500 [ProjectUnits::mAh];
     }
 }
 ```

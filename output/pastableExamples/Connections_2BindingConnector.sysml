@@ -7,5 +7,7 @@ package Connections_2BindingConnector {
        part a : A;
        part b : B;
        bind a.p1 = b.p2;
+       /* CRITICAL: No array indices allowed! Bind multiple items directly: */
+       /* bind a.ports = b.ports; */
     }
 }

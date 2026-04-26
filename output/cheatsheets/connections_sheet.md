@@ -41,7 +41,7 @@ package Connections_1bConnectionUsage {
 
 ## 2. Binding Connector (=)
 
-Equating two elements.
+Equating elements. **CRITICAL**: No array indices are allowed (e.g. `a[1] = b[1]` is invalid).
 
 ```sysml
 package Connections_2BindingConnector {
@@ -53,6 +53,8 @@ package Connections_2BindingConnector {
        part a : A;
        part b : B;
        bind a.p1 = b.p2;
+       /* CRITICAL: No array indices allowed! Bind multiple items directly: */
+       /* bind a.ports = b.ports; */
     }
 }
 ```
