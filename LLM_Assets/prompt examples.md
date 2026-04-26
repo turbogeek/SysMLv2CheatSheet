@@ -6,18 +6,22 @@ I want you to create an INCOSE discovery document and then a requirements docume
 
 I want you to create an INCOSE discovery document and then a requirements document and then a logical SysMLv2 model and then a physical SysMLv2 model of a train to deliver passengers. The train should be able to operate autonomously on a track, accelerate, brake, and safely deliver passengers to their destinations. It should also have a camera and other sensors to detect obstacles on the tracks and maintain safe distances. Read and apply the rules in `LLM_skills/skill.md`, follow the process in `LLM_skills/methodology_skill.md`, and use the template in `LLM_Assets/incose_template.md`. Also add some helpful tables and views in the model.
 
-# Bicycle for personal transport
+## Bicycle for personal transport
 
 I want you to create an INCOSE discovery document and then a requirements document and then a logical SysMLv2 model and then a physical SysMLv2 model of a bicycle for personal transport. The bicycle should be able to operate on roads, accelerate, brake, and safely deliver passengers to their destinations. It should also have a camera and other sensors to detect obstacles on the road and maintain safe distances. Read and apply the rules in `LLM_skills/skill.md`, follow the process in `LLM_skills/methodology_skill.md`, and use the template in `LLM_Assets/incose_template.md`. Also add some helpful tables and views in the model.
 
-# Simple Toaster
+## Simple Toaster
 
-I want you to create an INCOSE discovery document and then a requirements document and then a logical SysMLv2 model and then a physical SysMLv2 model of a simple toaster. The toaster should be able to toast bread. Read and apply the rules in `LLM_skills/skill.md`, follow the process in `LLM_skills/methodology_skill.md`, and use the template in `LLM_Assets/incose_template.md`. Also add some helpful tables and views in the model.
+I want you to create an INCOSE discovery document and then a requirements document and then a logical SysMLv2 model and then a physical SysMLv2 model of a simple toaster. The toaster should be able to toast bread. Read and apply the rules in `LLM_skills/skill.md`, follow the process in `LLM_skills/methodology_skill.md`, and use the template in `LLM_Assets/incose_template.md`. Also add some helpful tables and views in the model.Use the MagicGrid process to create packages for Concept Exploration, Concept Definition, Logical Design, and Physical Design.
 
-# Minimal test of the SysMLv2 and Methodology skills
+## Minimal test of the SysMLv2 and Methodology skills
 
-I want you to create a requirements document and then a logical SysMLv2 model and then a physical SysMLv2 model of a simple system with subsystems for power, processing, and display. The system should display a message on the display when the user provides input to the system. Read and apply the rules in `LLM_skills/skill.md`, follow the process in `LLM_skills/methodology_skill.md`, and use the template in `LLM_Assets/incose_template.md`. Also add some helpful tables and views in the model.
+I want you to create a requirements document and then a logical SysMLv2 model and then a physical SysMLv2 model of a simple system with subsystems for power, processing, and display. The system should display a message on the display when the user provides input to the system. Read and apply the rules in `LLM_skills/skill.md`, follow the process in `LLM_skills/methodology_skill.md`, and use the template in `LLM_Assets/incose_template.md`. Also add some helpful tables and views in the model.Use the MagicGrid process to create packages for Concept Exploration, Concept Definition, Logical Design, and Physical Design.
 
-# Simple Alarm Clock
+## Simple Alarm Clock
 
-I want you to create an INCOSE discovery document and then a requirements document and then a logical SysMLv2 model and then a physical SysMLv2 model of a simple alarm clock. The alarm clock should be able to display the time, set an alarm, and sound an alarm when the alarm is set. Read and apply the rules in `LLM_skills/skill.md`, follow the process in `LLM_skills/methodology_skill.md`, and use the template in `LLM_Assets/incose_template.md`. Also add some helpful tables and views in the model.
+I want you to create an INCOSE discovery document and then a requirements document and then a logical SysMLv2 model and then a physical SysMLv2 model of a simple alarm clock. The alarm clock should be able to display the time, set an alarm, and sound an alarm when the alarm is set. Read and apply the rules in `LLM_skills/skill.md`, follow the process in `LLM_skills/methodology_skill.md`, and use the template in `LLM_Assets/incose_template.md`. Also add some helpful tables and views in the model. Use the MagicGrid process to create packages for Concept Exploration, Concept Definition, Logical Design, and Physical Design.
+
+## Simple Hobbyist Drone
+
+I want you to create an new instance of 'incose_template.md' for the following project: A simple hobbyist drone that should be able to record video, fly, hover, and land based on user input from a cell phone app. Use research about hobby drones to create stakeholders, stakeholder concerns, stakeholder needs, operational scenarios, operational needs, operational concepts, and stakeholder expectations, use cases and verifyable requirements. Features and capabilities should be on par with a $500 consumer price point. Use that information to create a SysMLv2 text file based on the information about SysMLv2 from 'skill.md' that follows the package structure of OOSEM or MagicGrid process with a concept, and logical,and physical SysMLv2 model  Read and apply the rules in 'skill.md', follow the process in 'methodology_skill.md', and use the template in 'incose_template.md'. Also add some helpful views (table and views that use expose to automatically render data as diagrams or tables) in the model.

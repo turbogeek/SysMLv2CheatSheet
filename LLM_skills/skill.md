@@ -1,6 +1,6 @@
 # SysML v2 AI Agent Skill / Comprehensive Reference
 
-**Generated on:** 2026-04-26 10:33:34
+**Generated on:** 2026-04-26 15:05:37
 
 ---
 
@@ -218,7 +218,12 @@ connection def DeviceConnection {
 }
 
 // Binding connection
-bind part2.feature = part3.feature;
+bind part2.feature = part3.feature; /* Must use '=', not 'to' */
+
+/* Bindings cannot contain indices or multiplicity ranges.
+   To bind an array of parts, declare each part individually and bind one by one. 
+   Binding to an entire multi-part is only allowed when the target side is a part with multiplicity and no indexing is needed. */
+bind battery.pwrOut = escs.pwrIn;
 
 // Succession
 first action1 then action2;
@@ -237,8 +242,11 @@ Interfaces are connections where all ends are port usages.
 
 ```sysml
 interface def FuelingInterface {
-    end port tankPort : FuelingPort;
-    end port vehiclePort : ~FuelingPort;
+    end port tankPort : FuelingPort; /* Ends must be ports, not parts */
+    end port vehiclePort : ~FuelingPort; /* Use conjugation (~) to reverse direction */
+    
+    /* Inside an interface, use flow without 'of' and 'from' */
+    flow tankPort.fuelOut to vehiclePort.fuelIn;
 }
 ```
 
@@ -292,6 +300,39 @@ allocate physicalUsage.comp to logicalUsage.func;
 - Support traceability
 - Map across abstraction levels
 - **Must be applied between usages, not definitions**
+- **Create a dedicated package** with part instances (e.g. `myLogical`, `myPhysical`) and place `allocate` statements there.
+
+### 1.11 Units and Quantities
+
+SysMLv2 handles units and quantities through the `ISQ` and `SI` libraries.
+
+```sysml
+package ProjectUnits {
+    private import SI::*;
+    private import ISQInformation::*; // Required for 'byte', 'storageCapacity', etc.
+    private import MeasurementReferences::ConversionByPrefix;
+
+    /* Define custom units via ConversionByPrefix */
+    attribute <ms> millisecond : DurationUnit {
+        :>> unitConversion : ConversionByPrefix {
+            :>> prefix = milli;
+            :>> referenceUnit = s;
+        }
+    }
+}
+
+part def Battery {
+    /* Use standard quantity kinds rather than raw Reals when applicable */
+    attribute capacity : ISQ::electricCharge; // Correct for physical batteries (mAh / Ah)
+    attribute storage : ISQInformation::storageCapacity; // Correct for data storage (bytes)
+}
+```
+
+**Key Features:**
+
+- Explicit tracking of units avoids mismatch errors.
+- Custom units can be built using prefix conversions or formulas based on reference units.
+- Use libraries like `ISQ`, `SI`, and `ISQInformation` properly to keep definitions precise.
 
 ---
 
@@ -444,10 +485,10 @@ state def OperationalStates {
     state on;
 
     transition off_to_on /* name of transition */
-        first off /* transitioning from state*/
+        first off /* transitioning from state (multiple source states require separate transitions; 'or' is not allowed in 'first') */
         accept TurnOn via commPort/* event */
-        if isEnabled /* guard */
-        do action powerUp : PowerUp; /* do action aka effect */
+        if isEnabled /* guard (use 'if', not 'where') */
+        do action powerUp : PowerUp; /* do action aka effect. Actions must be defined in the same part scope as the state machine to access attributes like batteryVoltage. */
         then on /* transition to state*/; 
 }
 
@@ -581,12 +622,12 @@ package Requirements {
         attribute MTBF_target : Time::Iso8601DateTimeStructure = 5[Time::Iso8601DateTimeStructure::year];
 
         require constraint {
-            MTBF >= MTBF_target
+            MTBF >= MTBF_target /* No semicolon inside constraint block */
         }
     }
     
     requirement <'REQ-SAFE-01'> 'Max Temperature' : RT::SafetyRequirement {
-        doc /* The external chassis temperature shall not exceed 45°C. */
+        doc /* The external chassis temperature shall not exceed 45°C. No // comments allowed! */
     }
 }
 ```
@@ -754,7 +795,7 @@ use case def PurchaseItem {
 Viewpoints frame stakeholder concerns; views satisfy viewpoints. It is highly recommended to use the `expose` keyword along with predefined standard views and filters (such as `EssentialElementsFilter` and `NonStandardLibraryElementFilter`) to ensure views layout properly.
 
 ```sysml
-package BV BaseViews {
+package <BV> BaseViews {
     doc /* A set of reusable views. These form the base of the zoo of views and are intended to be the starting point for the creation of new views. For example, the partDefTableView is a filtered and constrained table of parts. It inherits from the generic table and adds a default filter of parts.  */
     private import DS_Views::SymbolicViewsByExpression::*;
     private import DS_Views::TabularViews::*;
@@ -763,9 +804,11 @@ package BV BaseViews {
  /* A set of reusable views. These form the base of the zoo. This also serves as training and laboratory for the views */
     
     view partsView : UsagesNestedView, EssentialElementsFilter, NonStandardLibraryElementFilter;
+    view genericGraphicalView : DS_Views::SymbolicViews::gv, EssentialElementsFilter, NonStandardLibraryElementFilter;
     view partsTreeView : TreeView, EssentialElementsFilter, NonStandardLibraryElementFilter {
         filter @PartDefinition;
         filter @PartUsage;
+        /* Note: Always use usage or definition explicitly, e.g. filter @AllocationUsage instead of @Allocation */
     }
     view actionsTreeView : ActionsTreeView, EssentialElementsFilter, NonStandardLibraryElementFilter;
     view actionsNestedView : ActionsNestedView, EssentialElementsFilter, NonStandardLibraryElementFilter;
@@ -1568,7 +1611,7 @@ This skill is intended to produce SysMLv2 that is:
 
 # SysML v2 Cheat Sheets: Complete Collection
 
-**Generated on:** 2026-04-26 10:33:34
+**Generated on:** 2026-04-26 15:05:37
 
 ---
 
@@ -3637,7 +3680,7 @@ style color = "red";
 
 # SysML v2 Tutorials: Complete Collection
 
-**Generated on:** 2026-04-26 10:33:34
+**Generated on:** 2026-04-26 15:05:37
 
 ---
 
