@@ -16,7 +16,7 @@ I want you to create an INCOSE discovery document and then a requirements docume
 
 ## Minimal test of the SysMLv2 and Methodology skills
 
-I want you to create a requirements document and then a logical SysMLv2 model and then a physical SysMLv2 model of a simple system with subsystems for power, processing, and display. The system should display a message on the display when the user provides input to the system. Read and apply the rules in `LLM_skills/skill.md`, follow the process in `LLM_skills/methodology_skill.md`, and use the template in `LLM_Assets/incose_template.md`. Also add some helpful tables and views in the model.Use the MagicGrid process to create packages for Concept Exploration, Concept Definition, Logical Design, and Physical Design.
+I want you to create a requirements document and then a logical SysMLv2 model and then a physical SysMLv2 model of a simple 2 slot toaster. Follow the process in LLM_skills/methodology_skill.md, and use the template in LLM_Assets/incose_template.md. and create a new instance of 'incose_template.md' for the following project: A simple 2 slot toaster that should be able to toast bread and maybe a bagel. Read and apply the rules in LLM_skills/skill.md and unsing the design from the incose process template you create a single text file representing the complete SysMLv2 model that implements the requirements of the simple 2 slot toaster using the MagicGrid process to create packages for Concept Exploration, Logical Design, and Physical Design, including helpful tables and views in the model that use the automated layouts for diagrams and tables per the examples in the skill.md file.
 
 ## Simple Alarm Clock
 
