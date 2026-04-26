@@ -1,5 +1,7 @@
 # SysML v2.0 Language Reference
 
+Alias: SysMLv2
+
 ## Overview
 
 Systems Modeling Language (SysML) v2.0 is an OMG standard for model-based systems engineering. It extends the Kernel Modeling Language (KerML) to provide comprehensive modeling capabilities for complex systems.
@@ -30,6 +32,7 @@ You must never use these reserved words as element names:
 When you need to use concepts like "standard", "type", "default", "interface", etc., use alternative names like `communicationStandard`, `dataType`, `defaultValue`, `commInterface`, `busInterface`, etc.
 
 **Common Reserved Word Alternatives:**
+
 - `standard` → `communicationStandard`, `protocolStandard`
 - `type` → `dataType`, `elementType`, `messageType`
 - `default` → `defaultValue`, `defaultSetting`
@@ -303,6 +306,7 @@ part logicalUsage : LogicalSystem;
 part physicalUsage : PhysicalSystem;
 
 allocate physicalUsage.comp to logicalUsage.func;
+
 ```
 
 **Key Features:**
@@ -1092,7 +1096,7 @@ action def ProcessOrder {
 
 Major differences from SysML v1:
 
-1. **Textual First**: SysML v2 is primarily textual (v1 was graphical first)
+1. **Textual, Model and Doagrams**: SysML v2 has a textual syntax, so modelers can modify and interpret the model via text. The truth is still the model, but there are now many different methods for writing the model, including using an LLM.
 2. **No Blocks**: Parts replace blocks as the primary structural element
 3. **Unified Actions/Activities**: Integrated action model (v1 had separate concepts)
 4. **Calculations**: New concept for side-effect-free computations
@@ -1102,8 +1106,9 @@ Major differences from SysML v1:
 8. **Occurrence Semantics**: Explicit temporal and spatial extent modeling
 9. **Conjugated Ports**: Built-in support for direction reversal
 10. **Metadata Framework**: Standardized metadata annotations
-
----
+11. **Views and Viewpoints**: Are closer to the concepts of INCOSE and ISO 15288. Viewpoints are a type of requirement for Views. Note that Views are still evolving in SysML v2 and not yet fully specified in the standard such that they can used effectively by different vendor tools. Views have an expose that works like the package import to load data for the view to render and filter to remove items from the view.
+12. **Concerns**: New concept in v2. A concern definition or usage is declared as a requirement definition or usage (see 7.21.2 ) using the kind keyword concern instead of requirement. Otherwise, a concern definition or usage is specified exactly like a regular requirement definition or usage. The intent, however, is that the concerns of one or more stakeholders can be modeled as the required constraints of a concern definition or usage with appropriate stakeholder parameters.
+13. **constraint, assume constraint, and require constraint**:  New concept in v2. A constraint definition or usage is declared as a requirement definition or usage (see 7.21.2 ) using the kind keyword concern instead of requirement. Otherwise, a concern definition or usage is specified exactly like a regular requirement definition or usage. The intent, however, is that the concerns of one or more stakeholders can be modeled as the required constraints of a concern definition or usage with appropriate stakeholder parameters.One or more concerns can then be framed in other requirement definitions and usages. A framed concern usage is a subrequirement usage (see 7.21.2 ) indicated by prefixing a concern usage declaration with the keyword frame. As for an assumed or required constraint, the keyword **frame** can be used rather than frame concern to declare a framed concern using reference subsetting. In any case, since the framed concern usage itself is a subrequirement, it will automatically be considered a required constraint of its containing requirement definition or usage.
 
 ## 10. METAMODEL CONCEPTS (Section 8)
 
@@ -1114,7 +1119,7 @@ The SysML v2 metamodel defines:
 - **Semantics**: Meaning and behavior of elements
 - **Well-Formedness Rules**: Validity constraints
 
-Key metamodel concepts:
+### Key metamodel concepts
 
 - All elements are features
 - Features can be types or usages
@@ -1149,7 +1154,6 @@ equirement) typed by a definition.
 - **Actions and States:** In a similar vein, ction def or state def define the flows/behavioral blocks. The usage ction or state sits inside the concrete parts that exhibit or execute them.
 - **Views Placement:** Tables and tree views should be placed *directly within the package they are documenting* rather than grouped externally.
 - **Structure Visualization:** For packages featuring structure or dependencies, leverage DS_Views::SymbolicViewsByExpression::TreeView (tree view) using expose PackageName::** to automatically evaluate and display elements.
-
 
 ---
 
@@ -1265,7 +1269,7 @@ Rules:
 - Do not replace the shall statement with the short name.
 - Do not create actual project/system requirements as requirement def.
 
-## allocate, satisfy, and verify must connect usages only.
+## allocate, satisfy, and verify must connect usages only
 
 Never connect definitions in
 
