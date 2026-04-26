@@ -10,7 +10,7 @@ Tagging elements with data.
 package Patterns_1MetadataAnnotations {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     metadata   def  Status  {
       attribute  priority  :  Integer ;
       attribute  approved  :  Boolean ;
@@ -32,7 +32,7 @@ package Patterns_2Views {
     private import ScalarValues::*;
     private import SysML::*;
     part def GeneralDiagram;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     view  MyView  :  GeneralDiagram  {
     /* filter Status; */
     }
@@ -69,7 +69,7 @@ Templates vs Concrete instances.
 package Patterns_4AbstractvsIndividual {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     abstract  part  def  Wheel ;
     part  def  Bus  {
       abstract  part  wheel  [4]  :  Wheel ;

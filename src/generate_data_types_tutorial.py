@@ -65,7 +65,7 @@ def generate_for_theme(theme_key, theme):
     full_code = """package DataTypes_Tutorial {
     private import ScalarValues::*;
     /* Note: ISQ is automatically imported by SI (public import) */
-    private import SI::*;
+    private import SI::kg;
     private import MeasurementReferences::ConversionByPrefix;
 
     /* --- 1. Custom Value Definitions --- */

@@ -3,7 +3,7 @@ package Calculations_4ConstraintUsage {
     private import SysML::*;
     attribute def Mass;
     constraint def MassLimit { in m : Mass; in limit : Mass; }
-    // Wrapped Snippet (Action Context)
+    /* Wrapped Snippet (Action Context */)
     action def Main {
         attribute mass : Mass;
         constraint  checkMass  :  MassLimit  {

@@ -26,7 +26,8 @@ Uses a definition to create a specific view.
 
 ```sysml
 viewpoint def SafetyAnalysis { doc "Focus on hazards"; }
-view def SafetyView { satisfies SafetyAnalysis; }
+viewpoint <'vp1'> 'sa' : SafetyAnalysis;
+view mySafetyView { satisfy 'sa'; }
 ```
 
 Connects a view to its stakeholder concern.
@@ -35,15 +36,15 @@ Connects a view to its stakeholder concern.
 
 ```sysml
 view myView {
-    expose myCar;      // Single element
-    expose myCar::**;  // Recursive import
+    expose myCar;      /* Single element */
+    expose myCar::**;  /* Recursive import */
 }
 ```
 
 ## 5. Filter
 
 ```sysml
-filter @Part; // Keep only parts
+filter @Part; /* Keep only parts */
 ```
 
 ## 6. Rendering

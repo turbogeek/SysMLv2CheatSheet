@@ -49,7 +49,7 @@ def generate_for_theme(theme_key, theme):
     
     full_code = """package DroneDSLinSysML {
     
-    // --- 1. Domain Library (Vocabulary) ---
+    /* --- 1. Domain Library (Vocabulary) --- */
     library package Drone_Library {
         part def Sensor;
         part def ImageSensor :> Sensor;
@@ -63,7 +63,7 @@ def generate_for_theme(theme_key, theme):
         }
     }
     
-    // --- 2. Metadata Definitions (The Mapping) ---
+    /* --- 2. Metadata Definitions (The Mapping) --- */
     package Drone_Metadata {
         private import Drone_Library::*;
         private import Metaobjects::SemanticMetadata;
@@ -89,16 +89,16 @@ def generate_for_theme(theme_key, theme):
         }
     }
     
-    // --- 3. DSL Usage (The Result) ---
+    /* --- 3. DSL Usage (The Result) --- */
     package Mission_Model {
         private import Drone_Metadata::*;
         
         #drone part def SurveillanceDrone {
-            // Using the DSL vocabulary:
+            /* Using the DSL vocabulary: */
             #rotor part frontRotors[2];
             #rotor part rearRotors[2];
             
-            // Defining sensors using shorthand
+            /* Defining sensors using shorthand */
             #cam part mainCamera;
             #lidar part obstacleAvoider;
         }

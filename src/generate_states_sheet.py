@@ -39,7 +39,7 @@ def generate_for_theme(theme_key, theme):
     code_1 = """package States_1StateDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     action def logStart;
     action def logEnd;
     state   def  TrafficLight  {
@@ -124,7 +124,7 @@ def generate_for_theme(theme_key, theme):
     code_4 = """package States_4CompositeStates {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     state Operational {
        entry;
        state Normal;
@@ -148,7 +148,7 @@ def generate_for_theme(theme_key, theme):
     code_5 = """package States_5ParallelStates {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     state def System parallel {
        state Power;
        state Connectivity;

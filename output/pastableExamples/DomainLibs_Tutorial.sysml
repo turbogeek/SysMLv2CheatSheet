@@ -1,5 +1,5 @@
 package DomainLibs_Tutorial {
-    private import SI::*;
+    private import SI::m;
     private import Time::*;
     
     /* --- 1. Using ISQ Types --- */

@@ -1,6 +1,6 @@
 # SysML v2 AI Agent Skill / Comprehensive Reference
 
-**Generated on:** 2026-04-25 23:10:23
+**Generated on:** 2026-04-26 10:33:34
 
 ---
 
@@ -1568,7 +1568,7 @@ This skill is intended to produce SysMLv2 that is:
 
 # SysML v2 Cheat Sheets: Complete Collection
 
-**Generated on:** 2026-04-25 23:10:23
+**Generated on:** 2026-04-26 10:33:34
 
 ---
 
@@ -1970,7 +1970,7 @@ States and lifecycle actions.
 package Behavior_1StateDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     state   def  PracticeSession  {
        entry ;  exit ;
        state  Idle ;
@@ -2067,7 +2067,7 @@ package Behavior_5ActionUsage {
     private import ScalarValues::*;
     private import SysML::*;
     action def Serve { in speed : Integer; }
-    // Wrapped Snippet (Action Context)
+    /* Wrapped Snippet (Action Context */)
     action def Main {
         action  playPoint  {
            action  serve  :  Serve ;
@@ -2142,7 +2142,7 @@ package Calculations_2CalculationUsage {
     private import SysML::*;
     attribute def Voltage; attribute def Current; attribute def Power;
     calc def PowerCalc { in v : Voltage; in i : Current; return p : Power; }
-    // Wrapped Snippet (Action Context)
+    /* Wrapped Snippet (Action Context */)
     action def Main {
         calc  p_motor  :  PowerCalc  {
            in  v  =  12.0 ;
@@ -2166,7 +2166,7 @@ package Calculations_4ConstraintUsage {
     private import SysML::*;
     attribute def Mass;
     constraint def MassLimit { in m : Mass; in limit : Mass; }
-    // Wrapped Snippet (Action Context)
+    /* Wrapped Snippet (Action Context */)
     action def Main {
         attribute mass : Mass;
         constraint  checkMass  :  MassLimit  {
@@ -2240,7 +2240,7 @@ package Cases_1UseCaseDefinition {
     private import SysML::*;
     attribute def Vehicle;
     attribute def Person;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     use   case   def  DriveCar  {
         subject  vehicle  :  Vehicle ;
         actor  driver  :  Person ;
@@ -2262,7 +2262,7 @@ package Cases_2TestCaseVerification {
     attribute def Vehicle;
     attribute def Person;
     attribute def VerdictKind;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     requirement brakeReq;
     requirement stoppingDistance;
     verification   def  TestBrakes  {
@@ -2284,7 +2284,7 @@ package Cases_3AnalysisCase {
     private import ScalarValues::*;
     private import SysML::*;
     attribute def Vehicle;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     analysis   def  FuelEconomy  {
        subject  vehicle  :  Vehicle ;
        objective  {
@@ -2306,7 +2306,7 @@ package Cases_4CaseUsage {
     attribute def Vehicle; attribute def Person;
     use case def DriveCar { subject vehicle : Vehicle; actor driver : Person; }
     part me : Person;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     use   case  driveToWork  :  DriveCar  {
        actor  driver  =  me ;
     }
@@ -2386,7 +2386,7 @@ Flows within interfaces.
 package Connections_3InterfaceConnection {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     interface   def  IData  {
        end  source ;
        end  target ;
@@ -2701,7 +2701,7 @@ Tagging elements with data.
 package Patterns_1MetadataAnnotations {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     metadata   def  Status  {
       attribute  priority  :  Integer ;
       attribute  approved  :  Boolean ;
@@ -2723,7 +2723,7 @@ package Patterns_2Views {
     private import ScalarValues::*;
     private import SysML::*;
     part def GeneralDiagram;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     view  MyView  :  GeneralDiagram  {
     /* filter Status; */
     }
@@ -2760,7 +2760,7 @@ Templates vs Concrete instances.
 package Patterns_4AbstractvsIndividual {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     abstract  part  def  Wheel ;
     part  def  Bus  {
       abstract  part  wheel  [4]  :  Wheel ;
@@ -2815,11 +2815,11 @@ package Reference_2PrimitiveTypes {
     private import ScalarValues::*;
     private import Base::*;
     private import SysML::*;
-    attribute b : Boolean; // true, false
-    attribute i : Integer; // 1, -5, 0
-    attribute r : Real; // 3.14, 1.0
-    attribute s : String; // 'text'
-    attribute n : Natural; // 0, 1, * (UnlimitedNatural in v1)
+    attribute b : Boolean; /* true, false */
+    attribute i : Integer; /* 1, -5, 0 */
+    attribute r : Real; /* 3.14, 1.0 */
+    attribute s : String; /* 'text' */
+    attribute n : Natural; /* 0, 1, * (UnlimitedNatural in v1 */)
 }
 ```
 
@@ -3090,7 +3090,7 @@ package Requirements_3Satisfy {
     part server {
       satisfy req1;
     }
-    // satisfy req1 by server; // Alternative syntax
+    /* satisfy req1 by server; // Alternative syntax */
 }
 ```
 
@@ -3185,7 +3185,7 @@ package Shorthand_1Specialization {
     private import ScalarValues::*;
     private import SysML::*;
     part def Vehicle;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     part  def  Car  :>  Vehicle ;
     doc  /* Equivalent to: 
             part  def  Car  specializes  Vehicle ; */
@@ -3201,7 +3201,7 @@ package Shorthand_2Subsetting {
     private import ScalarValues::*;
     private import SysML::*;
     part parts;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     part  engine  :>  parts ;
     doc  /* Equivalent to: 
             part  engine  subsets  parts ; */
@@ -3233,7 +3233,7 @@ package Shorthand_4Conjugation {
     private import ScalarValues::*;
     private import SysML::*;
     port def Interface;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     port  p  :  ~ Interface ;
     doc  /* Equivalent to: 
             port  p  :  conjugated  Interface ; */
@@ -3248,7 +3248,7 @@ Assignment variations.
 package Shorthand_5FeatureValues {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     attribute  x  =  1 ;  /* Binding (Equality) */
     attribute  y  :=  2 ;  /* Initial Value */
     attribute  z  default  =  3 ;  /* Default Value */
@@ -3263,7 +3263,7 @@ Common shorthands.
 package Shorthand_6Multiplicity {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     part  many [*] ;  /* 0..* */
     part  one ;  /* 1..1 (Default) */
     part  opt [0..1] ;  /* 0..1 */
@@ -3345,7 +3345,7 @@ package StatePatterns_4InternalTransition {
     action check;
     state def Monitoring {
        state Idle;
-       // Internal behavior (Self-transition)
+       /* Internal behavior (Self-transition */)
        transition t1 first Idle accept tick do check then Idle;
     }
 }
@@ -3369,7 +3369,7 @@ Defining states and lifecycle actions.
 package States_1StateDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     action def logStart;
     action def logEnd;
     state   def  TrafficLight  {
@@ -3431,7 +3431,7 @@ States within states.
 package States_4CompositeStates {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     state Operational {
        entry;
        state Normal;
@@ -3448,7 +3448,7 @@ Concurrency.
 package States_5ParallelStates {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     state def System parallel {
        state Power;
        state Connectivity;
@@ -3601,7 +3601,8 @@ Uses a definition to create a specific view.
 
 ```sysml
 viewpoint def SafetyAnalysis { doc "Focus on hazards"; }
-view def SafetyView { satisfies SafetyAnalysis; }
+viewpoint <'vp1'> 'sa' : SafetyAnalysis;
+view mySafetyView { satisfy 'sa'; }
 ```
 
 Connects a view to its stakeholder concern.
@@ -3610,15 +3611,15 @@ Connects a view to its stakeholder concern.
 
 ```sysml
 view myView {
-    expose myCar;      // Single element
-    expose myCar::**;  // Recursive import
+    expose myCar;      /* Single element */
+    expose myCar::**;  /* Recursive import */
 }
 ```
 
 ## 5. Filter
 
 ```sysml
-filter @Part; // Keep only parts
+filter @Part; /* Keep only parts */
 ```
 
 ## 6. Rendering
@@ -3636,7 +3637,7 @@ style color = "red";
 
 # SysML v2 Tutorials: Complete Collection
 
-**Generated on:** 2026-04-25 23:10:23
+**Generated on:** 2026-04-26 10:33:34
 
 ---
 
@@ -3911,32 +3912,32 @@ Enumerations define a fixed set of literals. Useful for states, modes, or config
 
 ```sysml
 package CoreTypes_Tutorial {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     
-    // --- 1. Enumerations ---
+    /* --- 1. Enumerations --- */
     enum def Status {
         enum Active;
         enum Idle;
         enum Error;
     }
 
-    // --- 2. Attributes & Scalars ---
+    /* --- 2. Attributes & Scalars --- */
     attribute def MassValue :> Real;
     
-    // --- 3. Parts (Structure) ---
+    /* --- 3. Parts (Structure) --- */
     part def StorageTank {
         attribute capacity : MassValue = 1000.0;
         attribute currentStatus : Status = Status::Idle;
     }
 
-    // --- 4. Items (Flow/Substance) ---
+    /* --- 4. Items (Flow/Substance) --- */
     item def Water;
     
     part def WaterSystem {
         part tank1 : StorageTank;
         part tank2 : StorageTank;
         
-        // Items flow or are stored
+        /* Items flow or are stored */
         item storedWater : Water;
     }
 }
@@ -3977,7 +3978,7 @@ You can define domain-specific types:
 package DataTypes_Tutorial {
     private import ScalarValues::*;
     /* Note: ISQ is automatically imported by SI (public import) */
-    private import SI::*;
+    private import SI::kg;
     private import MeasurementReferences::ConversionByPrefix;
 
     /* --- 1. Custom Value Definitions --- */
@@ -4046,7 +4047,7 @@ package DataTypes_Tutorial {
 The standard libraries provide types for almost all physical quantities.
 
 ```sysml
-private import SI::*; /* Publicly imports ISQ */
+private import SI::m; /* Publicly imports ISQ */
 ```
 
 ## 2. Units
@@ -4061,7 +4062,7 @@ attribute len = 5 [m];
 
 ```sysml
 package DomainLibs_Tutorial {
-    private import SI::*;
+    private import SI::m;
     private import Time::*;
     
     /* --- 1. Using ISQ Types --- */
@@ -4199,7 +4200,7 @@ In SysML v2, almost everything is a Feature. Features describe the characteristi
 Feature chaining allows you to access deeply nested features without redefining the entire hierarchy. You can 'reach into' a part to constrain or redefine its internal properties using the dot (.) operator.
 
 ```sysml
-// Feature Chaining Example
+/* Feature Chaining Example */
 part :>> engine.mass = 150 [ISQ::kg];
 ```
 
@@ -4214,7 +4215,7 @@ part :>> engine.mass = 150 [ISQ::kg];
 package Feature_Tutorial_Model {
     private import ISQ::*;
 
-    // --- 1. Base Definitions ---
+    /* --- 1. Base Definitions --- */
     part def Engine {
         attribute horsepower :> ISQ::power;
         attribute mass :> ISQ::mass;
@@ -4227,32 +4228,32 @@ package Feature_Tutorial_Model {
         part wheels : Wheel[4];
     }
 
-    // --- 2. Subsetting Example ---
+    /* --- 2. Subsetting Example --- */
     part def Truck :> Vehicle {
-        // 'front' and 'rear' partition the 'wheels' set
+        /* 'front' and 'rear' partition the 'wheels' set */
         part frontWheels[2] subsets wheels;
         part rearWheels[2] subsets wheels;
     }
 
-    // --- 3. Redefinition Example ---
+    /* --- 3. Redefinition Example --- */
     part def ElectricMotor :> Engine;
     
     part def ElectricCar :> Vehicle {
-        // Replace generic Engine with ElectricMotor
+        /* Replace generic Engine with ElectricMotor */
         part redefines engine : ElectricMotor;
     }
 
-    // --- 4. Feature Chaining & Redeclaration Example ---
+    /* --- 4. Feature Chaining & Redeclaration Example --- */
     part def SportsCar :> Vehicle {
-        // Feature Chaining: reaching into 'engine'
-        // Redeclaration (:>>) shorthand for 'redefines' or 'subsets'
+        /* Feature Chaining: reaching into 'engine' */
+        /* Redeclaration (:>>) shorthand for 'redefines' or 'subsets' */
         
         attribute :>> engine.horsepower = 500 [hp];
         
-        // This is structurally equivalent to:
-        // part :>> engine {
-        //    attribute :>> horsepower = 500 [hp];
-        // }
+        /* This is structurally equivalent to: */
+        /* part :>> engine { */
+        /* attribute :>> horsepower = 500 [hp]; */
+        /*  */}
     }
 }
 ```
@@ -4560,9 +4561,9 @@ Structure is built by nesting parts inside other parts (Composite Structure).
 
 ```sysml
 package PartsAndAttributes_Tutorial {
-    private import ISQ::*; // Import standard quantities
+    private import ISQ::*; /* Import standard quantities */
     
-    // --- Definitions ---
+    /* --- Definitions --- */
     part def Engine {
         attribute maxThrust :> ISQ::force;
         attribute mass :> ISQ::mass;
@@ -4572,21 +4573,21 @@ package PartsAndAttributes_Tutorial {
         attribute capacity : VolumeValue;
     }
     
-    // --- Composite Definition ---
+    /* --- Composite Definition --- */
     part def Spacecraft {
-        // Attributes of the spacecraft itself
+        /* Attributes of the spacecraft itself */
         attribute totalMass :> ISQ::mass;
         attribute callSign : String;
         
-        // Parts (Usages)
-        // Decomposing Spacecraft into subsystems
+        /* Parts (Usages */)
+        /* Decomposing Spacecraft into subsystems */
         part mainEngine : Engine {
-            // Assigning values to attributes
+            /* Assigning values to attributes */
             attribute :>> maxThrust = 500 [kN];
             attribute :>> mass = 1000 [kg];
         }
         
-        part reserveEngine : Engine; // Uses defaults if any
+        part reserveEngine : Engine; /* Uses defaults if any */
         
         part fuelSystem {
             part loxTank : FuelTank;
@@ -4594,7 +4595,7 @@ package PartsAndAttributes_Tutorial {
         }
     }
     
-    // --- Concrete Instance ---
+    /* --- Concrete Instance --- */
     part myShip : Spacecraft {
         attribute :>> callSign = "Voyager-1";
     }
@@ -4754,7 +4755,7 @@ Semantic Metadata allows you to define a Domain Specific Language (DSL) on top o
 ```sysml
 package DroneDSLinSysML {
     
-    // --- 1. Domain Library (Vocabulary) ---
+    /* --- 1. Domain Library (Vocabulary) --- */
     library package Drone_Library {
         part def Sensor;
         part def ImageSensor :> Sensor;
@@ -4768,7 +4769,7 @@ package DroneDSLinSysML {
         }
     }
     
-    // --- 2. Metadata Definitions (The Mapping) ---
+    /* --- 2. Metadata Definitions (The Mapping) --- */
     package Drone_Metadata {
         private import Drone_Library::*;
         private import Metaobjects::SemanticMetadata;
@@ -4794,16 +4795,16 @@ package DroneDSLinSysML {
         }
     }
     
-    // --- 3. DSL Usage (The Result) ---
+    /* --- 3. DSL Usage (The Result) --- */
     package Mission_Model {
         private import Drone_Metadata::*;
         
         #drone part def SurveillanceDrone {
-            // Using the DSL vocabulary:
+            /* Using the DSL vocabulary: */
             #rotor part frontRotors[2];
             #rotor part rearRotors[2];
             
-            // Defining sensors using shorthand
+            /* Defining sensors using shorthand */
             #cam part mainCamera;
             #lidar part obstacleAvoider;
         }
@@ -4836,7 +4837,7 @@ State machines define event-driven behavior. A system exists in a 'state' until 
 
 ```sysml
 package StateMachine_Tutorial {
-    private import SI::*;
+    private import SI::s;
     
     /* Define the component containing the machine */
     part def TrafficLight {
@@ -5008,12 +5009,17 @@ package Viewpoint_Tutorial {
         doc "A report focusing only on mass properties.";
     }
     
-    /* --- 2. View Definition --- */
+    /* --- 2. Viewpoint Usage --- */
+    viewpoint <'VP-002'> 'mass report viewpoint' : MassReport {
+        doc "Focuses on mass properties of the vehicle";
+    }
+    
+    /* --- 3. View Definition --- */
     view def MassView {
         /* The subject being viewed */
         in car : Car;
         
-        /* --- 3. Exposing Elements --- */
+        /* --- 4. Exposing Elements --- */
         /* Show the car itself */
         expose car;
         
@@ -5024,11 +5030,12 @@ package Viewpoint_Tutorial {
         /* filter @Attribute ==> name.endsWith("sw") */
     }
     
-    /* --- 4. View Usage --- */
+    /* --- 5. View Usage --- */
     part myCar : Car;
     
     view report : MassView {
         in car = myCar;
+        satisfy 'mass report viewpoint';
     }
 }
 ```
@@ -5135,15 +5142,15 @@ package StyleSheets {
     part def StatusStyle :> DS_Styles::CoreStylesComponents::StyleSheet {
         
         part approvedRule :> rule {
-            // Condition for when the rule applies
+            /* Condition for when the rule applies */
             part :>> condition : FreeFormCondition {
                 calc :>> test {
                     GetValueOfMetadataFeature(element, Profile::info::status.metadata) == Profile::Status::approved.metadata
                 }
             }
-            // Style applied when condition is true
+            /* Style applied when condition is true */
             part :>> style : SymbolStyle {
-                attribute :>> penColor : Color = "#006400"; // Dark Green
+                attribute :>> penColor : Color = "#006400"; /* Dark Green */
                 attribute :>> lineWidth = 2;
             }
         }
@@ -5154,7 +5161,7 @@ package StyleSheets {
 **Applying the Style Sheet to a View:**
 ```sysml
 view 'colored requirements diagram' : DS_Views::SymbolicViews::gv {
-    // Explicitly apply the style sheet
+    /* Explicitly apply the style sheet */
     part : StyleSheets::StatusStyle :> explicitlyAppliedStyleSheets;
 }
 ```
@@ -5168,9 +5175,9 @@ You can define custom requirements tables (`rt`) or generic tables (`gt`) with s
 ```sysml
 private import DS_Views::*;
 
-// A Requirements Table
+/* A Requirements Table */
 view 'requirements table' : TabularViews::rt {
-    expose DroneStakeholderRequirements::**; // Scope
+    expose DroneStakeholderRequirements::**; /* Scope */
     render rendering :>> asTable {
         view :>> 'Declared Name';
         view :>> 'Req Id';
@@ -5178,7 +5185,7 @@ view 'requirements table' : TabularViews::rt {
     }
 }
 
-// A Generic Table with Custom Calculated Columns
+/* A Generic Table with Custom Calculated Columns */
 view 'variant table' : CoreViews::bt {
     filter @PartDefinition or @PartUsage;
     expose Drone::DroneVariants::**;
@@ -5188,17 +5195,17 @@ view 'variant table' : CoreViews::bt {
             ref item :>> columnFeature = declaredName meta Feature;
         }
         
-        // Custom expression column
+        /* Custom expression column */
         view 'Net Price' : CoreViews::ColumnByExpressionView :> column {
             render rendering : CoreViews::RealCellRendering :>> asTableCell {
                 calc :>> getValue {
                     in :>> rowElement : Element;
                     (getNetPrice(rowElement) as LiteralInteger).value ?? 0
                 }
-                // Custom calculation function
+                /* Custom calculation function */
                 calc getNetPrice {
                     in e : Element;
-                    // ... extraction logic ...
+                    /* ... extraction logic ... */
                 }
             }
         }
@@ -5221,14 +5228,14 @@ view def 'Requirements View' :> DS_Views::CoreViews::bsv {
         part requirementsCategory :> buttonCategories {
             attribute :>> label default "Requirements";
             
-            // Adding a button that creates an element via Code Action
+            /* Adding a button that creates an element via Code Action */
             part reqButton : Button :> abstractButtons {
                 perform action : DS_UIComponents::CoreUIComponents::Operations::OperationFromCode :> operation {
                     in ref = DS_Views::ViewPalettes::CodeActionIdentifiers::requirementAction;
                 }
             }
             
-            // Adding a button that creates an element from a Template
+            /* Adding a button that creates an element from a Template */
             part softwareButton : Button :> abstractButtons {
                 attribute :>> label = "Software Requirement";
                 perform action : DS_UIComponents::CoreUIComponents::Operations::OperationFromTemplate :> operation {
@@ -5248,12 +5255,12 @@ You can inject your custom views and tables into the Cameo "Create View" or "Cre
 
 ```sysml
 package CustomViewCreationDialogs {
-    // 1. Wrap the view in a package acting as a template
+    /* 1. Wrap the view in a package acting as a template */
     package customRequirementsViewTemplate {
         view : CustomRequirementsView::'Requirements View';
     }
 
-    // 2. Specialize the Creation Dialog
+    /* 2. Specialize the Creation Dialog */
     part def CustomViewCreationDialog :> DS_UIComponents::UIComponents::SysMLViewCreationDialog {
         
         part :>> sysMLViewsMenu {

@@ -26,15 +26,15 @@ package StyleSheets {
     part def StatusStyle :> DS_Styles::CoreStylesComponents::StyleSheet {
         
         part approvedRule :> rule {
-            // Condition for when the rule applies
+            /* Condition for when the rule applies */
             part :>> condition : FreeFormCondition {
                 calc :>> test {
                     GetValueOfMetadataFeature(element, Profile::info::status.metadata) == Profile::Status::approved.metadata
                 }
             }
-            // Style applied when condition is true
+            /* Style applied when condition is true */
             part :>> style : SymbolStyle {
-                attribute :>> penColor : Color = "#006400"; // Dark Green
+                attribute :>> penColor : Color = "#006400"; /* Dark Green */
                 attribute :>> lineWidth = 2;
             }
         }
@@ -45,7 +45,7 @@ package StyleSheets {
 **Applying the Style Sheet to a View:**
 ```sysml
 view 'colored requirements diagram' : DS_Views::SymbolicViews::gv {
-    // Explicitly apply the style sheet
+    /* Explicitly apply the style sheet */
     part : StyleSheets::StatusStyle :> explicitlyAppliedStyleSheets;
 }
 ```
@@ -59,9 +59,9 @@ You can define custom requirements tables (`rt`) or generic tables (`gt`) with s
 ```sysml
 private import DS_Views::*;
 
-// A Requirements Table
+/* A Requirements Table */
 view 'requirements table' : TabularViews::rt {
-    expose DroneStakeholderRequirements::**; // Scope
+    expose DroneStakeholderRequirements::**; /* Scope */
     render rendering :>> asTable {
         view :>> 'Declared Name';
         view :>> 'Req Id';
@@ -69,7 +69,7 @@ view 'requirements table' : TabularViews::rt {
     }
 }
 
-// A Generic Table with Custom Calculated Columns
+/* A Generic Table with Custom Calculated Columns */
 view 'variant table' : CoreViews::bt {
     filter @PartDefinition or @PartUsage;
     expose Drone::DroneVariants::**;
@@ -79,17 +79,17 @@ view 'variant table' : CoreViews::bt {
             ref item :>> columnFeature = declaredName meta Feature;
         }
         
-        // Custom expression column
+        /* Custom expression column */
         view 'Net Price' : CoreViews::ColumnByExpressionView :> column {
             render rendering : CoreViews::RealCellRendering :>> asTableCell {
                 calc :>> getValue {
                     in :>> rowElement : Element;
                     (getNetPrice(rowElement) as LiteralInteger).value ?? 0
                 }
-                // Custom calculation function
+                /* Custom calculation function */
                 calc getNetPrice {
                     in e : Element;
-                    // ... extraction logic ...
+                    /* ... extraction logic ... */
                 }
             }
         }
@@ -112,14 +112,14 @@ view def 'Requirements View' :> DS_Views::CoreViews::bsv {
         part requirementsCategory :> buttonCategories {
             attribute :>> label default "Requirements";
             
-            // Adding a button that creates an element via Code Action
+            /* Adding a button that creates an element via Code Action */
             part reqButton : Button :> abstractButtons {
                 perform action : DS_UIComponents::CoreUIComponents::Operations::OperationFromCode :> operation {
                     in ref = DS_Views::ViewPalettes::CodeActionIdentifiers::requirementAction;
                 }
             }
             
-            // Adding a button that creates an element from a Template
+            /* Adding a button that creates an element from a Template */
             part softwareButton : Button :> abstractButtons {
                 attribute :>> label = "Software Requirement";
                 perform action : DS_UIComponents::CoreUIComponents::Operations::OperationFromTemplate :> operation {
@@ -139,12 +139,12 @@ You can inject your custom views and tables into the Cameo "Create View" or "Cre
 
 ```sysml
 package CustomViewCreationDialogs {
-    // 1. Wrap the view in a package acting as a template
+    /* 1. Wrap the view in a package acting as a template */
     package customRequirementsViewTemplate {
         view : CustomRequirementsView::'Requirements View';
     }
 
-    // 2. Specialize the Creation Dialog
+    /* 2. Specialize the Creation Dialog */
     part def CustomViewCreationDialog :> DS_UIComponents::UIComponents::SysMLViewCreationDialog {
         
         part :>> sysMLViewsMenu {

@@ -53,9 +53,9 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     full_code = """package PartsAndAttributes_Tutorial {
-    private import ISQ::*; // Import standard quantities
+    private import ISQ::*; /* Import standard quantities */
     
-    // --- Definitions ---
+    /* --- Definitions --- */
     part def Engine {
         attribute maxThrust :> ISQ::force;
         attribute mass :> ISQ::mass;
@@ -65,21 +65,21 @@ def generate_for_theme(theme_key, theme):
         attribute capacity : VolumeValue;
     }
     
-    // --- Composite Definition ---
+    /* --- Composite Definition --- */
     part def Spacecraft {
-        // Attributes of the spacecraft itself
+        /* Attributes of the spacecraft itself */
         attribute totalMass :> ISQ::mass;
         attribute callSign : String;
         
-        // Parts (Usages)
-        // Decomposing Spacecraft into subsystems
+        /* Parts (Usages */)
+        /* Decomposing Spacecraft into subsystems */
         part mainEngine : Engine {
-            // Assigning values to attributes
+            /* Assigning values to attributes */
             attribute :>> maxThrust = 500 [kN];
             attribute :>> mass = 1000 [kg];
         }
         
-        part reserveEngine : Engine; // Uses defaults if any
+        part reserveEngine : Engine; /* Uses defaults if any */
         
         part fuelSystem {
             part loxTank : FuelTank;
@@ -87,7 +87,7 @@ def generate_for_theme(theme_key, theme):
         }
     }
     
-    // --- Concrete Instance ---
+    /* --- Concrete Instance --- */
     part myShip : Spacecraft {
         attribute :>> callSign = "Voyager-1";
     }

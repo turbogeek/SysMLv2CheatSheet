@@ -61,12 +61,17 @@ def generate_for_theme(theme_key, theme):
         doc "A report focusing only on mass properties.";
     }
     
-    /* --- 2. View Definition --- */
+    /* --- 2. Viewpoint Usage --- */
+    viewpoint <'VP-002'> 'mass report viewpoint' : MassReport {
+        doc "Focuses on mass properties of the vehicle";
+    }
+    
+    /* --- 3. View Definition --- */
     view def MassView {
         /* The subject being viewed */
         in car : Car;
         
-        /* --- 3. Exposing Elements --- */
+        /* --- 4. Exposing Elements --- */
         /* Show the car itself */
         expose car;
         
@@ -77,11 +82,12 @@ def generate_for_theme(theme_key, theme):
         /* filter @Attribute ==> name.endsWith("sw") */
     }
     
-    /* --- 4. View Usage --- */
+    /* --- 5. View Usage --- */
     part myCar : Car;
     
     view report : MassView {
         in car = myCar;
+        satisfy 'mass report viewpoint';
     }
 }"""
     

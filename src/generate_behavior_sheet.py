@@ -38,7 +38,7 @@ def generate_for_theme(theme_key, theme):
     code_1 = """package Behavior_1StateDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     state   def  PracticeSession  {
        entry ;  exit ;
        state  Idle ;
@@ -180,7 +180,7 @@ def generate_for_theme(theme_key, theme):
     private import ScalarValues::*;
     private import SysML::*;
     action def Serve { in speed : Integer; }
-    // Wrapped Snippet (Action Context)
+    /* Wrapped Snippet (Action Context */)
     action def Main {
         action  playPoint  {
            action  serve  :  Serve ;

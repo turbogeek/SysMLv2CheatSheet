@@ -1,7 +1,7 @@
 package DataTypes_Tutorial {
     private import ScalarValues::*;
     /* Note: ISQ is automatically imported by SI (public import) */
-    private import SI::*;
+    private import SI::kg;
     private import MeasurementReferences::ConversionByPrefix;
 
     /* --- 1. Custom Value Definitions --- */

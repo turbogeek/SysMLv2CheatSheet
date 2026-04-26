@@ -1,5 +1,5 @@
 package StateMachine_Tutorial {
-    private import SI::*;
+    private import SI::s;
     
     /* Define the component containing the machine */
     part def TrafficLight {

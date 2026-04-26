@@ -7,7 +7,7 @@
 The standard libraries provide types for almost all physical quantities.
 
 ```sysml
-private import SI::*; /* Publicly imports ISQ */
+private import SI::m; /* Publicly imports ISQ */
 ```
 
 ## 2. Units
@@ -22,7 +22,7 @@ attribute len = 5 [m];
 
 ```sysml
 package DomainLibs_Tutorial {
-    private import SI::*;
+    private import SI::m;
     private import Time::*;
     
     /* --- 1. Using ISQ Types --- */

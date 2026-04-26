@@ -46,7 +46,7 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     full_code = """package DomainLibs_Tutorial {
-    private import SI::*;
+    private import SI::m;
     private import Time::*;
     
     /* --- 1. Using ISQ Types --- */
@@ -122,7 +122,7 @@ def generate_for_theme(theme_key, theme):
     blocks = [
         ("header", "1. ISQ & SI"),
         ("text", "The standard libraries provide types for almost all physical quantities."),
-        ("code", "private import SI::*; /* Publicly imports ISQ */"),
+        ("code", "private import SI::m; /* Publicly imports ISQ */"),
         ("header", "2. Units"),
         ("text", "Units are first-class citizens using square brackets."),
         ("code", "attribute len = 5 [m];"),

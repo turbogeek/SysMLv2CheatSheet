@@ -48,8 +48,8 @@ def generate_for_theme(theme_key, theme):
         [("part", theme.c_keyword), (" def", theme.c_keyword), (" Car", theme.c_type), (" { ", theme.c_normal), ("part", theme.c_keyword), (" engine : Engine;", theme.c_normal), (" }", theme.c_normal)],
         [],
         [("part", theme.c_keyword), (" def", theme.c_keyword), (" PerformanceCar", theme.c_type), (" :>", theme.c_normal), (" Car", theme.c_type), (" {", theme.c_normal)],
-        [("  ", theme.c_normal), ("// Feature Chaining:", theme.c_comment)],
-        [("  ", theme.c_normal), ("// Constrain the 'mass' of the 'engine' without redefining 'engine'", theme.c_comment)],
+        [("  ", theme.c_normal), ("/* Feature Chaining:", theme.c_comment)],
+        [("  ", theme.c_normal), ("/* Constrain the 'mass' of the 'engine' without redefining 'engine'", theme.c_comment)],
         [("  ", theme.c_normal), ("attribute", theme.c_keyword), (" :>>", theme.c_normal), (" engine.mass", theme.c_normal), (" = ", theme.c_normal), ("150", theme.c_string), (" [ISQ::kg];", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
@@ -88,7 +88,7 @@ def generate_for_theme(theme_key, theme):
     full_code = """package Feature_Tutorial_Model {
     private import ISQ::*;
 
-    // --- 1. Base Definitions ---
+    /* --- 1. Base Definitions --- */
     part def Engine {
         attribute horsepower :> ISQ::power;
         attribute mass :> ISQ::mass;
@@ -101,32 +101,32 @@ def generate_for_theme(theme_key, theme):
         part wheels : Wheel[4];
     }
 
-    // --- 2. Subsetting Example ---
+    /* --- 2. Subsetting Example --- */
     part def Truck :> Vehicle {
-        // 'front' and 'rear' partition the 'wheels' set
+        /* 'front' and 'rear' partition the 'wheels' set */
         part frontWheels[2] subsets wheels;
         part rearWheels[2] subsets wheels;
     }
 
-    // --- 3. Redefinition Example ---
+    /* --- 3. Redefinition Example --- */
     part def ElectricMotor :> Engine;
     
     part def ElectricCar :> Vehicle {
-        // Replace generic Engine with ElectricMotor
+        /* Replace generic Engine with ElectricMotor */
         part redefines engine : ElectricMotor;
     }
 
-    // --- 4. Feature Chaining & Redeclaration Example ---
+    /* --- 4. Feature Chaining & Redeclaration Example --- */
     part def SportsCar :> Vehicle {
-        // Feature Chaining: reaching into 'engine'
-        // Redeclaration (:>>) shorthand for 'redefines' or 'subsets'
+        /* Feature Chaining: reaching into 'engine' */
+        /* Redeclaration (:>>) shorthand for 'redefines' or 'subsets' */
         
         attribute :>> engine.horsepower = 500 [hp];
         
-        // This is structurally equivalent to:
-        // part :>> engine {
-        //    attribute :>> horsepower = 500 [hp];
-        // }
+        /* This is structurally equivalent to: */
+        /* part :>> engine { */
+        /* attribute :>> horsepower = 500 [hp]; */
+        /*  */}
     }
 }"""
     
@@ -190,7 +190,7 @@ def generate_for_theme(theme_key, theme):
         ("text", "In SysML v2, almost everything is a Feature. Features describe the characteristics of a defined type. They can be structural (parts, attributes, ports) or behavioral (actions, states)."),
         ("header", "2. Feature Chaining (Dot Notation)"),
         ("text", "Feature chaining allows you to access deeply nested features without redefining the entire hierarchy. You can 'reach into' a part to constrain or redefine its internal properties using the dot (.) operator."),
-        ("code", """// Feature Chaining Example
+        ("code", """/* Feature Chaining Example */
 part :>> engine.mass = 150 [ISQ::kg];"""),
         ("header", "3. Modifying Features: Subsets vs Redefines"),
         ("list", [

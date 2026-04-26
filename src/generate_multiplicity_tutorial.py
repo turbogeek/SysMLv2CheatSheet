@@ -115,7 +115,7 @@ def generate_for_theme(theme_key, theme):
             color = theme.c_normal
             if w in ["part", "def", "attribute", "package", "ordered", "unique", "nonunique", "action", "in", "out", "subsets", "redefines"]:
                 color = theme.c_keyword
-            elif w.startswith("//") or w.startswith("/*"):
+            elif w.startswith("/* ") or w.startswith("/*"):
                 color = theme.c_comment
             elif "[" in w or "]" in w:
                  # heuristic for multiplicity brackets

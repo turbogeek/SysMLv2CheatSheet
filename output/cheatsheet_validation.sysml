@@ -96,10 +96,10 @@ package CheatSheetValidation {
          */
         
         private import ScalarValues::*;
-        private import SysML::*; // Required for Actions::Action::start
-        // private import ISQ::*; // Testing interference
+        private import SysML::*; /* Required for Actions::Action::start */
+        /* private import ISQ::*; /* Testing interference */ */
         
-        // --- Core Actions ---
+        /* --- Events Actions --- */
         action def Calculate {
             in x : Real;
             out y : Real;
@@ -108,7 +108,7 @@ package CheatSheetValidation {
         action def RootAction {
             action calc1 : Calculate;
             action calc2 : Calculate;
-            // Added flow per user request
+            /* Added flow per user request */
             flow from calc1.y to calc2.x;
         }
         
@@ -150,11 +150,11 @@ package CheatSheetValidation {
         action def A;
         action def B;
 
-        // --- Control Actions ---
+        /* --- Control Actions --- */
         action def ControlFlowDef {
-            // attribute x : Integer; removed
+            /* attribute x : Integer; removed */
             
-            // Simplified to pure control flow to assume validator stability
+            /* Simplified to pure control flow to assume validator stability */
             action step1;
             
             action def DecisionFlow {
@@ -174,24 +174,24 @@ package CheatSheetValidation {
         }
         action controlFlow : ControlFlowDef;
         
-        // --- Events Actions ---
+        /* --- Events Actions --- */
         attribute def StartSignal;
         attribute def Message;
         
         action def EventFlow {
             accept start : StartSignal;
             accept msg : Message;
-            // attribute s : StartSignal;
-            // part target;
-            // send s to target;
+            /* attribute s : StartSignal; */
+            /* part target; */
+            /* send s to target; */
             
-            // Explicit usage instantiation
+            /* Explicit usage instantiation */
              attribute s : StartSignal;
              part target;
-             // Simplified send to avoid concatenation issues
-             // send StartSignal( ); 
+             /* Simplified send to avoid concatenation issues */
+             /* send StartSignal( ); */ 
              
-             // Just verifying attribute definition
+             /* Just verifying attribute definition */
              attribute test : StartSignal;
         }
     }
@@ -208,13 +208,13 @@ package CheatSheetValidation {
 
         /* 1. Explicit Perform Action */
         part def SystemPart {
-            // Using 'action' usage keyword - these are performed by the part
+            /* Using 'action' usage keyword - these are performed by the part */
             action p1 : Action1;
             action p2 : Action2;
         }
         
         /* 2. Swimlane Allocation */
-        // Actions defined in a workflow, then allocated to parts
+        /* Actions defined in a workflow, then allocated to parts */
         action def Workflow {
             action a1;
             action a2;
@@ -226,7 +226,7 @@ package CheatSheetValidation {
         part system : SystemPart;
         
         allocation def WorkflowAlloc {
-            // "Swimlanes" are modeled as allocations of actions to parts
+            /* "Swimlanes" are modeled as allocations of actions to parts */
             allocate Workflow::a1 to user;
             allocate Workflow::a2 to system;
         }
@@ -287,12 +287,12 @@ package CheatSheetValidation {
         }
 
         /* 4. Succession Flow */
-        // Flow should be at package level or inside an action definition
+        /* Flow should be at package level or inside an action definition */
         action step1;
         action step2;
         flow from step1 to step2;
         
-        action process_flow; // usage
+        action process_flow; /* usage */
     }
 
     package BehaviorExamples {
@@ -322,17 +322,17 @@ package CheatSheetValidation {
             entry; then Idle;
             state Idle;
             
-            // Standard transition string
-            // Standard transition string
-            // transition
-            // startServe
-            // first
-            // Idle
-            // accept
-            // Remote::Start
-            // then
-            // Serving;
-            // Commented out due to validator bug (concatenation)
+            /* Standard transition string */
+            /* Standard transition string */
+            /* transition */
+            /* startServe */
+            /* first */
+            /* Idle */
+            /* accept */
+            /* Remote::Start */
+            /* then */
+            /* Serving; */
+            /* Commented out due to validator bug (concatenation */)
             
             state Serving;
         }
@@ -349,14 +349,14 @@ package CheatSheetValidation {
                 entry;
                 state Normal;
                 state Maintenance;
-                // Added transition per user request
+                /* Added transition per user request */
                 transition t1 first Normal then Maintenance;
             }
         }
 
         /* 5. Parallel States */
         /* 5. Parallel States */
-        // Replaced parallel state definition with proper composite state for validation
+        /* Replaced parallel state definition with proper composite state for validation */
         state def System {
             doc /* 5. Parallel States
                    Ref: SysML v2 Spec Section 7.18 - Concurrent States
@@ -389,7 +389,7 @@ package CheatSheetValidation {
                    Verifying requirements. */
             subject vehicle : Vehicle;
             objective brakeReqCheck : BrakeRequirement {
-                // Use binding instead of redefinition to avoid value override errors
+                /* Use binding instead of redefinition to avoid value override errors */
                 bind vehicle = TestBrakes::vehicle;
             }
             return verdict : VerdictKind;
@@ -491,14 +491,14 @@ package CheatSheetValidation {
             }
             
             /* 2. For Loop */
-            // Range loop
+            /* Range loop */
             for i in 1..10 {
                  assign x := i;
             }
             
-            // Collection loop
+            /* Collection loop */
             for power : PowerValue in powerProfile {
-                assign x := x + 1; // Mock body
+                assign x := x + 1; /* Mock body */
             }
             
             /* 2a. While Loop with Until */
@@ -539,48 +539,48 @@ package CheatSheetValidation {
             
             action sendA; 
             
-            // Comment spacers to force token separation (Failed)
-            // Using block syntax or simplified send
+            /* Comment spacers to force token separation (Failed */)
+            /* Using block syntax or simplified send */
             
             action sendA; 
             
-            // send
-            // startSignal {
-            //      out p1; // implicit
-            // }
+            /* send */
+            /* startSignal { */
+            /* out p1; // implicit */
+            /*  */}
             
-            // send startSignal via p1; (concatenation bug)
-            // send startSignal to target; (concatenation bug)
+            /* send startSignal via p1; (concatenation bug */)
+            /* send startSignal to target; (concatenation bug */)
             
             /* 7. Advanced Send (Bindings & Flows) */
-            // Advanced types
+            /* Advanced types */
             attribute def SensorReading;
             
-            // Advanced send examples commented out due to validator concatenation bug
-            // part monitor {
-            //    doc /* 7. Advanced Send (Bindings & Flows)
-            //           Ref: SysML v2 Spec Section 7.17 - Send Action */
-            //    action sendReadingTo {
-            //        in part destination;
-            //        
-            //        action sendReading {
-            //             send SensorReading();
-            //        }
-            //        
-            //        send getReading.reading {
-            //            in sender = monitor;
-            //            in receiver = destination;
-            //        }
-            //    }
-            //    action getReading { out reading : SensorReading; }
-            // }
+            /* Advanced send examples commented out due to validator concatenation bug */
+            /* part monitor { */
+            /* doc /* 7. Advanced Send (Bindings & Flows */)
+            /* Ref: SysML v2 Spec Section 7.17 - Send Action */ */
+            /* action sendReadingTo { */
+            /* in part destination; */
+            /*  */
+            /* action sendReading { */
+            /* send SensorReading(); */
+            /*  */}
+            /*  */
+            /* send getReading.reading { */
+            /* in sender = monitor; */
+            /* in receiver = destination; */
+            /*  */}
+            /*  */}
+            /* action getReading { out reading : SensorReading; */}
+            /*  */}
             
             /* 6. Control Nodes */
-            // fork f1;
-            // join j1;
-            // decide d1;
-            // merge m1;
-            // Simplification to avoid syntax errors in validator for now
+            /* fork f1; */
+            /* join j1; */
+            /* decide d1; */
+            /* merge m1; */
+            /* Simplification to avoid syntax errors in validator for now */
             action forkNode;
             action joinNode;
             action decideNode;
@@ -594,7 +594,7 @@ package CheatSheetValidation {
         port p1;
         part target;
         
-        // Loop support definitions
+        /* Loop support definitions */
         attribute def PowerValue;
         attribute powerProfile : PowerValue[*] ordered;
     }
@@ -609,7 +609,7 @@ package CheatSheetValidation {
             doc /* 1. Entry/Do/Exit
                    Ref: SysML v2 Spec Section 7.18 - State Definition */
             
-            // Define usages locally to avoid type casting errors
+            /* Define usages locally to avoid type casting errors */
             action l1 : logStart;
             action m1 : maintain;
             action l2 : logEnd;
@@ -661,7 +661,7 @@ package CheatSheetValidation {
          */
          private import ScalarValues::*;
 
-        // 1. Metadata Definition
+        /* 1. Metadata Definition */
         metadata def Status {
             doc /* 1. Metadata (Annotations)
                    Ref: SysML v2 Spec - Metadata Definition */
@@ -669,10 +669,10 @@ package CheatSheetValidation {
             attribute approved : Boolean;
         }
         
-        // Removed complex usage that triggers validator bugs
-        // part myPart ...
+        /* Removed complex usage that triggers validator bugs */
+        /* part myPart ... */
 
-        // 2. Views & Viewpoints
+        /* 2. Views & Viewpoints */
         view MyView : GeneralDiagram {
             doc /* 2. Views
                    Ref: SysML v2 Spec - View Definition */
@@ -680,26 +680,26 @@ package CheatSheetValidation {
         }
         part def GeneralDiagram;
 
-        // 2b. Embedded Views (Exposure)
+        /* 2b. Embedded Views (Exposure */)
         part def ConfiguredPart {
             attribute a;
             part p;
             
             view info {
                 doc /* Embedded view exposing content */
-                // Filter removed to avoid casting error
+                /* Filter removed to avoid casting error */
                 expose a;
                 expose p;
             }
         }
 
-        // 3. Custom Units (Nano Banana)
+        /* 3. Custom Units (Nano Banana */)
         package BananaUnits {
             doc /* 3. Custom Units (Nano Banana)
                    Ref: SysML v2 Spec - Unit Definition */
-            // Simplified to avoid syntax errors
+            /* Simplified to avoid syntax errors */
             attribute nanoBanana : LengthUnit;
-            // :>> unitConversion ...
+            /* :>> unitConversion ... */
         }
         attribute def LengthUnit { attribute unitConversion; }
         attribute def ConversionByPrefix {
@@ -707,7 +707,7 @@ package CheatSheetValidation {
              attribute referenceUnit : String;
         }
 
-        // 4. Abstract vs Individual
+        /* 4. Abstract vs Individual */
         abstract part def Wheel;
         part def Bus {
             abstract part wheel[4] : Wheel;
@@ -839,8 +839,8 @@ package CheatSheetValidation {
         doc /* Views for diagram generation in Cameo */
         private import SysML::*;
         private import CheatSheetValidation::*;
-        // Note: DS_Views is a Dassault Systemes extension package. 
-        // Ensure it is loaded in your model for these to validate/render.
+        /* Note: DS_Views is a Dassault Systemes extension package. */
+        /* Ensure it is loaded in your model for these to validate/render. */
         
         view StructureExamplesView : DS_Views::SymbolicViews::gv, DS_Views::SymbolicViewsByExpression::NonStandardLibraryElementFilter {
             expose StructureExamples::*;

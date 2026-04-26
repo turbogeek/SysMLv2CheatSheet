@@ -6,5 +6,5 @@ package Requirements_3Satisfy {
     part server {
       satisfy req1;
     }
-    // satisfy req1 by server; // Alternative syntax
+    /* satisfy req1 by server; // Alternative syntax */
 }

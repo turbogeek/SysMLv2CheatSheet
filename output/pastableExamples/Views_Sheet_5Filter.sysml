@@ -1,5 +1,5 @@
 package Views {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     part def Car;
     part myCar : Car;
     

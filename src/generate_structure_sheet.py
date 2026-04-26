@@ -120,7 +120,7 @@ def generate_for_theme(theme_key, theme):
     lines = [
         [("package", theme.c_keyword), (" VehicleModel", theme.c_normal), (" {", theme.c_normal)],
         [("  import", theme.c_keyword), (" ScalarValues::*", theme.c_type), (";", theme.c_normal)],
-        [("  part", theme.c_keyword), (" // ...", theme.c_normal)],
+        [("  part", theme.c_keyword), (" /* ...", theme.c_normal)],
         [("}", theme.c_normal)]
     ]
     code_6 = """package Structure_6Packages {

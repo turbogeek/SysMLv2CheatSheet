@@ -11,7 +11,7 @@ package Shorthand_1Specialization {
     private import ScalarValues::*;
     private import SysML::*;
     part def Vehicle;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     part  def  Car  :>  Vehicle ;
     doc  /* Equivalent to: 
             part  def  Car  specializes  Vehicle ; */
@@ -27,7 +27,7 @@ package Shorthand_2Subsetting {
     private import ScalarValues::*;
     private import SysML::*;
     part parts;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     part  engine  :>  parts ;
     doc  /* Equivalent to: 
             part  engine  subsets  parts ; */
@@ -59,7 +59,7 @@ package Shorthand_4Conjugation {
     private import ScalarValues::*;
     private import SysML::*;
     port def Interface;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     port  p  :  ~ Interface ;
     doc  /* Equivalent to: 
             port  p  :  conjugated  Interface ; */
@@ -74,7 +74,7 @@ Assignment variations.
 package Shorthand_5FeatureValues {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     attribute  x  =  1 ;  /* Binding (Equality) */
     attribute  y  :=  2 ;  /* Initial Value */
     attribute  z  default  =  3 ;  /* Default Value */
@@ -89,7 +89,7 @@ Common shorthands.
 package Shorthand_6Multiplicity {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     part  many [*] ;  /* 0..* */
     part  one ;  /* 1..1 (Default) */
     part  opt [0..1] ;  /* 0..1 */

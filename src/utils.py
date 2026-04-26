@@ -188,8 +188,7 @@ def wrap_code(snippet, package_name, wrapper_type="action"):
         return snippet
         
     wrapper = f"package {package_name} {{\n"
-    wrapper += "    private import ScalarValues::*;\n"
-    wrapper += "    private import SI::*;\n"
+    wrapper += "    private import ScalarValues::*; \n"
     wrapper += "    private import SysML::*;\n"
     
     if wrapper_type == "action":

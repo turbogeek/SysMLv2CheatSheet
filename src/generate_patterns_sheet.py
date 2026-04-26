@@ -41,7 +41,7 @@ def generate_for_theme(theme_key, theme):
     code_1 = """package Patterns_1MetadataAnnotations {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     metadata   def  Status  {
       attribute  priority  :  Integer ;
       attribute  approved  :  Boolean ;
@@ -70,7 +70,7 @@ def generate_for_theme(theme_key, theme):
     private import ScalarValues::*;
     private import SysML::*;
     part def GeneralDiagram;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     view  MyView  :  GeneralDiagram  {
     /* filter Status; */
     }
@@ -127,7 +127,7 @@ def generate_for_theme(theme_key, theme):
     code_4 = """package Patterns_4AbstractvsIndividual {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    /* Wrapped Snippet (Structure Context */)
     abstract  part  def  Wheel ;
     part  def  Bus  {
       abstract  part  wheel  [4]  :  Wheel ;

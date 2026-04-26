@@ -48,7 +48,7 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     full_code = """package StateMachine_Tutorial {
-    private import SI::*;
+    private import SI::s;
     
     /* Define the component containing the machine */
     part def TrafficLight {

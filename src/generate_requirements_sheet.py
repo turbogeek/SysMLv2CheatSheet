@@ -92,7 +92,7 @@ def generate_for_theme(theme_key, theme):
     part server {
       satisfy req1;
     }
-    // satisfy req1 by server; // Alternative syntax
+    /* satisfy req1 by server; // Alternative syntax */
 }"""
     card, h = utils.draw_card(col1_x, cur_y_c1, COL_WIDTH, "3. Satisfy", lines, "Design meets requirement.", theme, full_code=code_3, sheet_name="Requirements", wrapper_type="structure")
     md_blocks.append(("header", "3. Satisfy"))

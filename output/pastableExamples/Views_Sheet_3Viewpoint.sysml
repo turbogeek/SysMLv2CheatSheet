@@ -4,8 +4,11 @@ package Views {
         doc "Focus on hazards.";
     }
     
-    /* 2. Link view to viewpoint */
-    view def SafetyView {
-        satisfies SafetyAnalysis;
+    /* 2. Create viewpoint usage */
+    viewpoint <'vp1'> 'sa' : SafetyAnalysis;
+    
+    /* 3. Link view usage to viewpoint usage */
+    view mySafetyView {
+        satisfy 'sa';
     }
 }

@@ -63,8 +63,9 @@ def generate_for_theme(theme_key, theme):
     # Card 3: Viewpoint
     lines = [
         [("viewpoint def SafetyAnalysis;", theme.c_keyword)],
-        [("view def SafetyView {", theme.c_keyword)],
-        [("    satisfies SafetyAnalysis;", theme.c_normal)],
+        [("viewpoint <'v1'> 'sa' : SafetyAnalysis;", theme.c_keyword)],
+        [("view myView {", theme.c_keyword)],
+        [("    satisfy 'sa';", theme.c_normal)],
         [("}", theme.c_keyword)],
     ]
     expl = "Viewpoints define the rules/frame of concern."
@@ -74,9 +75,12 @@ def generate_for_theme(theme_key, theme):
         doc "Focus on hazards.";
     }
     
-    /* 2. Link view to viewpoint */
-    view def SafetyView {
-        satisfies SafetyAnalysis;
+    /* 2. Create viewpoint usage */
+    viewpoint <'vp1'> 'sa' : SafetyAnalysis;
+    
+    /* 3. Link view usage to viewpoint usage */
+    view mySafetyView {
+        satisfy 'sa';
     }
 }"""
     card, height = utils.draw_card(col1_x, cur_y_c1, col_width, "3. Viewpoint", lines, expl, theme, full, sheet_name="Views_Sheet")
@@ -118,7 +122,7 @@ def generate_for_theme(theme_key, theme):
     ]
     expl = "Filter included elements by criteria."
     full = """package Views {
-    import ScalarValues::*;
+    private import ScalarValues::*;
     part def Car;
     part myCar : Car;
     
@@ -195,17 +199,18 @@ def generate_for_theme(theme_key, theme):
             
             ("header", "3. Viewpoint"),
             ("code", """viewpoint def SafetyAnalysis { doc "Focus on hazards"; }
-view def SafetyView { satisfies SafetyAnalysis; }"""),
+viewpoint <'vp1'> 'sa' : SafetyAnalysis;
+view mySafetyView { satisfy 'sa'; }"""),
             ("text", "Connects a view to its stakeholder concern."),
             
             ("header", "4. Expose Content"),
             ("code", """view myView {
-    expose myCar;      // Single element
-    expose myCar::**;  // Recursive import
+    expose myCar;      /* Single element */
+    expose myCar::**;  /* Recursive import */
 }"""),
             
             ("header", "5. Filter"),
-            ("code", """filter @Part; // Keep only parts"""),
+            ("code", """filter @Part; /* Keep only parts */"""),
             
             ("header", "6. Rendering"),
             ("code", """render asTable { ... }
