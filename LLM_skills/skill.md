@@ -1,6 +1,6 @@
 # SysML v2 AI Agent Skill / Comprehensive Reference
 
-**Generated on:** 2026-04-26 18:04:44
+**Generated on:** 2026-04-26 21:56:28
 
 ---
 
@@ -1661,12 +1661,25 @@ This skill is intended to produce SysMLv2 that is:
   connect timer.outputContacts to outerElements.powerIn;
   ```
 
+- **Avoid Keyword "requirement" in Satisfy Statements**  
+  When satisfying a requirement, do not use the keyword `requirement` before the requirement usage name. Use `satisfy [RequirementName];` directly.
+  *Incorrect:* `satisfy requirement Requirements::'Browning Time';`
+  *Correct:* `satisfy Requirements::'Browning Time';`
+
+- **Avoid Keyword "concern" in Frame Statements**  
+  When framing a concern, use the `frame` keyword directly followed by the concern name. Do not include the word `concern`.
+  *Incorrect:* `frame concern StakeholderConcerns::'User Safety';`
+  *Correct:* `frame StakeholderConcerns::'User Safety';`
+
+- **Ensure Defining Parts are in Reachable Scope**  
+  When a part (or subject in a use case) is typed by a `part def`, that definition must be explicitly declared in the same scope or imported. Do not assume the existence of implicitly understood terms (e.g. `subject toaster : Toaster;` requires `part def Toaster;` to be defined or imported).
+
 
 ---
 
 # SysML v2 Cheat Sheets: Complete Collection
 
-**Generated on:** 2026-04-26 18:04:44
+**Generated on:** 2026-04-26 21:56:28
 
 ---
 
@@ -3738,7 +3751,7 @@ style color = "red";
 
 # SysML v2 Tutorials: Complete Collection
 
-**Generated on:** 2026-04-26 18:04:44
+**Generated on:** 2026-04-26 21:56:28
 
 ---
 
