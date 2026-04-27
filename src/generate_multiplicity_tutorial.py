@@ -57,6 +57,7 @@ def generate_for_theme(theme_key, theme):
         "• ordered : The order of elements matters (List/Sequence).",
         "• unique : No duplicates allowed (Set). Default behavior.",
         "• nonunique : Duplicates allowed (Bag).",
+        "• **Note**: Modifiers are placed after multiplicity, **NEVER** inside braces {}.",
         "Example: [*] ordered nonunique (A Sequence of items)"
     ]
     for line in lines:

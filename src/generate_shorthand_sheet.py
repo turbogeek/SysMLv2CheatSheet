@@ -139,7 +139,8 @@ package Shorthand_3Redefinition {
     lines = [
         [("part", theme.c_keyword), (" many", theme.c_normal), ("[*]", theme.c_keyword), (";", theme.c_normal), (" /* 0..* */", theme.c_comment)],
         [("part", theme.c_keyword), (" one", theme.c_normal), (";", theme.c_normal), (" /* 1..1 (Default) */", theme.c_comment)],
-        [("part", theme.c_keyword), (" opt", theme.c_normal), ("[0..1]", theme.c_keyword), (";", theme.c_normal), (" /* 0..1 */", theme.c_comment)]
+        [("part", theme.c_keyword), (" opt", theme.c_normal), ("[0..1]", theme.c_keyword), (";", theme.c_normal), (" /* 0..1 */", theme.c_comment)],
+        [("Note:", theme.c_keyword), (" Modifiers after [*], no {}", theme.c_normal)]
     ]
     code_6 = """package Shorthand_6Multiplicity {
     private import ScalarValues::*;

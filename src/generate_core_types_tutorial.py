@@ -34,7 +34,8 @@ def generate_for_theme(theme_key, theme):
     lines = [
         "Attributes store data values within definitions.",
         "• attribute def: Defines a reusable data type (can specialize standard types like Real, Integer).",
-        "• attribute: A usage of a definition holding a value."
+        "• attribute: A usage of a definition holding a value.",
+        "• **CRITICAL**: Always `private import ScalarValues::*;` at the top of the package to use Boolean, Real, etc."
     ]
     for line in lines:
         svg += utils.text(50, y, line, 18, theme.text_main)

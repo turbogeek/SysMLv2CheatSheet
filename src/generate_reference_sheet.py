@@ -66,7 +66,8 @@ def generate_for_theme(theme_key, theme):
         [("Integer", theme.c_type), (" /* 1, -5, 0 */", theme.c_comment)],
         [("Real", theme.c_type), (" /* 3.14, 1.0 */", theme.c_comment)],
         [("String", theme.c_type), (" /* 'text\" */", theme.c_comment)],
-        [("UnlimitedNatural", theme.c_type), (" /* 0, 1, * */", theme.c_comment)]
+        [("UnlimitedNatural", theme.c_type), (" /* 0, 1, * */", theme.c_comment)],
+        [("Note:", theme.c_keyword), (" Requires import ScalarValues::*", theme.c_normal)]
     ]
     code_2 = """package Reference_2PrimitiveTypes {
     private import ScalarValues::*;
@@ -147,6 +148,7 @@ def generate_for_theme(theme_key, theme):
         [("[0..1]", theme.c_normal), (" Optional", theme.c_normal)],
         [("ordered", theme.c_keyword), (" /* Sequence (indexed) */", theme.c_comment)],
         [("nonunique", theme.c_keyword), (" /* Allow duplicates */", theme.c_comment)],
+        [("Placement:", theme.c_keyword), (" After multiplicity, NO {}", theme.c_normal)],
         [("/* Defaults: */", theme.c_comment)],
         [("Part/Attr", theme.c_normal), (" -> [1]", theme.c_normal)],
         [("Other", theme.c_normal), (" -> [0..*]", theme.c_normal)]

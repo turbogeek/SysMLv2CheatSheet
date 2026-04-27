@@ -1,6 +1,6 @@
 # SysML v2 AI Agent Skill / Comprehensive Reference
 
-**Generated on:** 2026-04-26 23:23:41
+**Generated on:** 2026-04-27 11:28:53
 
 ---
 
@@ -67,7 +67,14 @@ package VehicleSystem {
 
 - Provide namespaces for organizing models
 - Support imports. Always prefer `private import PackageName::*;` to avoid polluting the namespace of other packages that import yours.
-- **CRITICAL RULE:** Any use of scalar values (like `Real`, `Integer`, `String`, `Boolean`) must be accompanied by an import, e.g., `private import ScalarValues::Real;` or `private import ScalarValues::*;`.
+- **CRITICAL RULE:** Any use of scalar values (like `Real`, `Integer`, `String`, `Boolean`) must be accompanied by an import, e.g., `private import ScalarValues::Real;` or `private import ScalarValues::*;`. Without this import, these types are not in scope and will cause errors.
+- **Example:**
+```sysml
+package MyPackage {
+    private import ScalarValues::*;
+    attribute flag : Boolean;
+}
+```
 - Can be filtered by element kind
 - Enable model library organization
 
@@ -590,6 +597,18 @@ constraint vehicleMassLimit : MassLimit {
     in mass = vehicle.mass;
     in limit = 2000[kg];
 }
+
+### 2.6 Collection Functions (8.3.11)
+
+When using collection functions such as `size`, `isEmpty`, `forAll`, etc., the function must be qualified with the standard library package name, **without** the `KerML::` prefix.
+
+**Correct Usage:**
+```sysml
+CollectionFunctions::size(stocks)
+```
+
+**Common Mistake:**
+Do not use `KerML::CollectionFunctions::size(stocks)`.
 ```
 
 **Assert Constraints:**
@@ -926,9 +945,12 @@ part engines[1..*] : Engine;      // At least 1
 
 ### Ordered and Unique
 
+The modifiers `ordered`, `unordered`, `unique`, `nonunique` are placed **after** the multiplicity specifier, **not inside braces**. 
+
 ```sysml
 part orderedList[*] ordered nonunique;
 part uniqueSet[*] unordered unique;
+attribute stocks : StockData[*] ordered nonunique;
 ```
 
 ### Specialization
@@ -1679,12 +1701,21 @@ This skill is intended to produce SysMLv2 that is:
 - **Ensure Defining Parts are in Reachable Scope**  
   When a part (or subject in a use case) is typed by a `part def`, that definition must be explicitly declared in the same scope or imported. Do not assume the existence of implicitly understood terms (e.g. `subject toaster : Toaster;` requires `part def Toaster;` to be defined or imported).
 
+- **CollectionFunctions Prefix Usage**  
+  Never use the `KerML::` prefix when calling collection functions. Use `CollectionFunctions::size(...)` or similar.
+
+- **Ordered/Nonunique Modifier Placement**  
+  Placement of `ordered`, `nonunique`, etc., must be directly after the multiplicity (e.g., `[*] ordered`) and **never** inside braces `{}`.
+
+- **Explicit ScalarValues Import**  
+  Always include `private import ScalarValues::*;` in any package that uses the primitive types `Boolean`, `Real`, `Integer`, or `String`.
+
 
 ---
 
 # SysML v2 Cheat Sheets: Complete Collection
 
-**Generated on:** 2026-04-26 23:23:41
+**Generated on:** 2026-04-27 11:28:53
 
 ---
 
@@ -3756,7 +3787,7 @@ style color = "red";
 
 # SysML v2 Tutorials: Complete Collection
 
-**Generated on:** 2026-04-26 23:23:41
+**Generated on:** 2026-04-27 11:28:53
 
 ---
 

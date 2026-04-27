@@ -54,6 +54,18 @@ If any of the following rules are violated, you must rewrite the code to correct
 - **Check:** Are `//` comments used anywhere?
 - **Correction:** SysMLv2 documentation and requirements must use block comments: `doc /* ... */`. Standard inline comments must use `/* ... */`. Never use `//`.
 
+### 15. CollectionFunctions prefix usage
+- **Check:** Is `KerML::CollectionFunctions::size(...)` used?  
+- **Correction:** Remove `KerML::` prefix. Use `CollectionFunctions::size(...)` (or import the package and call `size(...)`).
+
+### 16. Ordered/nonunique modifier placement
+- **Check:** Are braces `{}` used around `ordered nonunique`?  
+- **Correction:** Remove the braces. Write `[*] ordered nonunique` directly after the multiplicity.
+
+### 17. Missing ScalarValues import for primitive types
+- **Check:** Is `Boolean`, `Real`, `Integer`, or `String` used without a `ScalarValues::*` import in the enclosing package?  
+- **Correction:** Add `private import ScalarValues::*;` at the top of the package.
+
 ## Final Output Protocol
 
 When validation is complete, output the corrected SysMLv2 code. Explicitly list out which of the above rules were violated (if any) and explain how you fixed them to ensure the user understands the corrections made.
