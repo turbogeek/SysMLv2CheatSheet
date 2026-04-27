@@ -1,6 +1,6 @@
 # SysML v2 AI Agent Skill / Comprehensive Reference
 
-**Generated on:** 2026-04-26 21:56:28
+**Generated on:** 2026-04-26 23:23:24
 
 ---
 
@@ -1581,6 +1581,11 @@ package <BV> BaseViews {
         filter @PartUsage;
     }
     view requirementsTreeView : RequirementsTreeView, EssentialElementsFilter, NonStandardLibraryElementFilter;
+    view useCasesTree : DS_Views::SymbolicViews::gv, EssentialElementsFilter, NonStandardLibraryElementFilter {
+        doc /* Tree view of all use cases. NOTE change the expose as necessary */
+        expose CE::UseCases::**;
+        filter @UseCaseUsage;
+    }
 }
 ```
 
@@ -1679,7 +1684,7 @@ This skill is intended to produce SysMLv2 that is:
 
 # SysML v2 Cheat Sheets: Complete Collection
 
-**Generated on:** 2026-04-26 21:56:28
+**Generated on:** 2026-04-26 23:23:24
 
 ---
 
@@ -3751,7 +3756,7 @@ style color = "red";
 
 # SysML v2 Tutorials: Complete Collection
 
-**Generated on:** 2026-04-26 21:56:28
+**Generated on:** 2026-04-26 23:23:24
 
 ---
 

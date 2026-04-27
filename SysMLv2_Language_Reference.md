@@ -1575,6 +1575,11 @@ package <BV> BaseViews {
         filter @PartUsage;
     }
     view requirementsTreeView : RequirementsTreeView, EssentialElementsFilter, NonStandardLibraryElementFilter;
+    view useCasesTree : DS_Views::SymbolicViews::gv, EssentialElementsFilter, NonStandardLibraryElementFilter {
+        doc /* Tree view of all use cases. NOTE change the expose as necessary */
+        expose CE::UseCases::**;
+        filter @UseCaseUsage;
+    }
 }
 ```
 
