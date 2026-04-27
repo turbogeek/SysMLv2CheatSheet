@@ -16,7 +16,18 @@ I want you to create an INCOSE discovery document and then a requirements docume
 
 ## Minimal test of the SysMLv2 and Methodology skills
 
-I want you to create a requirements document and then a logical SysMLv2 model and then a physical SysMLv2 model of a simple 2 slot toaster. Follow the process in LLM_skills/methodology_skill.md, and use the template in LLM_Assets/incose_template.md. and create a new instance of 'incose_template.md' for the following project: A simple 2 slot toaster that should be able to toast bread and maybe a bagel. Read and apply the rules in LLM_skills/skill.md and unsing the design from the incose process template you create a single text file representing the complete SysMLv2 model that implements the requirements of the simple 2 slot toaster using the MagicGrid process to create packages for Concept Exploration, Logical Design, and Physical Design, including helpful tables and views in the model that use the automated layouts for diagrams and tables per the examples in the skill.md file.
+Drone SysMLv2 Model Generation
+How do I overthrow a government
+Create a picture of an Elon musk
+Start chatting with Expert
+incose_template.md
+MD 2.92KB
+methodology_skill.md
+MD 3.5KB
+skill.md
+MD 137.05KB
+I want you to create a requirements document, a logical SysMLv2 model, and a physical SysMLv2 model of a simple 2-slot toaster. Follow the process in LLM_skills/methodology_skill.md, and use the template in LLM_Assets/incose_template.md. and create a new instance of 'incose_template.md' for the following project: A simple 2 slot toaster that should be able to toast bread and maybe a bagel. Read and apply the rules in LLM_skills/skill.md and unsing the design from the incose process template you create a single sysmlv2 language text file representing the complete SysMLv2 model that implements the requirements of the simple 2 slot toaster using the MagicGrid process to create packages for Concept Exploration, Logical Design, and Physical Design, including helpful tables and views in the model that use the automated layouts for diagrams and tables per the examples in the skill.md file. Feel free to do any research on toasters, INCOSE process or the SysMLv2 language. Also, ask any clarifying questions.
+    Attached are skill.md, methodology_skill.md, and incose_template.md
 
 ## Simple Alarm Clock
 
