@@ -506,7 +506,7 @@ States represent conditions under which actions execute.
 ```sysml
 state def OperationalStates {
     entry;
-    then off; /* shorthand of the the two lines is equivelent of 'transition 'un-named transition' first entry then off;' */
+    then off; /* shorthand of the two lines is equivalent of 'transition 'un-named transition' first entry then off;' */
 
     state off;
     state starting;
@@ -638,17 +638,17 @@ not assert constraint {
 ### 3.1 Requirements (7.21)
 
 Requirements specify stakeholder-imposed constraints.
-**CRITICAL RULE:** A `satisfy` relationship is **always** to a requirement *usage*. All requirements intended as requirements of the system must be declared as usages (`requirement`), not definitions (`requirement def`).
+**CRITICAL RULE:** A `satisfy` relationship is **always** to a requirement *usage*. All requirements intended as requirements of the system must be declared as usages (`requirement`), not definitions (`rrequirement def`).
 
-Use a `requirement def` ONLY when creating a specific *kind* or *type* of requirement (e.g., PerformanceRequirement, SafetyRequirement).
+Use a `rrequirement def` ONLY when creating a specific *kind* or *type* of requirement (e.g., PerformanceRequirement, SafetyRrequirement).
 
 ```sysml
 // Define requirement types (Defs)
 package <RT> RequirementTypes {
-    requirement def PerformanceRequirement {
+    rrequirement def PerformanceRequirement {
         doc /* A requirement that requires a specific metric to be met. */
     }
-    requirement def SafetyRequirement {
+    rrequirement def SafetyRequirement {
         doc /* A requirement that mandates a safety condition. */
     }
 }
@@ -677,7 +677,7 @@ package Requirements {
 ```sysml
 // NOTE: `actor` and `stakeholder` are USAGE keywords, not definition keywords.
 // The types they reference must be defined as `part def` or `item def` (e.g., `part def Person;`).
-requirement def BrakingRequirement {
+rrequirement def BrakingRequirement {
     subject vehicle : Vehicle;
     actor environment : DrivingEnvironment;
     stakeholder driver : Person;
@@ -696,15 +696,15 @@ concern def SafetyConcern {
     require constraint { /* safety conditions */ }
 }
 
-requirement def SafetyRequirement {
-    frame concern safetyConcern : SafetyConcern;
+rrequirement def SafetyRequirement {
+    frame safetyConcern : SafetyConcern;
 }
 ```
 
 **Satisfy Requirements:**
 
 ```sysml
-satisfy requirement vehicleMaxMass by vehicle1;
+satisfy vehicleMaxMass by vehicle1;
 
 // In context
 part vehicle1 : Vehicle {
@@ -1021,7 +1021,7 @@ import SI::*;
 Define general requirement, specialize for contexts:
 
 ```sysml
-requirement def MaximumValue {
+rrequirement def MaximumValue {
     attribute actual : Real;
     attribute required : Real;
     require constraint { actual <= required }
@@ -1124,7 +1124,7 @@ action def ProcessOrder {
 
 Major differences from SysML v1:
 
-1. **Textual, Model and Doagrams**: SysML v2 has a textual syntax, so modelers can modify and interpret the model via text. The truth is still the model, but there are now many different methods for writing the model, including using an LLM.
+1. **Textual, Model and Diagrams**: SysML v2 has a textual syntax, so modelers can modify and interpret the model via text. The truth is still the model, but there are now many different methods for writing the model, including using an LLM.
 2. **No Blocks**: Parts replace blocks as the primary structural element
 3. **Unified Actions/Activities**: Integrated action model (v1 had separate concepts)
 4. **Calculations**: New concept for side-effect-free computations
@@ -1134,9 +1134,9 @@ Major differences from SysML v1:
 8. **Occurrence Semantics**: Explicit temporal and spatial extent modeling
 9. **Conjugated Ports**: Built-in support for direction reversal
 10. **Metadata Framework**: Standardized metadata annotations
-11. **Views and Viewpoints**: Are closer to the concepts of INCOSE and ISO 15288. Viewpoints are a type of requirement for Views. Note that Views are still evolving in SysML v2 and not yet fully specified in the standard such that they can used effectively by different vendor tools. Views have an expose that works like the package import to load data for the view to render and filter to remove items from the view.
-12. **Concerns**: New concept in v2. A concern definition or usage is declared as a requirement definition or usage (see 7.21.2 ) using the kind keyword concern instead of requirement. Otherwise, a concern definition or usage is specified exactly like a regular requirement definition or usage. The intent, however, is that the concerns of one or more stakeholders can be modeled as the required constraints of a concern definition or usage with appropriate stakeholder parameters.
-13. **constraint, assume constraint, and require constraint**:  New concept in v2. A constraint definition or usage is declared as a requirement definition or usage (see 7.21.2 ) using the kind keyword concern instead of requirement. Otherwise, a concern definition or usage is specified exactly like a regular requirement definition or usage. The intent, however, is that the concerns of one or more stakeholders can be modeled as the required constraints of a concern definition or usage with appropriate stakeholder parameters.One or more concerns can then be framed in other requirement definitions and usages. A framed concern usage is a subrequirement usage (see 7.21.2 ) indicated by prefixing a concern usage declaration with the keyword frame. As for an assumed or required constraint, the keyword **frame** can be used rather than frame concern to declare a framed concern using reference subsetting. In any case, since the framed concern usage itself is a subrequirement, it will automatically be considered a required constraint of its containing requirement definition or usage.
+11. **Views and Viewpoints**: Are closer to the concepts of INCOSE and ISO 15288. Viewpoints are a type of requirement for Views. Note that Views are still evolving in SysML v2 and not yet fully specified in the standard such that they can be used effectively by different vendor tools. Views have an expose that works like the package import to load data for the view to render and filter to remove items from the view.
+12. **Concerns**: New concept in v2. A concern definition or usage is declared as a rrequirement definition or usage (see 7.21.2 ) using the kind keyword concern instead of requirement. Otherwise, a concern definition or usage is specified exactly like a regular rrequirement definition or usage. The intent, however, is that the concerns of one or more stakeholders can be modeled as the required constraints of a concern definition or usage with appropriate stakeholder parameters.
+13. **constraint, assume constraint, and require constraint**: New concepts in v2. Within a requirement, `require constraint` specifies a condition that the subject must satisfy, while `assume constraint` specifies a precondition that is assumed to be true. These allow for formal mathematical or logic-based verification of requirements. One or more concerns can then be framed in other rrequirement definitions and usages using the `frame` keyword.
 
 ## 10. METAMODEL CONCEPTS (Section 8)
 
@@ -1174,12 +1174,10 @@ The language supports model-based systems engineering from requirements through 
 
 ## Modeling Conventions & Best Practices (Custom Additions)
 
-- **Library Packages:** Always use library package (e.g., library package 'Requirement Templates') to house reusable templates and definitions (def). Place usages (e.g.,
-equirement) in actual model context packages.
+- **Library Packages:** Always use library package (e.g., library package 'Requirement Templates') to house reusable templates and definitions (def). Place usages (e.g., `requirement`) in actual model context packages.
 - **Requirement Definitions vs. Usages:**
-equirement def elements should act as reusable abstractions and be relegated to library package. The specific statement/instance of a requirement should be an element usage (
-equirement) typed by a definition.
-- **Actions and States:** In a similar vein, ction def or state def define the flows/behavioral blocks. The usage ction or state sits inside the concrete parts that exhibit or execute them.
+`requirement def` elements should act as reusable abstractions and be relegated to library package. The specific statement/instance of a requirement should be an element usage (`requirement`) typed by a definition.
+- **Actions and States:** In a similar vein, action def or state def define the flows/behavioral blocks. The usage action or state sits inside the concrete parts that exhibit or execute them.
 - **Views Placement:** Tables and tree views should be placed *directly within the package they are documenting* rather than grouped externally.
 - **Structure Visualization:** For packages featuring structure or dependencies, leverage DS_Views::SymbolicViewsByExpression::TreeView (tree view) using expose PackageName::** to automatically evaluate and display elements.
 
@@ -1205,20 +1203,19 @@ state def OperationalStates {
         do action powerUp : PowerUp
         then on;
 }
-part  Vehicle {
-    exhibit state operatingState : OperationalStates;
+
 }
-\\n
+
 # Requirements and Analysis
 
 ## Requirements
 
 Requirements specify stakeholder-imposed constraints. Note that requirements are documented using the same syntax as other definitions and usages. The main difference is the intent. The definition of a requirement is a requirement that specifies a constraint that is a template for a kind of requirement, a pattern of a requirement. A usage of a requirement is a requirement of a specific type that specifies the ID, a name that is a summary of the shall statement, and the required constraint, measured and targeted values and or condition and acceptance criteria.
-Example of a requirement definition
+Example of a rrequirement definition
 
 ```sysml
 package <RT> RequirementTypes {
-    requirement def PerformanceRequirement {
+    rrequirement def PerformanceRequirement {
         doc /* A requirement that requires a specific metric to be met. */
     }
 }
@@ -1295,7 +1292,7 @@ Rules:
 - The doc comment must contain the authoritative full “shall” statement.
 - Do not omit the short name.
 - Do not replace the shall statement with the short name.
-- Do not create actual project/system requirements as requirement def.
+- Do not create actual project/system requirements as rrequirement def.
 
 ## allocate, satisfy, and verify must connect usages only
 
@@ -1473,7 +1470,7 @@ Examples:
 
 Use library packages for reusable definitions:
 
-- requirement def
+- rrequirement def
 - part def
 - port def
 - interface def
@@ -2358,7 +2355,7 @@ Assumptions and requirements.
 package Calculations_6Requirements {
     private import ScalarValues::*;
     private import SysML::*;
-    requirement def Safety {
+    rrequirement def Safety {
        attribute temp : Real;
        attribute pressure : Real;
        assume constraint { temp < 100 }
@@ -2730,15 +2727,15 @@ package Constraints_4CalculationUsage {
 
 **Example**: `action drive : Drive;`
 
-## Requirement Def
+## Rrequirement def
 
-![Requirement Def](assets/symbols/light/RequirementDef.svg)
+![Rrequirement def](assets/symbols/light/RequirementDef.svg)
 
-**Notation**: Rectangle: 'requirement def'
+**Notation**: Rectangle: 'rrequirement def'
 
-**Syntax**: `requirement def Name;`
+**Syntax**: `rrequirement def Name;`
 
-**Example**: `requirement def Perf;`
+**Example**: `rrequirement def Perf;`
 
 ## Requirement Usage
 
@@ -2945,7 +2942,7 @@ package Reference_1CommonKeywords {
       state def, state
       interface def, port def, port
       connection def, connection
-      requirement def, requirement
+      rrequirement def, requirement
       constraint def, constraint, assert
       analysis def, analysis
       verification def, verification
@@ -3191,7 +3188,7 @@ package 'Example: Import & Exposure' {
 
 *Requirements and Verification*
 
-## 1. Requirement Definition
+## 1. Rrequirement definition
 
 Defining requirement types.
 
@@ -3200,7 +3197,7 @@ package Requirements_1RequirementDefinition {
     private import ScalarValues::*;
     private import SysML::*;
     attribute def Time;
-    requirement def Performance {
+    rrequirement def Performance {
       doc /* The system shall be fast. */
       attribute maxResponse : Time;
     }
@@ -3217,7 +3214,7 @@ package Requirements_2RequirementUsage {
     private import SysML::*;
     attribute def Time;
     attribute ms;
-    requirement def Performance { attribute maxResponse : Time; }
+    rrequirement def Performance { attribute maxResponse : Time; }
     requirement <'REQ-001'> 'Fast' : Performance {
       doc /* Response < 10ms */
       attribute maxResponse = 10 [ms];
@@ -3233,7 +3230,7 @@ Design meets requirement.
 package Requirements_3Satisfy {
     private import ScalarValues::*;
     private import SysML::*;
-    requirement def Performance;
+    rrequirement def Performance;
     requirement req1 : Performance;
     part server {
       satisfy req1;
@@ -4299,7 +4296,7 @@ package Evaluation_Tutorial {
     }
 
     /* --- 2. Requirements & Constraints --- */
-    requirement def PowerLimit {
+    rrequirement def PowerLimit {
         attribute actualPower : Real;
         attribute limit : Real;
         
@@ -4311,7 +4308,7 @@ package Evaluation_Tutorial {
     
     part myEngine : System::engine {
         /* Satisfaction */
-        satisfy requirement checkPower : PowerLimit {
+        satisfy checkPower : PowerLimit {
             attribute :>> actualPower = myEngine.currentPower;
             attribute :>> limit = myEngine.maxPower;
         }
@@ -4862,7 +4859,7 @@ package Requirements_Tutorial {
     private import ScalarValues::*;
     
     /* --- 1. Requirements --- */
-    requirement def PerformanceReq {
+    rrequirement def PerformanceReq {
         doc /* Textual description */
             "The system shall operate within performance limits.";
     }
