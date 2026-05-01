@@ -1,6 +1,6 @@
 # SysML v2 AI Agent Skill / Comprehensive Reference
 
-**Generated on:** 2026-04-28 09:40:30
+**Generated on:** 2026-04-28 09:41:13
 
 ---
 
@@ -16,10 +16,10 @@ Systems Modeling Language (SysML) v2.0 is an OMG standard for model-based system
 
 ### Key things to remember
 
-NEVER use single line comments `//` in the SysMLv2 language because these are not persisted to the model and are lost.
-The only reason to use `public` is when the element is to be used everywhere because a `public` is part of the world view. It is better to use the default (no `public` or `private`) so that a user in another package is forced to import.
-The only reason to use `private` is when the element is truly not usable or redefinable outside of a context of the package it lives, which in SysMLv2 is rare as we care less about this in engineering than is in software where we don't trust fellow programmers.
-When importing, the import must be prefixed with `public` , `private` or `protected` with 'private' being the default import accessibility specified (for example `private import ScalarValues::*;`).
+- NEVER use single line comments `//` in the SysMLv2 language because these are not persisted to the model and are lost.
+- The only reason to use `public` is when the element is to be used everywhere because a `public` is part of the world view. It is better to use the default (no `public` or `private`) so that a user in another package is forced to import.
+- The only reason to use `private` is when the element is truly not usable or redefinable outside of a context of the package it lives, which in SysMLv2 is rare as we care less about this in engineering than is in software where we don't trust fellow programmers.
+- When importing, the import must be prefixed with `public` , `private` or `protected` with 'private' being the default import accessibility specified (for example `private import ScalarValues::*;`).
 
 ### Definition and Usage Pattern
 
@@ -1715,7 +1715,7 @@ This skill is intended to produce SysMLv2 that is:
 
 # SysML v2 Cheat Sheets: Complete Collection
 
-**Generated on:** 2026-04-28 09:40:30
+**Generated on:** 2026-04-28 09:41:13
 
 ---
 
@@ -3787,7 +3787,7 @@ style color = "red";
 
 # SysML v2 Tutorials: Complete Collection
 
-**Generated on:** 2026-04-28 09:40:30
+**Generated on:** 2026-04-28 09:41:13
 
 ---
 

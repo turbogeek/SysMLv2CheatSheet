@@ -27,6 +27,11 @@ This template gathers information structured around the core OOSEM phases. Fill 
 *SysMLv2 Mapping: `requirement def` with associated `attribute def` for metrics.*
 [Constraints, timing, performance metrics]
 
+---
+> **[Guided Milestone Checkpoint 1]**
+> *If requested by the user, pause here to present the Needs and Requirements analysis for review before moving to Logical Architecture.*
+---
+
 ## 3. Define Logical Architecture
 *Decompose the system into logical, technology-independent components.*
 
@@ -41,6 +46,15 @@ This template gathers information structured around the core OOSEM phases. Fill 
 ### 3.3 Logical Behavior
 *SysMLv2 Mapping: `state def`, `action def`.*
 [Describe the state machines or activity workflows for the logical blocks]
+
+### 3.4 Specific Analysis Goals
+*SysMLv2 Mapping: `analysis def`, `calc def`.*
+[Define specific analysis goals for the logical architecture (e.g. Performance, Safety, Cost, Weight) to guide physical allocation.]
+
+---
+> **[Guided Milestone Checkpoint 2]**
+> *If requested by the user, pause here to present the Logical Architecture and Analysis Goals for review before synthesizing physical candidate architectures.*
+---
 
 ## 4. Synthesize Candidate Allocated Architectures
 *Propose physical/technology-specific architectures that implement the logical architecture.*
@@ -61,7 +75,8 @@ This template gathers information structured around the core OOSEM phases. Fill 
 [List the criteria used to select the best architecture: Cost, Weight, Power, Reliability, etc.]
 
 ### 5.2 Selected Architecture Justification
-[Briefly explain why the chosen physical architecture was selected]
+*SysMLv2 Mapping: `Doc` comments or specific trade study views.*
+[Briefly explain why the chosen physical architecture was selected based on the tradeoff metrics defined above]
 
 ---
 **LLM Instruction:** When generating SysMLv2 from this template, utilize block-based decomposition (`part def` and `part`) to emphasize the object-oriented structure. Ensure that logical behaviors (actions/states) are explicitly allocated to physical parts.

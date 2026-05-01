@@ -6,6 +6,15 @@ Alias: SysMLv2
 
 Systems Modeling Language (SysML) v2.0 is an OMG standard for model-based systems engineering. It extends the Kernel Modeling Language (KerML) to provide comprehensive modeling capabilities for complex systems.
 
+### Consulting Official Specifications
+If you encounter edge cases, ambiguous syntax, or need to verify the official OMG standard for SysMLv2 or KerML, you can query the official specifications directly using the provided python script.
+Run the following command in your terminal:
+`python src/query_specs.py "your search query"`
+This will return the most relevant sections from the official specification documents to guide your modeling.
+
+### Using Standard Libraries
+When you need to perform mathematical calculations, query collections, model 3D geometry, use cause-and-effect dynamics, or create custom/compound units (like `[ms]` or `ducks per meter`), you **MUST** consult `LLM_skills/standard_libraries_skill.md`. This dedicated skill explains how to leverage and extend the 9.x Domain Libraries from SysMLv2 and KerML.
+
 ## Core Concepts
 
 ### Key things to remember
