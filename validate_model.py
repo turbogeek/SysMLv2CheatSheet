@@ -11,7 +11,11 @@ def validate_sysml_file(file_path):
         print(f"Error: File '{file_path}' not found.", file=sys.stderr)
         return False
 
-    validator_cmd = r"E:\_Documents\git\v2Implementation\sysml-validator\validate.cmd"
+    # Determine the directory where this script resides
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # The validator resides at the same level as this git project
+    validator_dir = os.path.abspath(os.path.join(script_dir, "..", "v2Implementation", "sysml-validator"))
+    validator_cmd = os.path.join(validator_dir, "validate.cmd")
     
     if not os.path.exists(validator_cmd):
         print(f"Error: Validator script '{validator_cmd}' not found.", file=sys.stderr)
@@ -24,7 +28,7 @@ def validate_sysml_file(file_path):
             [validator_cmd, file_path],
             capture_output=True,
             text=True,
-            cwd=r"E:\_Documents\git\v2Implementation\sysml-validator"
+            cwd=validator_dir
         )
 
         # Check output for typical success indicators or return code
