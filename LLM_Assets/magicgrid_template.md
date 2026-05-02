@@ -21,11 +21,6 @@ This template uses the MagicGrid framework (often used with Cameo/MagicDraw) to 
 *SysMLv2 Mapping: `attribute def`, MoEs (Measures of Effectiveness).*
 [What are the key performance parameters or measures of effectiveness stakeholders care about?]
 
----
-> **[Guided Milestone Checkpoint 1]**
-> *If requested by the user, pause here to present the Problem Domain definition for review before moving to the Solution Domain.*
----
-
 ## Domain 2: Solution Domain
 *Focuses on the logical architecture. How do we logically solve the problem without tying to specific technologies?*
 
@@ -43,12 +38,7 @@ This template uses the MagicGrid framework (often used with Cameo/MagicDraw) to 
 
 ### 2.4 Parametrics (Solution)
 *SysMLv2 Mapping: `calc def`, `analysis def`, MoPs (Measures of Performance).*
-[Define the mathematical constraints, performance roll-ups, and logical system parameters. Include specific analysis goals for Performance, Safety, Cost, Weight, etc.]
-
----
-> **[Guided Milestone Checkpoint 2]**
-> *If requested by the user, pause here to present the Solution Domain Architecture and Analysis Goals for review before synthesizing Implementation Domain candidate architectures.*
----
+[Define the mathematical constraints, performance roll-ups, and logical system parameters]
 
 ## Domain 3: Implementation Domain
 *Focuses on the physical architecture and specific technology choices.*
@@ -68,10 +58,6 @@ This template uses the MagicGrid framework (often used with Cameo/MagicDraw) to 
 ### 3.4 Parametrics (Implementation)
 *SysMLv2 Mapping: `calc def`, TPMs (Technical Performance Measures).*
 [Specific component tolerances, weights, power consumption limits, etc.]
-
-### 3.5 Tradeoff Studies (Implementation)
-*SysMLv2 Mapping: `Doc` comments, or separate trade study packages.*
-[Compare alternative physical implementations using the Parametrics defined in the Solution Domain]
 
 ---
 **LLM Instruction:** When generating a SysMLv2 model from this MagicGrid template, maintain strict separation between Problem (Context), Solution (Logical), and Implementation (Physical) elements. Ensure robust traceability using `satisfy` (Implementation/Solution -> Problem) and `allocate` (Implementation -> Solution) relationships.

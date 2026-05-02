@@ -1,6 +1,6 @@
 # SysML v2 AI Agent Skill / Comprehensive Reference
 
-**Generated on:** 2026-04-28 09:41:13
+**Generated on:** 2026-05-02 10:36:59
 
 ---
 
@@ -12,14 +12,23 @@ Alias: SysMLv2
 
 Systems Modeling Language (SysML) v2.0 is an OMG standard for model-based systems engineering. It extends the Kernel Modeling Language (KerML) to provide comprehensive modeling capabilities for complex systems.
 
+### Consulting Official Specifications
+If you encounter edge cases, ambiguous syntax, or need to verify the official OMG standard for SysMLv2 or KerML, you can query the official specifications directly using the provided python script.
+Run the following command in your terminal:
+`python src/query_specs.py "your search query"`
+This will return the most relevant sections from the official specification documents to guide your modeling.
+
+### Using Standard Libraries
+When you need to perform mathematical calculations, query collections, model 3D geometry, use cause-and-effect dynamics, or create custom/compound units (like `[ms]` or `ducks per meter`), you **MUST** consult `LLM_skills/standard_libraries_skill.md`. This dedicated skill explains how to leverage and extend the 9.x Domain Libraries from SysMLv2 and KerML.
+
 ## Core Concepts
 
 ### Key things to remember
 
-- NEVER use single line comments `//` in the SysMLv2 language because these are not persisted to the model and are lost.
-- The only reason to use `public` is when the element is to be used everywhere because a `public` is part of the world view. It is better to use the default (no `public` or `private`) so that a user in another package is forced to import.
-- The only reason to use `private` is when the element is truly not usable or redefinable outside of a context of the package it lives, which in SysMLv2 is rare as we care less about this in engineering than is in software where we don't trust fellow programmers.
-- When importing, the import must be prefixed with `public` , `private` or `protected` with 'private' being the default import accessibility specified (for example `private import ScalarValues::*;`).
+NEVER use single line comments `//` in the SysMLv2 language because these are not persisted to the model and are lost.
+The only reason to use `public` is when the element is to be used everywhere because a `public` is part of the world view. It is better to use the default (no `public` or `private`) so that a user in another package is forced to import.
+The only reason to use `private` is when the element is truly not usable or redefinable outside of a context of the package it lives, which in SysMLv2 is rare as we care less about this in engineering than is in software where we don't trust fellow programmers.
+When importing, the import must be prefixed with `public` , `private` or `protected` with 'private' being the default import accessibility specified (for example `private import ScalarValues::*;`).
 
 ### Definition and Usage Pattern
 
@@ -1715,7 +1724,7 @@ This skill is intended to produce SysMLv2 that is:
 
 # SysML v2 Cheat Sheets: Complete Collection
 
-**Generated on:** 2026-04-28 09:41:13
+**Generated on:** 2026-05-02 10:36:59
 
 ---
 
@@ -3787,7 +3796,7 @@ style color = "red";
 
 # SysML v2 Tutorials: Complete Collection
 
-**Generated on:** 2026-04-28 09:41:13
+**Generated on:** 2026-05-02 10:36:59
 
 ---
 

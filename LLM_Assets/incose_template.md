@@ -26,11 +26,6 @@ This template is designed to gather information according to the standard INCOSE
 *SysMLv2 Mapping: `attribute def` or constraint blocks.*
 [List the criteria by which the stakeholders will judge the system's success]
 
----
-> **[Guided Milestone Checkpoint 1]**
-> *If requested by the user, pause here to present the discovery and requirements for review before moving to Logical Architecture.*
----
-
 ## 3. System Requirements Definition
 *Translate stakeholder needs into technical, verifiable system requirements.*
 
@@ -61,15 +56,6 @@ This template is designed to gather information according to the standard INCOSE
 *SysMLv2 Mapping: `action def`, `state def`.*
 [Describe state transitions, core algorithms, or functional flows]
 
-### 4.4 Specific Analysis Goals
-*SysMLv2 Mapping: `analysis def`, `calc def`.*
-[Define goals and constraints for Performance, Safety, Cost, Weight, Reliability, etc.]
-
----
-> **[Guided Milestone Checkpoint 2]**
-> *If requested by the user, pause here to present the Logical Architecture and Analysis Goals for review before moving to Physical Architecture.*
----
-
 ## 5. Design Definition
 *Allocate the logical architecture to specific physical or technical implementations.*
 
@@ -80,10 +66,6 @@ This template is designed to gather information according to the standard INCOSE
 ### 5.2 Allocation Matrix
 *SysMLv2 Mapping: `allocation` relationships or `allocate` dependencies.*
 [Describe which physical component satisfies which logical component or requirement]
-
-### 5.3 Tradeoff Studies
-*SysMLv2 Mapping: Provide rationales, `Doc` comments, or separate trade study packages.*
-[Compare alternative physical implementations using the Analysis Goals defined in 4.4]
 
 ---
 **LLM Instruction:** When processing this file, ensure that every requirement listed in Section 3 has a corresponding `satisfy` relationship from an architectural element in Section 4 or 5.
