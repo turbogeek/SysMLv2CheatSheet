@@ -10,7 +10,7 @@ These instructions assume you are starting from a completely fresh machine.
 
 The pipeline relies on three core technologies:
 * **Git**: To download and manage the repositories.
-* **Java (JDK 17+)**: To run the official SysML v2 validator engine.
+* **Java (JDK 21+ or Cameo JRE)**: To run the official SysML v2 validator engine.
 * **Python (3.10+)**: To run the automation and auto-fix scripts.
 * **VS Code (Optional but Recommended)**: As your code editor.
 
@@ -25,10 +25,15 @@ The pipeline relies on three core technologies:
 * Download the latest Python 3.11 or 3.12 installer.
 * **CRITICAL:** When you start the installer, check the box at the very bottom that says **"Add Python to PATH"** before clicking "Install Now".
 
-**3. Install Java (JDK 17)**
-* Go to the [Adoptium Eclipse Temurin Download page](https://adoptium.net/temurin/releases/?version=17).
-* Download the `.msi` installer for Windows x64.
-* Run the installer. On the Custom Setup screen, ensure **"Set JAVA_HOME variable"** is selected to be installed on the local drive.
+**3. Configure Java (via Cameo)**
+* CATIA Magic (Cameo) ships with its own specific version of Java (e.g., Eclipse Adoptium 21.0.10). Rather than installing a standalone version of Java, you must use the Cameo-provided JRE so your command-line scripts run in the exact same environment.
+* Find where Cameo is installed (e.g., `C:\Program Files\Cameo Systems Modeler`).
+* In your Windows Search, type **"Environment Variables"** and select "Edit the system environment variables".
+* Click **"Environment Variables..."**.
+* Under System Variables, click **"New..."** and add:
+  * Variable name: `JAVA_HOME`
+  * Variable value: `<Your Cameo Install Dir>\jre` (e.g., `C:\Program Files\Cameo Systems Modeler\jre`)
+* Next, find the **`Path`** variable, click **"Edit..."**, and add a new entry for `%JAVA_HOME%\bin`.
 
 **4. Test Windows Installation**
 * Open a new Command Prompt (`cmd`) or PowerShell.
@@ -53,16 +58,19 @@ The easiest way to install tools on macOS is using **Homebrew**.
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   ```
 
-**2. Install Git, Python, and Java**
+**2. Install Git and Python**
 * In the Terminal, run:
   ```bash
   brew install git
   brew install python
-  brew install openjdk@17
   ```
-* Symlink Java to the system wrappers so the OS finds it:
+
+**3. Configure Java (via Cameo)**
+* Cameo on macOS also bundles its own JRE inside the application package (e.g., `/Applications/Cameo Systems Modeler.app/Contents/PlugIns/jre/Contents/Home`).
+* Add the following to your shell profile (e.g., `~/.zshrc`):
   ```bash
-  sudo ln -sfn /opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk
+  export JAVA_HOME="/Applications/Cameo Systems Modeler.app/Contents/PlugIns/jre/Contents/Home"
+  export PATH="$JAVA_HOME/bin:$PATH"
   ```
 
 **3. Test macOS Installation**
