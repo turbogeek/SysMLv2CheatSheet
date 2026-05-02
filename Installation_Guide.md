@@ -103,23 +103,12 @@ You need two repositories: the SysML v2 Reference Implementation (which contains
 
 ---
 
-## 3. Configuring the Scripts
+## 3. Validating the Scripts
 
-The Python wrapper script (`validate_model.py`) needs to know where the Java validator is located.
+The Python wrapper script (`validate_model.py`) automatically determines where the Java validator is located. 
+As long as you cloned both repositories into the same parent folder (e.g., `Documents/git/` as shown in Step 2), the script will correctly find the validator at `../v2Implementation/sysml-validator/validate.cmd` (or `.sh`).
 
-1. Open `SysMLv2CheatSheet/validate_model.py` in your text editor.
-2. Find the configuration section at the top of the script.
-3. Update the `VALIDATOR_PATH` variable to point to the `validate.cmd` (or `validate.sh` on Mac) script inside your `v2Implementation` folder.
-   
-   **For Windows:**
-   ```python
-   VALIDATOR_PATH = r"C:\Users\YourName\Documents\git\v2Implementation\sysml-validator\validate.cmd"
-   ```
-
-   **For macOS:**
-   ```python
-   VALIDATOR_PATH = "/Users/YourName/Documents/git/v2Implementation/sysml-validator/validate.sh"
-   ```
+You do **not** need to manually edit paths inside `validate_model.py`.
 
 ---
 
@@ -192,7 +181,7 @@ It is critical to understand how the documentation files in this repository are 
 
 ### Troubleshooting
 * **"Java is not recognized..."**: Ensure you installed JDK 17 and added it to your PATH environment variable.
-* **"The system cannot find the path specified"**: Double-check the `VALIDATOR_PATH` variable in `validate_model.py` to ensure it points to the correct absolute location of the `validate` script.
+* **"Validator script not found..."**: Double-check that you cloned the `v2Implementation` repository exactly at the same folder level as `SysMLv2CheatSheet`.
 * **"Python is not recognized..."**: Re-run the Python installer and check "Add Python to PATH".
 
 ---
