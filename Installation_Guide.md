@@ -169,7 +169,20 @@ Let's test the entire pipeline by using Antigravity to generate a simple SysMLv2
    * Explictly tell Antigravity: *"Add this problem and solution to `../git/SysMLv2CheatSheet/LLM_skills/fix_recipies.md`."*
    * Antigravity will automatically update the markdown file, so it (and you) will never make that same mistake again!
 
-## 6. Editing Documentation & Architecture Rules
+## 6. Configuring Cameo to run Groovy natively
+
+For Cameo Systems Modeler to fully take advantage of running Groovy from the context of the tool (rather than just from the command line), we need to update its Automation Plugin to load the newly installed Groovy JARs. 
+
+Because the Cameo installation directory and Groovy installation directory vary per user, we provide a Python utility script to automate this patching process.
+
+1. Open a terminal (Command Prompt or PowerShell).
+2. Run the patching script located in the `src/` directory, providing the paths to your Cameo installation and your Groovy installation:
+   ```cmd
+   python src\update_cameo_groovy.py --cameo-dir "C:\Program Files\Cameo Systems Modeler" --groovy-dir "C:\Program Files\Groovy"
+   ```
+*(This script will back up your `plugin.xml`, copy all `.jar` files from the Groovy `lib` folder into the Cameo Automaton plugin, and automatically append them to the `<runtime>` section of the XML configuration).*
+
+## 7. Editing Documentation & Architecture Rules
 
 It is critical to understand how the documentation files in this repository are structured so that any manual edits you make are not overwritten.
 
