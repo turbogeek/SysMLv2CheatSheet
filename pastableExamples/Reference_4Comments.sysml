@@ -1,10 +1,12 @@
 package Reference_4Comments {
-    private import ScalarValues::*;
-    private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    /* Single line */ (not persisted)
+    /* Single line */
     /* Multi-line
        comment */
     doc /* Documentation */
+    /* Single line */
+    /* Multi-line
+       comment */
+    doc /* Documentation */
+    part element;
     comment about element /* text */
 }

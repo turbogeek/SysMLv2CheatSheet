@@ -1,9 +1,11 @@
 package Requirements_7TraceRefine {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    requirement req1;
+    requirement old_doc_item;
     requirement req2 {
-      refine req1;
-      trace old_doc_item;
+      doc /* Using dependency to represent relationships */
+      dependency from req2 to req1;
+      dependency from req2 to old_doc_item;
     }
 }

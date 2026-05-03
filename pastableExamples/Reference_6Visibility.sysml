@@ -1,8 +1,7 @@
 package Reference_6Visibility {
-    private import ScalarValues::*;
-    private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    public (default)
-    private (internal only)
-    protected (subtypes only)
+    doc /*
+      public    (default) - Visible everywhere
+      private   (private) - Visible only inside
+      protected (protected) - Visible to children
+    */
 }

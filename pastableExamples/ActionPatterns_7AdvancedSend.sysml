@@ -1,16 +1,16 @@
 package ActionPatterns_7AdvancedSend {
     private import ScalarValues::*;
+    private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
+    private import Base::*;
     action def Main {
+        attribute val : Anything;
+        part monitor;
         action sendReading send {
            in payload;
            in sender = monitor;
         }
         flow val to sendReading.payload;
     }
-
-    view ExposeExample {
-        expose Main;
-    }
+    view ExposeExample { expose Main; }
 }

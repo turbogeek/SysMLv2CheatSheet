@@ -8,7 +8,7 @@ package LoopVariationsExample {
         
         action collectionLoop {
             for p : Power in profile {
-                // body
+                /* body */
             }
         }
         

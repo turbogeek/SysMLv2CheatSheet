@@ -1,10 +1,10 @@
 package Requirements_3Satisfy {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    requirement def Performance;
+    requirement req1 : Performance;
     part server {
       satisfy req1;
     }
-    doc /* Or external: */
-    satisfy server by req1;
+    /* satisfy req1 by server; // Alternative syntax */
 }

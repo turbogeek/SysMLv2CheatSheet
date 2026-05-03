@@ -1,10 +1,11 @@
 package Requirements_2RequirementUsage {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
-    requirement req1 : Performance {
+    attribute def Time;
+    attribute ms;
+    requirement def Performance { attribute maxResponse : Time; }
+    requirement <'REQ-001'> 'Fast' : Performance {
       doc /* Response < 10ms */
-      id "REQ-001";
-      maxResponse = 10 [ms];
+      attribute maxResponse = 10 [ms];
     }
 }

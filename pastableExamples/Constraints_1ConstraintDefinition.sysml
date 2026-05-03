@@ -1,7 +1,9 @@
 package Constraints_1ConstraintDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Structure Context)
+    attribute def Force;
+    attribute def Mass;
+    attribute def Acceleration;
     constraint def NewtonLaw {
       in f : Force;
       in m : Mass;

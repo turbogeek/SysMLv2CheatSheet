@@ -1,17 +1,14 @@
 package Actions_2ActionUsage {
     private import ScalarValues::*;
     private import SysML::*;
-    // Wrapped Snippet (Action Context)
+    action def Serve;
     action def Main {
         action playPoint {
            action serve : Serve;
-           perform serve { ... }
+           perform serve { /* ... */ }
            action serve2 : Serve;
-           perform action serve2;
+           perform serve2;
         }
     }
-
-    view ExposeExample {
-        expose Main;
-    }
+    view ExposeExample { expose Main; }
 }
