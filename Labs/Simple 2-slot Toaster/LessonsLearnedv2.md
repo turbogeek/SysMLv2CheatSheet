@@ -5,6 +5,7 @@
 ---
 
 # SysML v2.0 Language Reference
+
 ... (the rest of the original skill.md remains unchanged up to the Best Practices section) ...
 
 ---
@@ -51,6 +52,8 @@
 
 - **Multiple Connection Targets**  
   The `connect` statement accepts exactly one source and one target. To connect a single source to multiple destinations, use separate `connect` statements. For example:
+
   ```sysml
   connect timer.outputContacts to innerElements.powerIn;
   connect timer.outputContacts to outerElements.powerIn;
+  ```
