@@ -49,6 +49,7 @@ def generate_for_theme(theme_key, theme):
     
     full_code = """package Evaluation_Tutorial {
     private import ScalarValues::*;
+    private import AnalysisCases::*;
     
     /* --- 1. Calculations --- */
     calc def PowerCalc {
@@ -78,9 +79,12 @@ def generate_for_theme(theme_key, theme):
         }
     }
     
+    /* Requirement Usage at package level to allow verification */
+    requirement checkPower : PowerLimit;
+
     part myEngine : System::engine {
         /* Satisfaction */
-        satisfy requirement checkPower : PowerLimit {
+        satisfy checkPower {
             attribute :>> actualPower = myEngine.currentPower;
             attribute :>> limit = myEngine.maxPower;
         }
@@ -102,14 +106,14 @@ def generate_for_theme(theme_key, theme):
     analysis def Optimization {
         subject candidates : System::engine [1..*];
         
-        objective : MaximizeObjective {
-            subject;
+        objective maximizeObj {
+            subject candidates = Optimization::candidates;
         }
         
         /* Define how we measure 'goodness' */
-        calc :>> evaluationFunction {
-            in part cand :> candidates :>> alternative;
-            return :>> result = cand.currentPower;
+        calc evaluate {
+            in part cand :> candidates;
+            return result : Real = cand.currentPower;
         }
     }
 }"""

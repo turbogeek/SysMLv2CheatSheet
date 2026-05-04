@@ -118,7 +118,7 @@ def generate_for_theme(theme_key, theme):
     code_3 = """package Connections_3InterfaceConnection {
     private import ScalarValues::*;
     private import SysML::*;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     interface   def  IData  {
        end  source ;
        end  target ;

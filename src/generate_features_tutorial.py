@@ -87,6 +87,7 @@ def generate_for_theme(theme_key, theme):
     
     full_code = """package Feature_Tutorial_Model {
     private import ISQ::*;
+    private import SI::*;
 
     /* --- 1. Base Definitions --- */
     part def Engine {
@@ -121,12 +122,12 @@ def generate_for_theme(theme_key, theme):
         /* Feature Chaining: reaching into 'engine' */
         /* Redeclaration (:>>) shorthand for 'redefines' or 'subsets' */
         
-        attribute :>> engine.horsepower = 500 [hp];
+        attribute :>> engine.horsepower = 500000 [W];
         
         /* This is structurally equivalent to: */
         /* part :>> engine { */
-        /* attribute :>> horsepower = 500 [hp]; */
-        /*  */}
+        /* attribute :>> horsepower = 500000 [W]; */
+        /* } */
     }
 }"""
     

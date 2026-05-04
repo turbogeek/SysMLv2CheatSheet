@@ -1,0 +1,467 @@
+﻿Testing ActionPatterns_1WhileLoop.sysml...
+ âœ… OK
+Testing ActionPatterns_2bLoopVariations.sysml...
+ âœ… OK
+Testing ActionPatterns_2ForLoop.sysml...
+ âœ… OK
+Testing ActionPatterns_3IfElse.sysml...
+ âœ… OK
+Testing ActionPatterns_4AcceptVariations.sysml...
+ âœ… OK
+Testing ActionPatterns_5SendVariations.sysml...
+ âœ… OK
+Testing ActionPatterns_6ControlNodes.sysml...
+ âœ… OK
+Testing ActionPatterns_7AdvancedSend.sysml...
+ âœ… OK
+Testing Actions_1ActionDefinition.sysml...
+ âœ… OK
+Testing Actions_2ActionUsage.sysml...
+ âœ… OK
+Testing Actions_4Parameters.sysml...
+ âœ… OK
+Testing Actions_5SendAcceptSignal.sysml...
+ âœ… OK
+Testing Actions_6Successionfirstthen.sysml...
+ âœ… OK
+Testing Actions_7Assignmentassign.sysml...
+ âœ… OK
+Testing Actions_8Trigger.sysml...
+ âœ… OK
+Testing Actions_Tutorial.sysml...
+ âœ… OK
+Testing Allocation_Tutorial.sysml...
+ âœ… OK
+Testing Analysis_Tutorial.sysml...
+ âœ… OK
+Testing Behavior_1StateDefinition.sysml...
+ âœ… OK
+Testing Behavior_2Transitions.sysml...
+ âœ… OK
+Testing Behavior_3bInternalTransition.sysml...
+ âœ… OK
+Testing Behavior_3GuardsEffects.sysml...
+ âœ… OK
+Testing Behavior_4ActionDefinition.sysml...
+ âœ… OK
+Testing Behavior_5ActionUsage.sysml...
+ âœ… OK
+Testing Behavior_6UseCases.sysml...
+ âœ… OK
+Testing Calculations_1CalculationDefinition.sysml...
+ âœ… OK
+Testing Calculations_2CalculationUsage.sysml...
+ âœ… OK
+Testing Calculations_4ConstraintUsage.sysml...
+ âœ… OK
+Testing Calculations_5Assertions.sysml...
+ âœ… OK
+Testing Calculations_6Requirements.sysml...
+ âœ… OK
+Testing Cases_1UseCaseDefinition.sysml...
+ âœ… OK
+Testing Cases_2TestCaseVerification.sysml...
+ âœ… OK
+Testing Cases_3AnalysisCase.sysml...
+ âœ… OK
+Testing Cases_4CaseUsage.sysml...
+ âœ… OK
+Testing Connections_1bConnectionUsage.sysml...
+ âœ… OK
+Testing Connections_1ConnectionDefinition.sysml...
+ âœ… OK
+Testing Connections_2BindingConnector.sysml...
+ âœ… OK
+Testing Connections_3InterfaceConnection.sysml...
+ âœ… OK
+Testing Connections_4SuccessionFlow.sysml...
+ âœ… OK
+Testing Connections_Tutorial.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 2: Name resolution error: couldn't resolve 
+reference to Element 'PortsInterfaces_Tutorial'.\\n[ERROR] line 7: Name resolution error: couldn't resolve reference 
+to Element 'Battery'.\\n[ERROR] line 8: Name resolution error: couldn't resolve reference to Element 
+'Computer'.\\n[ERROR] line 12: Name resolution error: couldn't resolve reference to Element 'pwrPort'.\\n[ERROR] line 
+12: Name resolution error: couldn't resolve reference to Element 'pwrIn'.\\n[ERROR] line 16: Name resolution error: 
+couldn't resolve reference to Element 'DataLink'.\\n[ERROR] line 20: Name resolution error: couldn't resolve reference 
+to Element 'eth0'."}
+Testing Constraints_1ConstraintDefinition.sysml...
+ âœ… OK
+Testing Constraints_2bInlineAssertion.sysml...
+ âœ… OK
+Testing Constraints_2ConstraintUsageAssert.sysml...
+ âœ… OK
+Testing Constraints_3CalculationDefinition.sysml...
+ âœ… OK
+Testing Constraints_4CalculationUsage.sysml...
+ âœ… OK
+Testing CoreTypes_Tutorial.sysml...
+ âœ… OK
+Testing DataTypes_Tutorial.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 20: Name resolution error: couldn't 
+resolve reference to Element 'DurationUnit'.\\n[ERROR] line 21: Name resolution error: couldn't resolve reference to 
+Element 'unitConversion'.\\n[ERROR] line 22: Name resolution error: couldn't resolve reference to Element 
+'milli'.\\n[ERROR] line 23: Name resolution error: couldn't resolve reference to Element 's'.\\n[ERROR] line 26: Name 
+resolution error: couldn't resolve reference to Element 'SpeedUnit'.\\n[ERROR] line 26: Name resolution error: 
+couldn't resolve reference to Element 'mm'.\\n[ERROR] line 26: Name resolution error: couldn't resolve reference to 
+Element 'h'.\\n[ERROR] line 39: Name resolution error: couldn't resolve reference to Element 'm'.\\n[ERROR] line 42: 
+Name resolution error: couldn't resolve reference to Element 'MassValue'.\\n[ERROR] line 45: Name resolution error: 
+couldn't resolve reference to Element 'km'.\\n[ERROR] line 45: Name resolution error: couldn't resolve reference to 
+Element 'h'.\\n[ERROR] line 56: Name resolution error: couldn't resolve reference to Element 
+'ISQInformation::GB'.\\n[ERROR] line 59: Name resolution error: couldn't resolve reference to Element 
+'ProjectUnits::mAh'."}
+Testing DomainLibs_Tutorial.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 14: Name resolution error: couldn't 
+resolve reference to Element 'kg'.\\n[ERROR] line 15: Name resolution error: couldn't resolve reference to Element 
+'km'.\\n[ERROR] line 15: Name resolution error: couldn't resolve reference to Element 'h'."}
+Testing Evaluation_Tutorial.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 46: Name resolution error: couldn't 
+resolve reference to Element 'checkPower'.\\n[ERROR] line 56: Name resolution error: couldn't resolve reference to 
+Element 'MaximizeObjective'.\\n[ERROR] line 61: Name resolution error: couldn't resolve reference to Element 
+'evaluationFunction'.\\n[ERROR] line 62: Name resolution error: couldn't resolve reference to Element 'alternative'."}
+Testing Features_Tutorial.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 44: extraneous input '}' expecting {, '>', 
+'redefines', 'standard', 'library', 'package', 'filter', 'alias', '[', 'public', 'private', 'protected', ':>', 
+'ordered', 'nonunique', 'subsets', '::>', 'references', '=>', 'crosses', 'dependency', 'variation', 'in', 'out', 
+'inout', 'derived', 'constant', 'end', '=', ':=', 'default', 'attribute', 'enum', 'occurrence', 'individual', 
+'snapshot', 'timeslice', 'event', 'item', 'part', 'port', 'binding', 'bind', 'succession', 'first', 'connection', 
+'connect', 'flow', 'message', 'interface', 'allocation', 'allocate', 'action', 'perform', 'state', 'exhibit', 'calc', 
+'constraint', 'assert', 'not', 'requirement', 'satisfy', 'concern', 'case', 'analysis', 'verification', 'use', 
+'include', 'view', 'rendering', 'viewpoint', REGULAR_COMMENT, NAME, DISPLAY_ID}\\n[ERROR] line 37: Name resolution 
+error: couldn't resolve reference to Element 'hp'."}
+Testing Filters_Tutorial.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 14: mismatched input 'part' expecting 
+{';', '{', 'about'}\\n[ERROR] line 40: extraneous input '@' expecting {';', '{', 'all', '*', '(', 'null', 'new', 
+'true', 'false', '$::', RealValue, NAME, DECIMAL_VALUE, STRING_VALUE}"}
+Testing Flows_Tutorial.sysml...
+ âœ… OK
+Testing MergedExamples.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 1027: extraneous input '}' expecting {, 
+'>', 'redefines', 'standard', 'library', 'package', 'filter', 'alias', '[', 'public', 'private', 'protected', ':>', 
+'ordered', 'nonunique', 'subsets', '::>', 'references', '=>', 'crosses', 'dependency', 'variation', 'in', 'out', 
+'inout', 'derived', 'constant', 'end', '=', ':=', 'default', 'attribute', 'enum', 'occurrence', 'individual', 
+'snapshot', 'timeslice', 'event', 'item', 'part', 'port', 'binding', 'bind', 'succession', 'first', 'connection', 
+'connect', 'flow', 'message', 'interface', 'allocation', 'allocate', 'action', 'perform', 'state', 'exhibit', 'calc', 
+'constraint', 'assert', 'not', 'requirement', 'satisfy', 'concern', 'case', 'analysis', 'verification', 'use', 
+'include', 'view', 'rendering', 'viewpoint', REGULAR_COMMENT, NAME, DISPLAY_ID}\\n[ERROR] line 1043: mismatched input 
+'part' expecting {';', '{', 'about'}\\n[ERROR] line 1069: extraneous input '@' expecting {';', '{', 'all', '*', '(', 
+'null', 'new', 'true', 'false', '$::', RealValue, NAME, DECIMAL_VALUE, STRING_VALUE}\\n[ERROR] line 1281: no viable 
+alternative at input 'privateimportSpecializedLibrary::Widgetas'\\n[ERROR] line 1302: mismatched input '[' expecting 
+{';', '{', '=', ':=', 'default'}\\n[ERROR] line 1326: extraneous input ')' expecting {'>', 'redefines', 'standard', 
+'library', 'package', 'alias', '[', 'public', 'private', 'protected', ':>', 'ordered', 'nonunique', 'subsets', '::>', 
+'references', '=>', 'crosses', 'dependency', 'variation', 'variant', 'in', 'out', 'inout', 'derived', 'constant', 
+'end', '=', ':=', 'default', 'attribute', 'enum', 'occurrence', 'individual', 'snapshot', 'timeslice', 'event', 
+'then', 'item', 'part', 'port', 'binding', 'bind', 'succession', 'first', 'connection', 'connect', 'flow', 'message', 
+'interface', 'allocation', 'allocate', 'action', 'perform', 'state', 'exhibit', 'calc', 'constraint', 'assert', 'not', 
+'requirement', 'satisfy', 'concern', 'case', 'analysis', 'verification', 'use', 'include', 'view', 'rendering', 
+'viewpoint', REGULAR_COMMENT, NAME, DISPLAY_ID}\\n[ERROR] line 1414: no viable alternative at input 
+'outpowerLevel:Real;'\\n[ERROR] line 1472: extraneous input ')' expecting {'>', 'redefines', 'standard', 'library', 
+'package', 'filter', 'alias', '[', 'public', 'private', 'protected', ':>', 'ordered', 'nonunique', 'subsets', '::>', 
+'references', '=>', 'crosses', 'dependency', 'variation', 'in', 'out', 'inout', 'derived', 'constant', 'end', '=', 
+':=', 'default', 'attribute', 'enum', 'occurrence', 'individual', 'snapshot', 'timeslice', 'event', 'item', 'part', 
+'port', 'binding', 'bind', 'succession', 'first', 'connection', 'connect', 'flow', 'message', 'interface', 
+'allocation', 'allocate', 'action', 'perform', 'state', 'exhibit', 'calc', 'constraint', 'assert', 'not', 
+'requirement', 'satisfy', 'concern', 'case', 'analysis', 'verification', 'use', 'include', 'view', 'rendering', 
+'viewpoint', REGULAR_COMMENT, NAME, DISPLAY_ID}\\n[ERROR] line 1591: extraneous input 'require' expecting {'>', 
+'redefines', 'standard', 'library', 'package', 'alias', '[', 'public', 'private', 'protected', ':>', 'ordered', 
+'nonunique', 'subsets', '::>', 'references', '=>', 'crosses', 'dependency', 'variation', 'variant', 'in', 'out', 
+'inout', 'derived', 'constant', 'end', '=', ':=', 'default', 'attribute', 'enum', 'occurrence', 'individual', 
+'snapshot', 'timeslice', 'event', 'then', 'item', 'part', 'port', 'binding', 'bind', 'succession', 'first', 
+'connection', 'connect', 'flow', 'message', 'interface', 'allocation', 'allocate', 'action', 'perform', 'state', 
+'exhibit', 'calc', 'constraint', 'assert', 'not', 'requirement', 'satisfy', 'concern', 'case', 'analysis', 
+'verification', 'use', 'include', 'view', 'rendering', 'viewpoint', REGULAR_COMMENT, NAME, DISPLAY_ID}\\n[ERROR] line 
+1617: extraneous input ''The system shall operate within performance limits.'' expecting {'>', 'redefines', 
+'standard', 'library', 'package', 'alias', '[', 'public', 'private', 'protected', ':>', 'ordered', 'nonunique', 
+'subsets', '::>', 'references', '=>', 'crosses', 'dependency', 'variation', 'variant', 'in', 'out', 'inout', 
+'derived', 'constant', 'end', '=', ':=', 'default', 'attribute', 'enum', 'occurrence', 'individual', 'snapshot', 
+'timeslice', 'event', 'then', 'item', 'part', 'port', 'binding', 'bind', 'succession', 'first', 'connection', 
+'connect', 'flow', 'message', 'interface', 'allocation', 'allocate', 'action', 'perform', 'state', 'exhibit', 'calc', 
+'constraint', 'assert', 'not', 'requirement', 'subject', 'assume', 'require', 'frame', 'actor', 'stakeholder', 
+'satisfy', 'concern', 'case', 'analysis', 'verification', 'verify', 'use', 'include', 'view', 'rendering', 
+'viewpoint', REGULAR_COMMENT, NAME, DISPLAY_ID}\\n[ERROR] line 1652: no viable alternative at input 
+'verificationcase'\\n[ERROR] line 1653: extraneous input 'verify' expecting {'>', 'redefines', 'standard', 'library', 
+'package', 'alias', 'for', 'all', '*', '[', 'public', 'private', 'protected', ':>', 'ordered', 'nonunique', 'subsets', 
+'::>', 'references', '=>', 'crosses', 'dependency', 'variation', 'variant', 'in', 'out', 'inout', 'derived', 
+'constant', 'end', '=', ':=', 'default', 'attribute', 'enum', 'occurrence', 'individual', 'snapshot', 'timeslice', 
+'event', 'then', 'item', 'part', 'port', '~', 'binding', 'bind', 'succession', 'first', 'connection', 'connect', '(', 
+'flow', 'message', 'interface', 'allocation', 'allocate', 'action', 'perform', 'accept', 'send', 'assign', 'if', 
+'while', 'loop', 'terminate', 'merge', 'decide', 'join', 'fork', 'state', 'exhibit', 'calc', 'return', 'constraint', 
+'assert', 'not', 'requirement', 'subject', 'actor', 'satisfy', 'concern', 'case', 'objective', 'analysis', 
+'verification', 'use', 'include', 'view', 'rendering', 'viewpoint', 'hastype', 'istype', 'as', '+', '-', 'null', 
+'new', 'true', 'false', '$::', RealValue, REGULAR_COMMENT, NAME, DECIMAL_VALUE, STRING_VALUE, DISPLAY_ID}\\n[ERROR] 
+line 1856: mismatched input ')' expecting {'>', 'redefines', 'standard', 'library', 'package', 'alias', '[', 'public', 
+'private', 'protected', ':>', 'ordered', 'nonunique', 'subsets', '::>', 'references', '=>', 'crosses', 'dependency', 
+'variation', 'variant', 'in', 'out', 'inout', 'derived', 'constant', 'end', '=', ':=', 'default', 'attribute', 'enum', 
+'occurrence', 'individual', 'snapshot', 'timeslice', 'event', 'then', 'item', 'part', 'port', 'binding', 'bind', 
+'succession', 'first', 'connection', 'connect', 'flow', 'message', 'interface', 'allocation', 'allocate', 'action', 
+'perform', 'state', 'entry', 'do', 'exit', 'exhibit', 'transition', 'calc', 'constraint', 'assert', 'not', 
+'requirement', 'satisfy', 'concern', 'case', 'analysis', 'verification', 'use', 'include', 'view', 'rendering', 
+'viewpoint', REGULAR_COMMENT, NAME, DISPLAY_ID}\\n[ERROR] line 1857: mismatched input 'accept' expecting 
+'then'\\n[ERROR] line 1859: extraneous input '}' expecting {, '>', 'redefines', 'standard', 'library', 'package', 
+'filter', 'alias', '[', 'public', 'private', 'protected', ':>', 'ordered', 'nonunique', 'subsets', '::>', 
+'references', '=>', 'crosses', 'dependency', 'variation', 'in', 'out', 'inout', 'derived', 'constant', 'end', '=', 
+':=', 'default', 'attribute', 'enum', 'occurrence', 'individual', 'snapshot', 'timeslice', 'event', 'item', 'part', 
+'port', 'binding', 'bind', 'succession', 'first', 'connection', 'connect', 'flow', 'message', 'interface', 
+'allocation', 'allocate', 'action', 'perform', 'state', 'exhibit', 'calc', 'constraint', 'assert', 'not', 
+'requirement', 'satisfy', 'concern', 'case', 'analysis', 'verification', 'use', 'include', 'view', 'rendering', 
+'viewpoint', REGULAR_COMMENT, NAME, DISPLAY_ID}\\n[ERROR] line 2010: mismatched input ''A report focusing only on mass 
+properties.'' expecting {'locale', REGULAR_COMMENT}\\n[ERROR] line 2015: mismatched input ''Focuses on mass properties 
+of the vehicle'' expecting {'locale', REGULAR_COMMENT}\\n[ERROR] line 2025: extraneous input 'expose' expecting {'>', 
+'redefines', 'standard', 'library', 'package', 'filter', 'alias', '[', 'public', 'private', 'protected', ':>', 
+'ordered', 'nonunique', 'subsets', '::>', 'references', '=>', 'crosses', 'dependency', 'variation', 'variant', 'in', 
+'out', 'inout', 'derived', 'constant', 'end', '=', ':=', 'default', 'attribute', 'enum', 'occurrence', 'individual', 
+'snapshot', 'timeslice', 'event', 'then', 'item', 'part', 'port', 'binding', 'bind', 'succession', 'first', 
+'connection', 'connect', 'flow', 'message', 'interface', 'allocation', 'allocate', 'action', 'perform', 'state', 
+'exhibit', 'calc', 'constraint', 'assert', 'not', 'requirement', 'satisfy', 'concern', 'case', 'analysis', 
+'verification', 'use', 'include', 'view', 'render', 'rendering', 'viewpoint', REGULAR_COMMENT, NAME, 
+DISPLAY_ID}\\n[ERROR] line 2028: extraneous input 'expose' expecting {'>', 'redefines', 'standard', 'library', 
+'package', 'filter', 'alias', '[', 'public', 'private', 'protected', ':>', 'ordered', 'nonunique', 'subsets', '::>', 
+'references', '=>', 'crosses', 'dependency', 'variation', 'variant', 'in', 'out', 'inout', 'derived', 'constant', 
+'end', '=', ':=', 'default', 'attribute', 'enum', 'occurrence', 'individual', 'snapshot', 'timeslice', 'event', 
+'then', 'item', 'part', 'port', 'binding', 'bind', 'succession', 'first', 'connection', 'connect', 'flow', 'message', 
+'interface', 'allocation', 'allocate', 'action', 'perform', 'state', 'exhibit', 'calc', 'constraint', 'assert', 'not', 
+'requirement', 'satisfy', 'concern', 'case', 'analysis', 'verification', 'use', 'include', 'view', 'render', 
+'rendering', 'viewpoint', REGULAR_COMMENT, NAME, DISPLAY_ID}\\n[ERROR] line 2049: no viable alternative at input 
+'insubject'\\n[ERROR] line 2057: no viable alternative at input 'insubject'\\n[ERROR] line 2061: no viable alternative 
+at input 'insubject'\\n[ERROR] line 2069: mismatched input ''Focus on hazards.'' expecting {'locale', 
+REGULAR_COMMENT}\\n[ERROR] line 2119: no viable alternative at input 'stylecolor'\\n[ERROR] line 1302: empty 
+statement\\n[ERROR] line 1617: empty statement\\n[ERROR] line 2010: empty statement\\n[ERROR] line 2015: empty 
+statement\\n[ERROR] line 2061: empty statement\\n[ERROR] line 2069: empty statement\\n[ERROR] line 844: Name 
+resolution error: couldn't resolve reference to Element 'DurationUnit'.\\n[ERROR] line 845: Name resolution error: 
+couldn't resolve reference to Element 'unitConversion'.\\n[ERROR] line 846: Name resolution error: couldn't resolve 
+reference to Element 'milli'.\\n[ERROR] line 847: Name resolution error: couldn't resolve reference to Element 
+'s'.\\n[ERROR] line 850: Name resolution error: couldn't resolve reference to Element 'SpeedUnit'.\\n[ERROR] line 850: 
+Name resolution error: couldn't resolve reference to Element 'mm'.\\n[ERROR] line 850: Name resolution error: couldn't 
+resolve reference to Element 'h'.\\n[ERROR] line 863: Name resolution error: couldn't resolve reference to Element 
+'m'.\\n[ERROR] line 866: Name resolution error: couldn't resolve reference to Element 'MassValue'.\\n[ERROR] line 869: 
+Name resolution error: couldn't resolve reference to Element 'km'.\\n[ERROR] line 869: Name resolution error: couldn't 
+resolve reference to Element 'h'.\\n[ERROR] line 880: Name resolution error: couldn't resolve reference to Element 
+'ISQInformation::GB'.\\n[ERROR] line 883: Name resolution error: couldn't resolve reference to Element 
+'ProjectUnits::mAh'.\\n[ERROR] line 901: Name resolution error: couldn't resolve reference to Element 'kg'.\\n[ERROR] 
+line 902: Name resolution error: couldn't resolve reference to Element 'km'.\\n[ERROR] line 902: Name resolution 
+error: couldn't resolve reference to Element 'h'.\\n[ERROR] line 961: Name resolution error: couldn't resolve 
+reference to Element 'checkPower'.\\n[ERROR] line 971: Name resolution error: couldn't resolve reference to Element 
+'MaximizeObjective'.\\n[ERROR] line 976: Name resolution error: couldn't resolve reference to Element 
+'evaluationFunction'.\\n[ERROR] line 977: Name resolution error: couldn't resolve reference to Element 
+'alternative'.\\n[ERROR] line 1020: Name resolution error: couldn't resolve reference to Element 'hp'.\\n[ERROR] line 
+1155: Name resolution error: couldn't resolve reference to Element 'Deprecated'.\\n[ERROR] line 1324: Name resolution 
+error: couldn't resolve reference to Element 'String'.\\n[ERROR] line 1330: Name resolution error: couldn't resolve 
+reference to Element 'kN'.\\n[ERROR] line 1331: Name resolution error: couldn't resolve reference to Element 
+'kg'.\\n[ERROR] line 1436: Name resolution error: couldn't resolve reference to Element 
+'PowerInterface::'~PowerInterface''.\\n[ERROR] line 2105: Name resolution error: couldn't resolve reference to Element 
+'PartUsage'.\\n[ERROR] line 2108: Name resolution error: couldn't resolve reference to Element 
+'AllocationUsage'.\\n[ERROR] line 2122: Name resolution error: couldn't resolve reference to Element 
+'asTable'.\\n[ERROR] line 2136: Name resolution error: couldn't resolve reference to Element 'TreeView'.\\n[ERROR] 
+line 2136: Name resolution error: couldn't resolve reference to Element 'EssentialElementsFilter'.\\n[ERROR] line 
+2136: Name resolution error: couldn't resolve reference to Element 'NonStandardLibraryElementFilter'.\\n[ERROR] line 
+2140: Name resolution error: couldn't resolve reference to Element 'rt'.\\n[ERROR] line 2140: Name resolution error: 
+couldn't resolve reference to Element 'EssentialElementsFilter'.\\n[ERROR] line 2140: Name resolution error: couldn't 
+resolve reference to Element 'NonStandardLibraryElementFilter'.\\n[ERROR] line 2156: Name resolution error: couldn't 
+resolve reference to Element 'EssentialElementsFilter'.\\n[ERROR] line 2156: Name resolution error: couldn't resolve 
+reference to Element 'NonStandardLibraryElementFilter'."}
+Testing Metadata_1MetadataDefinition.sysml...
+ âœ… OK
+Testing Metadata_2ElementAnnotation.sysml...
+ âœ… OK
+Testing Metadata_3RelationshipAnnotation.sysml...
+ âœ… OK
+Testing Metadata_4StandardMetadata.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 7: Name resolution error: couldn't resolve 
+reference to Element 'Deprecated'."}
+Testing Metadata_5MetadataExtension.sysml...
+ âœ… OK
+Testing Metadata_6ShortAnnotation.sysml...
+ âœ… OK
+Testing Multiplicity_Tutorial.sysml...
+ âœ… OK
+Testing Naming_Tutorial.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 22: no viable alternative at input 
+'privateimportSpecializedLibrary::Widgetas'\\n[ERROR] line 43: mismatched input '[' expecting {';', '{', '=', ':=', 
+'default'}\\n[ERROR] line 43: empty statement"}
+Testing PartsAndAttributes_Tutorial.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 20: extraneous input ')' expecting {'>', 
+'redefines', 'standard', 'library', 'package', 'alias', '[', 'public', 'private', 'protected', ':>', 'ordered', 
+'nonunique', 'subsets', '::>', 'references', '=>', 'crosses', 'dependency', 'variation', 'variant', 'in', 'out', 
+'inout', 'derived', 'constant', 'end', '=', ':=', 'default', 'attribute', 'enum', 'occurrence', 'individual', 
+'snapshot', 'timeslice', 'event', 'then', 'item', 'part', 'port', 'binding', 'bind', 'succession', 'first', 
+'connection', 'connect', 'flow', 'message', 'interface', 'allocation', 'allocate', 'action', 'perform', 'state', 
+'exhibit', 'calc', 'constraint', 'assert', 'not', 'requirement', 'satisfy', 'concern', 'case', 'analysis', 
+'verification', 'use', 'include', 'view', 'rendering', 'viewpoint', REGULAR_COMMENT, NAME, DISPLAY_ID}\\n[ERROR] line 
+18: Name resolution error: couldn't resolve reference to Element 'String'.\\n[ERROR] line 24: Name resolution error: 
+couldn't resolve reference to Element 'kN'.\\n[ERROR] line 25: Name resolution error: couldn't resolve reference to 
+Element 'kg'."}
+Testing Patterns_1MetadataAnnotations.sysml...
+ âœ… OK
+Testing Patterns_2Views.sysml...
+ âœ… OK
+Testing Patterns_3CustomUnitsNanoBanana.sysml...
+ âœ… OK
+Testing Patterns_4AbstractvsIndividual.sysml...
+ âœ… OK
+Testing PortsInterfaces_Tutorial.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 8: no viable alternative at input 
+'outpowerLevel:Real;'\\n[ERROR] line 30: Name resolution error: couldn't resolve reference to Element 
+'PowerInterface::'~PowerInterface''."}
+Testing Reference_1CommonKeywords.sysml...
+ âœ… OK
+Testing Reference_2PrimitiveTypes.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 9: extraneous input ')' expecting {'>', 
+'redefines', 'standard', 'library', 'package', 'filter', 'alias', '[', 'public', 'private', 'protected', ':>', 
+'ordered', 'nonunique', 'subsets', '::>', 'references', '=>', 'crosses', 'dependency', 'variation', 'in', 'out', 
+'inout', 'derived', 'constant', 'end', '=', ':=', 'default', 'attribute', 'enum', 'occurrence', 'individual', 
+'snapshot', 'timeslice', 'event', 'item', 'part', 'port', 'binding', 'bind', 'succession', 'first', 'connection', 
+'connect', 'flow', 'message', 'interface', 'allocation', 'allocate', 'action', 'perform', 'state', 'exhibit', 'calc', 
+'constraint', 'assert', 'not', 'requirement', 'satisfy', 'concern', 'case', 'analysis', 'verification', 'use', 
+'include', 'view', 'rendering', 'viewpoint', REGULAR_COMMENT, NAME, DISPLAY_ID}"}
+Testing Reference_3Relationships.sysml...
+ âœ… OK
+Testing Reference_4Comments.sysml...
+ âœ… OK
+Testing Reference_5Multiplicity.sysml...
+ âœ… OK
+Testing Reference_6Visibility.sysml...
+ âœ… OK
+Testing Requirements_1RequirementDefinition.sysml...
+ âœ… OK
+Testing Requirements_2RequirementUsage.sysml...
+ âœ… OK
+Testing Requirements_3Satisfy.sysml...
+ âœ… OK
+Testing Requirements_4Verify.sysml...
+ âœ… OK
+Testing Requirements_5ConstraintDefinition.sysml...
+ âœ… OK
+Testing Requirements_6AssertConstraint.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 8: extraneous input 'require' expecting 
+{'>', 'redefines', 'standard', 'library', 'package', 'alias', '[', 'public', 'private', 'protected', ':>', 'ordered', 
+'nonunique', 'subsets', '::>', 'references', '=>', 'crosses', 'dependency', 'variation', 'variant', 'in', 'out', 
+'inout', 'derived', 'constant', 'end', '=', ':=', 'default', 'attribute', 'enum', 'occurrence', 'individual', 
+'snapshot', 'timeslice', 'event', 'then', 'item', 'part', 'port', 'binding', 'bind', 'succession', 'first', 
+'connection', 'connect', 'flow', 'message', 'interface', 'allocation', 'allocate', 'action', 'perform', 'state', 
+'exhibit', 'calc', 'constraint', 'assert', 'not', 'requirement', 'satisfy', 'concern', 'case', 'analysis', 
+'verification', 'use', 'include', 'view', 'rendering', 'viewpoint', REGULAR_COMMENT, NAME, DISPLAY_ID}"}
+Testing Requirements_7TraceRefine.sysml...
+ âœ… OK
+Testing Requirements_Tutorial.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 7: extraneous input ''The system shall 
+operate within performance limits.'' expecting {'>', 'redefines', 'standard', 'library', 'package', 'alias', '[', 
+'public', 'private', 'protected', ':>', 'ordered', 'nonunique', 'subsets', '::>', 'references', '=>', 'crosses', 
+'dependency', 'variation', 'variant', 'in', 'out', 'inout', 'derived', 'constant', 'end', '=', ':=', 'default', 
+'attribute', 'enum', 'occurrence', 'individual', 'snapshot', 'timeslice', 'event', 'then', 'item', 'part', 'port', 
+'binding', 'bind', 'succession', 'first', 'connection', 'connect', 'flow', 'message', 'interface', 'allocation', 
+'allocate', 'action', 'perform', 'state', 'exhibit', 'calc', 'constraint', 'assert', 'not', 'requirement', 'subject', 
+'assume', 'require', 'frame', 'actor', 'stakeholder', 'satisfy', 'concern', 'case', 'analysis', 'verification', 
+'verify', 'use', 'include', 'view', 'rendering', 'viewpoint', REGULAR_COMMENT, NAME, DISPLAY_ID}\\n[ERROR] line 42: no 
+viable alternative at input 'verificationcase'\\n[ERROR] line 43: extraneous input 'verify' expecting {'>', 
+'redefines', 'standard', 'library', 'package', 'alias', 'for', 'all', '*', '[', 'public', 'private', 'protected', 
+':>', 'ordered', 'nonunique', 'subsets', '::>', 'references', '=>', 'crosses', 'dependency', 'variation', 'variant', 
+'in', 'out', 'inout', 'derived', 'constant', 'end', '=', ':=', 'default', 'attribute', 'enum', 'occurrence', 
+'individual', 'snapshot', 'timeslice', 'event', 'then', 'item', 'part', 'port', '~', 'binding', 'bind', 'succession', 
+'first', 'connection', 'connect', '(', 'flow', 'message', 'interface', 'allocation', 'allocate', 'action', 'perform', 
+'accept', 'send', 'assign', 'if', 'while', 'loop', 'terminate', 'merge', 'decide', 'join', 'fork', 'state', 'exhibit', 
+'calc', 'return', 'constraint', 'assert', 'not', 'requirement', 'subject', 'actor', 'satisfy', 'concern', 'case', 
+'objective', 'analysis', 'verification', 'use', 'include', 'view', 'rendering', 'viewpoint', 'hastype', 'istype', 
+'as', '+', '-', 'null', 'new', 'true', 'false', '$::', RealValue, REGULAR_COMMENT, NAME, DECIMAL_VALUE, STRING_VALUE, 
+DISPLAY_ID}\\n[ERROR] line 7: empty statement"}
+Testing SemanticMetadata_Tutorial.sysml...
+ âœ… OK
+Testing Shorthand_1Specialization.sysml...
+ âœ… OK
+Testing Shorthand_2Subsetting.sysml...
+ âœ… OK
+Testing Shorthand_3Redefinition.sysml...
+ âœ… OK
+Testing Shorthand_4Conjugation.sysml...
+ âœ… OK
+Testing Shorthand_5FeatureValues.sysml...
+ âœ… OK
+Testing Shorthand_6Multiplicity.sysml...
+ âœ… OK
+Testing StateMachine_Tutorial.sysml...
+ âœ… OK
+Testing StatePatterns_1EntryDoExit.sysml...
+ âœ… OK
+Testing StatePatterns_2CompositeState.sysml...
+ âœ… OK
+Testing StatePatterns_3ExhibitState.sysml...
+ âœ… OK
+Testing StatePatterns_4InternalTransition.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 8: mismatched input ')' expecting {'>', 
+'redefines', 'standard', 'library', 'package', 'alias', '[', 'public', 'private', 'protected', ':>', 'ordered', 
+'nonunique', 'subsets', '::>', 'references', '=>', 'crosses', 'dependency', 'variation', 'variant', 'in', 'out', 
+'inout', 'derived', 'constant', 'end', '=', ':=', 'default', 'attribute', 'enum', 'occurrence', 'individual', 
+'snapshot', 'timeslice', 'event', 'then', 'item', 'part', 'port', 'binding', 'bind', 'succession', 'first', 
+'connection', 'connect', 'flow', 'message', 'interface', 'allocation', 'allocate', 'action', 'perform', 'state', 
+'entry', 'do', 'exit', 'exhibit', 'transition', 'calc', 'constraint', 'assert', 'not', 'requirement', 'satisfy', 
+'concern', 'case', 'analysis', 'verification', 'use', 'include', 'view', 'rendering', 'viewpoint', REGULAR_COMMENT, 
+NAME, DISPLAY_ID}\\n[ERROR] line 9: mismatched input 'accept' expecting 'then'\\n[ERROR] line 11: extraneous input '}' 
+expecting {, '>', 'redefines', 'standard', 'library', 'package', 'filter', 'alias', '[', 'public', 'private', 
+'protected', ':>', 'ordered', 'nonunique', 'subsets', '::>', 'references', '=>', 'crosses', 'dependency', 'variation', 
+'in', 'out', 'inout', 'derived', 'constant', 'end', '=', ':=', 'default', 'attribute', 'enum', 'occurrence', 
+'individual', 'snapshot', 'timeslice', 'event', 'item', 'part', 'port', 'binding', 'bind', 'succession', 'first', 
+'connection', 'connect', 'flow', 'message', 'interface', 'allocation', 'allocate', 'action', 'perform', 'state', 
+'exhibit', 'calc', 'constraint', 'assert', 'not', 'requirement', 'satisfy', 'concern', 'case', 'analysis', 
+'verification', 'use', 'include', 'view', 'rendering', 'viewpoint', REGULAR_COMMENT, NAME, DISPLAY_ID}"}
+Testing States_1StateDefinition.sysml...
+ âœ… OK
+Testing States_2Transitions.sysml...
+ âœ… OK
+Testing States_3GuardsEffects.sysml...
+ âœ… OK
+Testing States_4CompositeStates.sysml...
+ âœ… OK
+Testing States_5ParallelStates.sysml...
+ âœ… OK
+Testing UseCaseTutorial_APS.sysml...
+ âœ… OK
+Testing Variants_Tutorial.sysml...
+ âœ… OK
+Testing Viewpoints_Tutorial.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 13: mismatched input ''A report focusing 
+only on mass properties.'' expecting {'locale', REGULAR_COMMENT}\\n[ERROR] line 18: mismatched input ''Focuses on mass 
+properties of the vehicle'' expecting {'locale', REGULAR_COMMENT}\\n[ERROR] line 28: extraneous input 'expose' 
+expecting {'>', 'redefines', 'standard', 'library', 'package', 'filter', 'alias', '[', 'public', 'private', 
+'protected', ':>', 'ordered', 'nonunique', 'subsets', '::>', 'references', '=>', 'crosses', 'dependency', 'variation', 
+'variant', 'in', 'out', 'inout', 'derived', 'constant', 'end', '=', ':=', 'default', 'attribute', 'enum', 
+'occurrence', 'individual', 'snapshot', 'timeslice', 'event', 'then', 'item', 'part', 'port', 'binding', 'bind', 
+'succession', 'first', 'connection', 'connect', 'flow', 'message', 'interface', 'allocation', 'allocate', 'action', 
+'perform', 'state', 'exhibit', 'calc', 'constraint', 'assert', 'not', 'requirement', 'satisfy', 'concern', 'case', 
+'analysis', 'verification', 'use', 'include', 'view', 'render', 'rendering', 'viewpoint', REGULAR_COMMENT, NAME, 
+DISPLAY_ID}\\n[ERROR] line 31: extraneous input 'expose' expecting {'>', 'redefines', 'standard', 'library', 
+'package', 'filter', 'alias', '[', 'public', 'private', 'protected', ':>', 'ordered', 'nonunique', 'subsets', '::>', 
+'references', '=>', 'crosses', 'dependency', 'variation', 'variant', 'in', 'out', 'inout', 'derived', 'constant', 
+'end', '=', ':=', 'default', 'attribute', 'enum', 'occurrence', 'individual', 'snapshot', 'timeslice', 'event', 
+'then', 'item', 'part', 'port', 'binding', 'bind', 'succession', 'first', 'connection', 'connect', 'flow', 'message', 
+'interface', 'allocation', 'allocate', 'action', 'perform', 'state', 'exhibit', 'calc', 'constraint', 'assert', 'not', 
+'requirement', 'satisfy', 'concern', 'case', 'analysis', 'verification', 'use', 'include', 'view', 'render', 
+'rendering', 'viewpoint', REGULAR_COMMENT, NAME, DISPLAY_ID}\\n[ERROR] line 13: empty statement\\n[ERROR] line 18: 
+empty statement"}
+Testing Views_Sheet_1ViewDefinition.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 6: no viable alternative at input 
+'insubject'"}
+Testing Views_Sheet_2ViewUsage.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 4: no viable alternative at input 
+'insubject'\\n[ERROR] line 8: no viable alternative at input 'insubject'\\n[ERROR] line 8: empty statement"}
+Testing Views_Sheet_3Viewpoint.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 4: mismatched input ''Focus on hazards.'' 
+expecting {'locale', REGULAR_COMMENT}\\n[ERROR] line 4: empty statement"}
+Testing Views_Sheet_4ExposeContent.sysml...
+ âœ… OK
+Testing Views_Sheet_5Filter.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 10: Name resolution error: couldn't 
+resolve reference to Element 'PartUsage'.\\n[ERROR] line 13: Name resolution error: couldn't resolve reference to 
+Element 'AllocationUsage'."}
+Testing Views_Sheet_6RenderingStyle.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 5: no viable alternative at input 
+'stylecolor'\\n[ERROR] line 8: Name resolution error: couldn't resolve reference to Element 'asTable'."}
+Testing Views_Tutorial.sysml...
+ âŒ ERROR: {"success":false,"error":"Semantic errors found:\\n[ERROR] line 8: Name resolution error: couldn't resolve 
+reference to Element 'TreeView'.\\n[ERROR] line 8: Name resolution error: couldn't resolve reference to Element 
+'EssentialElementsFilter'.\\n[ERROR] line 8: Name resolution error: couldn't resolve reference to Element 
+'NonStandardLibraryElementFilter'.\\n[ERROR] line 12: Name resolution error: couldn't resolve reference to Element 
+'rt'.\\n[ERROR] line 12: Name resolution error: couldn't resolve reference to Element 
+'EssentialElementsFilter'.\\n[ERROR] line 12: Name resolution error: couldn't resolve reference to Element 
+'NonStandardLibraryElementFilter'.\\n[ERROR] line 28: Name resolution error: couldn't resolve reference to Element 
+'EssentialElementsFilter'.\\n[ERROR] line 28: Name resolution error: couldn't resolve reference to Element 
+'NonStandardLibraryElementFilter'."}
+
+Summary: 86 passed, 22 failed.

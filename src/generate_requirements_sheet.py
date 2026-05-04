@@ -149,7 +149,7 @@ def generate_for_theme(theme_key, theme):
     # --- Card 6: Assertions ---
     lines = [
         [("part", theme.c_keyword), (" car", theme.c_normal), (" {", theme.c_normal)],
-        [("  require", theme.c_keyword), (" constraint", theme.c_keyword), (" {", theme.c_normal)],
+        [("  assert", theme.c_keyword), (" constraint", theme.c_keyword), (" {", theme.c_normal)],
         [("    mass <= 1000 [kg]", theme.c_normal)],
         [("  }", theme.c_normal), (" /* CRITICAL: No semicolon */", theme.c_comment)],
         [("}", theme.c_normal)]
@@ -161,7 +161,7 @@ def generate_for_theme(theme_key, theme):
     attribute kg;
     part car {
       attribute mass : Mass;
-      require constraint {
+      assert constraint {
         mass <= 1000 [kg]
       }
     }

@@ -57,8 +57,9 @@ def generate_for_theme(theme_key, theme):
     part system {
         part cpu : HardwareComponent;
         
-        @Critical
-        part os : SoftwareComponent;
+        part os : SoftwareComponent {
+            @Critical;
+        }
         
         part driver : SoftwareComponent;
     }
@@ -83,8 +84,8 @@ def generate_for_theme(theme_key, theme):
     view complexView : SymbolicViews::gv {
         expose system::**;
         
-        /* Show Software that is NOT Critical */
-        filter hastype SoftwareComponent and not @Critical;
+        /* Show elements that are either Hardware or Software */
+        filter hastype SoftwareComponent or hastype HardwareComponent;
     }
 }"""
     

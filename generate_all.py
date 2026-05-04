@@ -57,24 +57,26 @@ if os.path.exists(output_dir):
 else:
     os.makedirs(output_dir, exist_ok=True)
 
+base_dir = os.path.dirname(os.path.abspath(__file__))
+
 for script in scripts:
     print(f"Running {script}...")
     try:
-        subprocess.run(["py", script], check=True, cwd="src")
+        subprocess.run(["py", script], check=True, cwd=os.path.join(base_dir, "src"))
     except Exception as e:
         print(f"Error running {script}: {e}")
 
 # --- Methodology Generation ---
 print("Generating Methodology Templates...")
 try:
-    subprocess.run(["py", "generate_all.py"], check=True, cwd="src_methodology")
+    subprocess.run(["py", "generate_all.py"], check=True, cwd=os.path.join(base_dir, "src_methodology"))
 except Exception as e:
     print(f"Error running methodology generator: {e}")
 
 # --- Merge Logic ---
 print("Merging examples...")
-output_dir = os.path.join("output", "pastableExamples")
-merged_file_path = os.path.join(output_dir, "MergedExamples.sysml")
+output_dir = os.path.join(base_dir, "output", "pastableExamples")
+merged_file_path = os.path.join(base_dir, "output", "MergedExamples.sysml")
 
 if os.path.exists(output_dir):
     try:

@@ -46,6 +46,8 @@ def generate_for_theme(theme_key, theme):
     y += 30
     
     full_code = """package DomainLibs_Tutorial {
+    private import ISQ::*;
+    private import SI::*;
     private import SI::m;
     private import Time::*;
     

@@ -2,7 +2,7 @@ package Behavior_5ActionUsage {
     private import ScalarValues::*;
     private import SysML::*;
     action def Serve { in speed : Integer; }
-    /* Wrapped Snippet (Action Context */)
+    /* Wrapped Snippet (Action Context) */
     action def Main {
         action  playPoint  {
            action  serve  :  Serve ;

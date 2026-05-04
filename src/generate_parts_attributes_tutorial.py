@@ -54,6 +54,10 @@ def generate_for_theme(theme_key, theme):
     
     full_code = """package PartsAndAttributes_Tutorial {
     private import ISQ::*; /* Import standard quantities */
+    private import ScalarValues::*;
+    
+    attribute kN;
+    attribute kg;
     
     /* --- Definitions --- */
     part def Engine {
@@ -71,7 +75,7 @@ def generate_for_theme(theme_key, theme):
         attribute totalMass :> ISQ::mass;
         attribute callSign : String;
         
-        /* Parts (Usages */)
+        /* Parts (Usages) */
         /* Decomposing Spacecraft into subsystems */
         part mainEngine : Engine {
             /* Assigning values to attributes */

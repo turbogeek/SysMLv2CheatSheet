@@ -128,6 +128,8 @@ def generate_for_theme(theme_key, theme):
     private import ScalarValues::*;
     private import SysML::*;
     
+    metadata def Deprecated;
+    
     doc /* Deprecation */
     part oldPart {
         @Deprecated;

@@ -31,8 +31,8 @@ def generate_for_theme(theme_key, theme):
     part def System;
     
     view def ReportView {
-        /* Input parameter for subject */
-        in subject : System;
+        /* Input parameter for target system */
+        in part target_sys : System;
     }
 }"""
     card, height = utils.draw_card(col1_x, cur_y_c1, col_width, "1. View Definition", lines, expl, theme, full, sheet_name="Views_Sheet")
@@ -49,11 +49,11 @@ def generate_for_theme(theme_key, theme):
     full = """package Views {
     part def System;
     part mySystem : System; 
-    view def ReportView { in subject : System; }
+    view def ReportView { in part target_sys : System; }
     
     /* View Usage */
     view report : ReportView {
-        in subject = mySystem;
+        in part target_sys = mySystem;
     }
 }"""
     card, height = utils.draw_card(col1_x, cur_y_c1, col_width, "2. View Usage", lines, expl, theme, full, sheet_name="Views_Sheet")
@@ -72,7 +72,7 @@ def generate_for_theme(theme_key, theme):
     full = """package Views {
     /* 1. Define specific concern/perspective */
     viewpoint def SafetyAnalysis {
-        doc "Focus on hazards.";
+        doc /* Focus on hazards. */
     }
     
     /* 2. Create viewpoint usage */
@@ -123,6 +123,7 @@ def generate_for_theme(theme_key, theme):
     expl = "Filter included elements by criteria."
     full = """package Views {
     private import ScalarValues::*;
+    private import SysML::*;
     part def Car;
     part myCar : Car;
     
@@ -153,11 +154,8 @@ def generate_for_theme(theme_key, theme):
     full = """package Views {
     /* Assuming standard libraries available */
     view def MyView {
-        /* Apply visual style */
-        style color = "blue";
-        
         /* Define table structure */
-        render asTable {
+        render rendering asTable {
            /* table details */
         }
     }
@@ -190,13 +188,13 @@ def generate_for_theme(theme_key, theme):
         blocks = [
             ("header", "1. View Definition"),
             ("code", """view def ReportView {
-    in subject : System;
+    in part target_sys : System;
 }"""),
             ("text", "Defines a reusable view structure."),
             
             ("header", "2. View Usage"),
             ("code", """view report : ReportView {
-    in subject = mySystem;
+    in part target_sys = mySystem;
 }"""),
             ("text", "Uses a definition to create a specific view."),
             

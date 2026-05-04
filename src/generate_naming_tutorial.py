@@ -87,6 +87,8 @@ def generate_for_theme(theme_key, theme):
     
     full_code = """package Naming_Tutorial {
     private import ScalarValues::*;
+    private import SI::*;
+    private import ISQ::*;
     
     /* --- Library Definitions --- */
     package StandardLibrary {
@@ -105,8 +107,11 @@ def generate_for_theme(theme_key, theme):
     /* Real-world example: The 'SI' library has 'public import ISQ::*;' */
     public import StandardLibrary::*;
     
-    /* Private import: Resolving collision with alias */
-    private import SpecializedLibrary::Widget as SpecialWidget;
+    /* Private import to bring it into scope, though we can also just use alias directly */
+    private import SpecializedLibrary::Widget;
+    
+    /* Alias to resolve collision or create short names */
+    alias SpecialWidget for SpecializedLibrary::Widget;
 
     /* --- Definitions & Usages --- */
     part def SystemContext {
@@ -126,8 +131,8 @@ def generate_for_theme(theme_key, theme):
         /* Correct Convention: camelCase usage */
         part mainGadget : Gadget;
         
-        /* Unit reference uses brackets, no quotes needed for special chars */
-        attribute speed : Real [km/h];
+        /* Unit reference uses brackets after a value, no quotes needed for special chars */
+        attribute speed : Real = 100.0 [km/h];
     }
 }"""
     

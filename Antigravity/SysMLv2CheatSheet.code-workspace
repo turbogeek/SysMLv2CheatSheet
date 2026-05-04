@@ -17,6 +17,7 @@
 		"java.compile.nullAnalysis.mode": "automatic",
 		"java.project.sourcePaths": [
 			"Prompt Examples Outputs/Simple 2-slot Toaster"
-		]
+		],
+		"java.configuration.updateBuildConfiguration": "interactive"
 	}
 }

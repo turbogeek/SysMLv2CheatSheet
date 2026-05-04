@@ -42,7 +42,7 @@ def generate_for_theme(theme_key, theme):
     private import SysML::*;
     attribute def Vehicle;
     attribute def Person;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     use   case   def  DriveCar  {
         subject  vehicle  :  Vehicle ;
         actor  driver  :  Person ;
@@ -74,7 +74,7 @@ def generate_for_theme(theme_key, theme):
     attribute def Vehicle;
     attribute def Person;
     attribute def VerdictKind;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     requirement brakeReq;
     requirement stoppingDistance;
     verification   def  TestBrakes  {
@@ -106,7 +106,7 @@ def generate_for_theme(theme_key, theme):
     private import ScalarValues::*;
     private import SysML::*;
     attribute def Vehicle;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     analysis   def  FuelEconomy  {
        subject  vehicle  :  Vehicle ;
        objective  {
@@ -134,7 +134,7 @@ def generate_for_theme(theme_key, theme):
     attribute def Vehicle; attribute def Person;
     use case def DriveCar { subject vehicle : Vehicle; actor driver : Person; }
     part me : Person;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     use   case  driveToWork  :  DriveCar  {
        actor  driver  =  me ;
     }
