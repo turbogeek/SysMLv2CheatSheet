@@ -21,12 +21,8 @@ This skill file equips AI Agents (like Antigravity, Claude, ChatGPT) with the kn
 ## Key Methodology Principles for SysMLv2
 
 *   **Requirements Traceability:** Every methodology requires that system elements trace back to stakeholder needs. In SysMLv2, ensure you use `satisfy` from the structural/behavioral elements to the `requirement` **usages**. 
-    *   **CRITICAL RULE:** All requirements intended as requirements of the system MUST be usages. Use the **shortName** to assign requirement IDs (e.g., `requirement <REQ1> 'Requirement Name' { ... }`), NOT definitions (`requirement def`). 
+    *   **CRITICAL RULE:** All requirements intended as requirements of the system MUST be usages (e.g., `requirement <'ID'> 'Short Name' { ... }`), NOT definitions (`requirement def`). 
     *   Only use `requirement def` when defining a specific *kind* of requirement (e.g., `requirement def PerformanceRequirement`).
-*   **Stakeholders and Concerns:** Both OOSEM and MagicGrid explicitly require modeling stakeholders and their concerns before defining system requirements. 
-    *   Create a dedicated `Stakeholders` package.
-    *   Define stakeholders (e.g., `part def Operator;`) and their concerns (e.g., `concern SafetyConcern;`).
-    *   Within the `Requirements` package, use the `frame` keyword inside the requirement to link it to the relevant concern (e.g., `requirement <REQ1> 'Safe Operation' { frame SafetyConcern; }`).
 *   **Logical vs. Physical:** OOSEM and MagicGrid heavily rely on separating Logical architectures (technology agnostic) from Physical/Implementation architectures (technology specific). Model this in SysMLv2 by creating distinct `part def` hierarchies and using `allocation` to map Physical parts to Logical parts. 
     *   **CRITICAL RULE:** `allocate` only works between **usages**, not definitions. You must instantiate your physical and logical `part def`s as `part` usages before allocating them.
 *   **Behavior Allocation:** Ensure that `action def`s (behaviors) are explicitly performed by structural elements (using `perform` or by nesting them within the `part def`).
