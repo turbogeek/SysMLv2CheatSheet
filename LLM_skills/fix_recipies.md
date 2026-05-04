@@ -151,3 +151,37 @@ part def ExamplePart {
   attribute  diameter : length = 5 [in];
 }
 ```
+
+## 14. Missing Visibility Modifier on Imports
+
+**Error:** `extraneous input 'import' expecting {'private', 'public', ...}`
+**Context:** The LLM uses `import PackageName::*;` without a visibility modifier at the package level.
+**Fix:** In many SysMLv2 implementations (like Cameo's test harness), top-level and package-level imports require a visibility modifier.
+**Answer:** Always prepend `import` with `private` or `public`.
+
+```sysml
+private import Requirements::*;
+```
+
+## 15. Satisfying Requirement Definitions vs Usages
+
+**Error:** `Name resolution error: Element 'ReqName' as cannot be cast to .`
+**Context:** The LLM attempts to satisfy a requirement definition directly (`satisfy ReqName;` where `ReqName` is a `requirement def`).
+**Fix:** You can only satisfy a requirement *usage*, not a requirement definition.
+**Answer:** Define the requirement as a usage (e.g., `requirement ReqName { ... }`) rather than a definition (`requirement def ReqName { ... }`). Then you can satisfy it by name.
+
+```sysml
+package Requirements {
+    // Define as a usage so it can be satisfied directly
+    requirement HeatingReq {
+        doc /* The system shall heat... */
+    }
+}
+
+package Architecture {
+    private import Requirements::*;
+    part def HeatingSubsystem {
+        satisfy HeatingReq;
+    }
+}
+```
