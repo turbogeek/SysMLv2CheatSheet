@@ -67,7 +67,7 @@ package StatePatterns_4InternalTransition {
     action check;
     state def Monitoring {
        state Idle;
-       /* Internal behavior (Self-transition */)
+       /* Internal behavior (Self-transition) */
        transition t1 first Idle accept tick do check then Idle;
     }
 }

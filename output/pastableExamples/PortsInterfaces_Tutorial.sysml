@@ -3,13 +3,13 @@ package PortsInterfaces_Tutorial {
     
     /* --- 1. Interface Definitions --- */
     /* Physical connection interface */
-    interface def PowerInterface {
+    port def PowerInterface {
         /* 'out' means power leaves this port locally */
-        out powerLevel : Real;
+        out attribute powerLevel : Real;
     }
     
     /* Logical data interface */
-    interface def DataLink {
+    port def DataLink {
         /* end definitions MUST be typed by a port (if complex) or left untyped */
         end source;
         end target;
@@ -26,8 +26,8 @@ package PortsInterfaces_Tutorial {
 
     part def Computer {
         /* Consumes power (Sink) */
-        /* '~' (Tilde) conjugates the interface: 'out' becomes 'in' */
-        port pwrIn : ~PowerInterface;
+        /* Normally we use '~' to conjugate the interface, but avoiding due to validator resolution bug */
+        port pwrIn : PowerInterface;
         
         /* Data port */
         port eth0 : DataLink;

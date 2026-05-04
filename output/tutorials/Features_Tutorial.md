@@ -25,6 +25,7 @@ part :>> engine.mass = 150 [ISQ::kg];
 ```sysml
 package Feature_Tutorial_Model {
     private import ISQ::*;
+    private import SI::*;
 
     /* --- 1. Base Definitions --- */
     part def Engine {
@@ -59,12 +60,12 @@ package Feature_Tutorial_Model {
         /* Feature Chaining: reaching into 'engine' */
         /* Redeclaration (:>>) shorthand for 'redefines' or 'subsets' */
         
-        attribute :>> engine.horsepower = 500 [hp];
+        attribute :>> engine.horsepower = 500000 [W];
         
         /* This is structurally equivalent to: */
         /* part :>> engine { */
-        /* attribute :>> horsepower = 500 [hp]; */
-        /*  */}
+        /* attribute :>> horsepower = 500000 [W]; */
+        /* } */
     }
 }
 ```

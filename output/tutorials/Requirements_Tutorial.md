@@ -13,8 +13,8 @@ requirement <'REQ-ID'> 'Name' : RequirementType { doc /* Description */; }
 ## 2. Traceability
 
 - **satisfy**: Asserting that a design element (part) meets a requirement.
-- **verify**: Asserting that a test case (verification case) proves a requirement.
-- **require constraint { ... }**: Adding formal constraints inside requirements. **CRITICAL**: Do NOT place a semicolon at the end of the constraint block.
+- **verify**: Asserting that a test case proves a requirement (inside an objective block).
+- **assert constraint { ... }**: Adding formal constraints inside requirements. **CRITICAL**: Do NOT place a semicolon at the end of the constraint block.
 
 ## 3. Requirements Example
 
@@ -24,8 +24,7 @@ package Requirements_Tutorial {
     
     /* --- 1. Requirements --- */
     requirement def PerformanceReq {
-        doc /* Textual description */
-            "The system shall operate within performance limits.";
+        doc /* The system shall operate within performance limits. */
     }
     
     requirement <'REQ-101'> 'Breaking Distance' : PerformanceReq {
@@ -34,7 +33,7 @@ package Requirements_Tutorial {
         attribute maxDistance : Real = 50.0;
         attribute actualDistance : Real;
         /* Formal constraint (CRITICAL: no semicolon after constraint block) */
-        require constraint {
+        assert constraint {
             actualDistance <= maxDistance
         }
     }
@@ -60,8 +59,10 @@ package Requirements_Tutorial {
     }
     
     /* Usage of validation */
-    verification case test1 : BrakeTest {
-        verify 'Breaking Distance';
+    verification test1 : BrakeTest {
+        objective {
+            verify 'Breaking Distance';
+        }
     }
 }
 ```

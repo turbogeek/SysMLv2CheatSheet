@@ -1,5 +1,9 @@
 package PartsAndAttributes_Tutorial {
     private import ISQ::*; /* Import standard quantities */
+    private import ScalarValues::*;
+    
+    attribute kN;
+    attribute kg;
     
     /* --- Definitions --- */
     part def Engine {
@@ -17,7 +21,7 @@ package PartsAndAttributes_Tutorial {
         attribute totalMass :> ISQ::mass;
         attribute callSign : String;
         
-        /* Parts (Usages */)
+        /* Parts (Usages) */
         /* Decomposing Spacecraft into subsystems */
         part mainEngine : Engine {
             /* Assigning values to attributes */

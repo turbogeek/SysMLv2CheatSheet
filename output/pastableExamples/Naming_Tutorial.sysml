@@ -1,5 +1,7 @@
 package Naming_Tutorial {
     private import ScalarValues::*;
+    private import SI::*;
+    private import ISQ::*;
     
     /* --- Library Definitions --- */
     package StandardLibrary {
@@ -18,8 +20,11 @@ package Naming_Tutorial {
     /* Real-world example: The 'SI' library has 'public import ISQ::*;' */
     public import StandardLibrary::*;
     
-    /* Private import: Resolving collision with alias */
-    private import SpecializedLibrary::Widget as SpecialWidget;
+    /* Private import to bring it into scope, though we can also just use alias directly */
+    private import SpecializedLibrary::Widget;
+    
+    /* Alias to resolve collision or create short names */
+    alias SpecialWidget for SpecializedLibrary::Widget;
 
     /* --- Definitions & Usages --- */
     part def SystemContext {
@@ -39,7 +44,7 @@ package Naming_Tutorial {
         /* Correct Convention: camelCase usage */
         part mainGadget : Gadget;
         
-        /* Unit reference uses brackets, no quotes needed for special chars */
-        attribute speed : Real [km/h];
+        /* Unit reference uses brackets after a value, no quotes needed for special chars */
+        attribute speed : Real = 100.0 [km/h];
     }
 }

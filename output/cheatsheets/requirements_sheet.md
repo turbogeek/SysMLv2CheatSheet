@@ -99,7 +99,7 @@ package Requirements_6Assertions {
     attribute kg;
     part car {
       attribute mass : Mass;
-      require constraint {
+      assert constraint {
         mass <= 1000 [kg]
       }
     }

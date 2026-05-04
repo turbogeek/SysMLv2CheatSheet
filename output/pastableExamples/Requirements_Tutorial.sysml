@@ -3,8 +3,7 @@ package Requirements_Tutorial {
     
     /* --- 1. Requirements --- */
     requirement def PerformanceReq {
-        doc /* Textual description */
-            "The system shall operate within performance limits.";
+        doc /* The system shall operate within performance limits. */
     }
     
     requirement <'REQ-101'> 'Breaking Distance' : PerformanceReq {
@@ -13,7 +12,7 @@ package Requirements_Tutorial {
         attribute maxDistance : Real = 50.0;
         attribute actualDistance : Real;
         /* Formal constraint (CRITICAL: no semicolon after constraint block) */
-        require constraint {
+        assert constraint {
             actualDistance <= maxDistance
         }
     }
@@ -39,7 +38,9 @@ package Requirements_Tutorial {
     }
     
     /* Usage of validation */
-    verification case test1 : BrakeTest {
-        verify 'Breaking Distance';
+    verification test1 : BrakeTest {
+        objective {
+            verify 'Breaking Distance';
+        }
     }
 }

@@ -6,7 +6,7 @@
 
 ```sysml
 view def ReportView {
-    in subject : System;
+    in part target_sys : System;
 }
 ```
 
@@ -16,7 +16,7 @@ Defines a reusable view structure.
 
 ```sysml
 view report : ReportView {
-    in subject = mySystem;
+    in part target_sys = mySystem;
 }
 ```
 

@@ -4,7 +4,7 @@ package Cases_2TestCaseVerification {
     attribute def Vehicle;
     attribute def Person;
     attribute def VerdictKind;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     requirement brakeReq;
     requirement stoppingDistance;
     verification   def  TestBrakes  {

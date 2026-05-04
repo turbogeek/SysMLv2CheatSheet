@@ -10,7 +10,7 @@ Defining states and lifecycle actions.
 package States_1StateDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     action def logStart;
     action def logEnd;
     state   def  TrafficLight  {
@@ -72,7 +72,7 @@ States within states.
 package States_4CompositeStates {
     private import ScalarValues::*;
     private import SysML::*;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     state Operational {
        entry;
        state Normal;
@@ -89,7 +89,7 @@ Concurrency.
 package States_5ParallelStates {
     private import ScalarValues::*;
     private import SysML::*;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     state def System parallel {
        state Power;
        state Connectivity;

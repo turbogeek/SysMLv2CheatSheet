@@ -15,7 +15,28 @@ This example shows connecting a Battery to a Computer, and binding the internal 
 
 ```sysml
 package Connections_Tutorial {
-    private import PortsInterfaces_Tutorial::*; /* Import Battery, Computer */
+    private import ScalarValues::*;
+    
+    /* --- Interface Definitions --- */
+    port def PowerInterface {
+        out attribute powerLevel : Real;
+    }
+    
+    port def DataLink {
+        end source;
+        end target;
+        flow source to target;
+    }
+
+    /* --- Component Definitions --- */
+    part def Battery {
+        port pwrPort : PowerInterface;
+    }
+
+    part def Computer {
+        port pwrIn : PowerInterface;
+        port eth0 : DataLink;
+    }
     
     part def System;
     

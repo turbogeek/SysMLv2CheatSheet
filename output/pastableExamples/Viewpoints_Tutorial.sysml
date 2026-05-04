@@ -10,35 +10,31 @@ package Viewpoint_Tutorial {
     
     /* --- 1. Viewpoint Definition --- */
     viewpoint def MassReport {
-        doc "A report focusing only on mass properties.";
+        doc /* A report focusing only on mass properties. */
     }
     
     /* --- 2. Viewpoint Usage --- */
     viewpoint <'VP-002'> 'mass report viewpoint' : MassReport {
-        doc "Focuses on mass properties of the vehicle";
+        doc /* Focuses on mass properties of the vehicle */
     }
     
     /* --- 3. View Definition --- */
     view def MassView {
         /* The subject being viewed */
-        in car : Car;
-        
-        /* --- 4. Exposing Elements --- */
-        /* Show the car itself */
-        expose car;
-        
-        /* Show sub-parts */
-        expose car.engine;
-        
-        /* Filter: Only show attributes ending in 'Mass' (conceptual) */
-        /* filter @Attribute ==> name.endsWith("sw") */
+        in part car : Car;
     }
-    
-    /* --- 5. View Usage --- */
+        
+    /* --- 4. View Usage and Exposing Elements --- */
     part myCar : Car;
     
     view report : MassView {
-        in car = myCar;
+        in part car = myCar;
         satisfy 'mass report viewpoint';
+        
+        /* Show the car itself */
+        expose myCar;
+        
+        /* Show sub-parts using :: */
+        expose myCar::engine;
     }
 }

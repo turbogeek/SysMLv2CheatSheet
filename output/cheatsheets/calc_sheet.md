@@ -31,7 +31,7 @@ package Calculations_2CalculationUsage {
     private import SysML::*;
     attribute def Voltage; attribute def Current; attribute def Power;
     calc def PowerCalc { in v : Voltage; in i : Current; return p : Power; }
-    /* Wrapped Snippet (Action Context */)
+    /* Wrapped Snippet (Action Context) */
     action def Main {
         calc  p_motor  :  PowerCalc  {
            in  v  =  12.0 ;
@@ -55,7 +55,7 @@ package Calculations_4ConstraintUsage {
     private import SysML::*;
     attribute def Mass;
     constraint def MassLimit { in m : Mass; in limit : Mass; }
-    /* Wrapped Snippet (Action Context */)
+    /* Wrapped Snippet (Action Context) */
     action def Main {
         attribute mass : Mass;
         constraint  checkMass  :  MassLimit  {

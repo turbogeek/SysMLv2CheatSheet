@@ -1,6 +1,6 @@
 # SysML v2 Cheat Sheets: Complete Collection
 
-**Generated on:** 2026-05-03 13:49:40
+**Generated on:** 2026-05-03 23:14:06
 
 ---
 
@@ -402,7 +402,7 @@ States and lifecycle actions.
 package Behavior_1StateDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     state   def  PracticeSession  {
        entry ;  exit ;
        state  Idle ;
@@ -499,7 +499,7 @@ package Behavior_5ActionUsage {
     private import ScalarValues::*;
     private import SysML::*;
     action def Serve { in speed : Integer; }
-    /* Wrapped Snippet (Action Context */)
+    /* Wrapped Snippet (Action Context) */
     action def Main {
         action  playPoint  {
            action  serve  :  Serve ;
@@ -574,7 +574,7 @@ package Calculations_2CalculationUsage {
     private import SysML::*;
     attribute def Voltage; attribute def Current; attribute def Power;
     calc def PowerCalc { in v : Voltage; in i : Current; return p : Power; }
-    /* Wrapped Snippet (Action Context */)
+    /* Wrapped Snippet (Action Context) */
     action def Main {
         calc  p_motor  :  PowerCalc  {
            in  v  =  12.0 ;
@@ -598,7 +598,7 @@ package Calculations_4ConstraintUsage {
     private import SysML::*;
     attribute def Mass;
     constraint def MassLimit { in m : Mass; in limit : Mass; }
-    /* Wrapped Snippet (Action Context */)
+    /* Wrapped Snippet (Action Context) */
     action def Main {
         attribute mass : Mass;
         constraint  checkMass  :  MassLimit  {
@@ -672,7 +672,7 @@ package Cases_1UseCaseDefinition {
     private import SysML::*;
     attribute def Vehicle;
     attribute def Person;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     use   case   def  DriveCar  {
         subject  vehicle  :  Vehicle ;
         actor  driver  :  Person ;
@@ -694,7 +694,7 @@ package Cases_2TestCaseVerification {
     attribute def Vehicle;
     attribute def Person;
     attribute def VerdictKind;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     requirement brakeReq;
     requirement stoppingDistance;
     verification   def  TestBrakes  {
@@ -716,7 +716,7 @@ package Cases_3AnalysisCase {
     private import ScalarValues::*;
     private import SysML::*;
     attribute def Vehicle;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     analysis   def  FuelEconomy  {
        subject  vehicle  :  Vehicle ;
        objective  {
@@ -738,7 +738,7 @@ package Cases_4CaseUsage {
     attribute def Vehicle; attribute def Person;
     use case def DriveCar { subject vehicle : Vehicle; actor driver : Person; }
     part me : Person;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     use   case  driveToWork  :  DriveCar  {
        actor  driver  =  me ;
     }
@@ -820,7 +820,7 @@ Flows within interfaces.
 package Connections_3InterfaceConnection {
     private import ScalarValues::*;
     private import SysML::*;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     interface   def  IData  {
        end  source ;
        end  target ;
@@ -1135,7 +1135,7 @@ Tagging elements with data.
 package Patterns_1MetadataAnnotations {
     private import ScalarValues::*;
     private import SysML::*;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     metadata   def  Status  {
       attribute  priority  :  Integer ;
       attribute  approved  :  Boolean ;
@@ -1157,7 +1157,7 @@ package Patterns_2Views {
     private import ScalarValues::*;
     private import SysML::*;
     part def GeneralDiagram;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     view  MyView  :  GeneralDiagram  {
     /* filter Status; */
     }
@@ -1194,7 +1194,7 @@ Templates vs Concrete instances.
 package Patterns_4AbstractvsIndividual {
     private import ScalarValues::*;
     private import SysML::*;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     abstract  part  def  Wheel ;
     part  def  Bus  {
       abstract  part  wheel  [4]  :  Wheel ;
@@ -1253,7 +1253,7 @@ package Reference_2PrimitiveTypes {
     attribute i : Integer; /* 1, -5, 0 */
     attribute r : Real; /* 3.14, 1.0 */
     attribute s : String; /* 'text' */
-    attribute n : Natural; /* 0, 1, * (UnlimitedNatural in v1 */)
+    attribute n : Natural; /* 0, 1, * (UnlimitedNatural in v1) */
 }
 ```
 
@@ -1573,7 +1573,7 @@ package Requirements_6Assertions {
     attribute kg;
     part car {
       attribute mass : Mass;
-      require constraint {
+      assert constraint {
         mass <= 1000 [kg]
       }
     }
@@ -1617,7 +1617,7 @@ package Shorthand_1Specialization {
     private import ScalarValues::*;
     private import SysML::*;
     part def Vehicle;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     part  def  Car  :>  Vehicle ;
     doc  /* Equivalent to: 
             part  def  Car  specializes  Vehicle ; */
@@ -1633,7 +1633,7 @@ package Shorthand_2Subsetting {
     private import ScalarValues::*;
     private import SysML::*;
     part parts;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     part  engine  :>  parts ;
     doc  /* Equivalent to: 
             part  engine  subsets  parts ; */
@@ -1665,7 +1665,7 @@ package Shorthand_4Conjugation {
     private import ScalarValues::*;
     private import SysML::*;
     port def Interface;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     port  p  :  ~ Interface ;
     doc  /* Equivalent to: 
             port  p  :  conjugated  Interface ; */
@@ -1680,7 +1680,7 @@ Assignment variations.
 package Shorthand_5FeatureValues {
     private import ScalarValues::*;
     private import SysML::*;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     attribute  x  =  1 ;  /* Binding (Equality) */
     attribute  y  :=  2 ;  /* Initial Value */
     attribute  z  default  =  3 ;  /* Default Value */
@@ -1695,7 +1695,7 @@ Common shorthands.
 package Shorthand_6Multiplicity {
     private import ScalarValues::*;
     private import SysML::*;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     part  many [*] ;  /* 0..* */
     part  one ;  /* 1..1 (Default) */
     part  opt [0..1] ;  /* 0..1 */
@@ -1777,7 +1777,7 @@ package StatePatterns_4InternalTransition {
     action check;
     state def Monitoring {
        state Idle;
-       /* Internal behavior (Self-transition */)
+       /* Internal behavior (Self-transition) */
        transition t1 first Idle accept tick do check then Idle;
     }
 }
@@ -1801,7 +1801,7 @@ Defining states and lifecycle actions.
 package States_1StateDefinition {
     private import ScalarValues::*;
     private import SysML::*;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     action def logStart;
     action def logEnd;
     state   def  TrafficLight  {
@@ -1863,7 +1863,7 @@ States within states.
 package States_4CompositeStates {
     private import ScalarValues::*;
     private import SysML::*;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     state Operational {
        entry;
        state Normal;
@@ -1880,7 +1880,7 @@ Concurrency.
 package States_5ParallelStates {
     private import ScalarValues::*;
     private import SysML::*;
-    /* Wrapped Snippet (Structure Context */)
+    /* Wrapped Snippet (Structure Context) */
     state def System parallel {
        state Power;
        state Connectivity;
@@ -2013,7 +2013,7 @@ package Structure_8Enumerations {
 
 ```sysml
 view def ReportView {
-    in subject : System;
+    in part target_sys : System;
 }
 ```
 
@@ -2023,7 +2023,7 @@ Defines a reusable view structure.
 
 ```sysml
 view report : ReportView {
-    in subject = mySystem;
+    in part target_sys = mySystem;
 }
 ```
 

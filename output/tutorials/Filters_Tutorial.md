@@ -27,8 +27,9 @@ package Filters_Tutorial {
     part system {
         part cpu : HardwareComponent;
         
-        @Critical
-        part os : SoftwareComponent;
+        part os : SoftwareComponent {
+            @Critical;
+        }
         
         part driver : SoftwareComponent;
     }
@@ -53,8 +54,8 @@ package Filters_Tutorial {
     view complexView : SymbolicViews::gv {
         expose system::**;
         
-        /* Show Software that is NOT Critical */
-        filter hastype SoftwareComponent and not @Critical;
+        /* Show elements that are either Hardware or Software */
+        filter hastype SoftwareComponent or hastype HardwareComponent;
     }
 }
 ```

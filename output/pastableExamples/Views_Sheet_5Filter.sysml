@@ -1,5 +1,6 @@
 package Views {
     private import ScalarValues::*;
+    private import SysML::*;
     part def Car;
     part myCar : Car;
     

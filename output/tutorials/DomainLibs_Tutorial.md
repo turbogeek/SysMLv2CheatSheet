@@ -22,6 +22,8 @@ attribute len = 5 [m];
 
 ```sysml
 package DomainLibs_Tutorial {
+    private import ISQ::*;
+    private import SI::*;
     private import SI::m;
     private import Time::*;
     
