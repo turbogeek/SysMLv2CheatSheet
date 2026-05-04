@@ -18,12 +18,14 @@ style: |
 ---
 
 # Automating SysMLv2 Modeling with AI
+
 Bridging Model-Based Systems Engineering and AI with Antigravity
 **SysMLv2 Cheat Sheet Project**
 
 ---
 
 ## 1. Introduction: Why build this?
+
 - **The Challenge:** SysMLv2 textual modeling syntax is strictly typed and has a steep learning curve.
 - **The Solution:** Leverage AI (Antigravity/Gemini) alongside the Model Context Protocol (MCP) to automate the authoring of SysMLv2 models.
 - **Methodologies:** Incorporates industry-standard workflows like INCOSE, OOSEM, and MagicGrid via Markdown templates.
@@ -32,6 +34,7 @@ Bridging Model-Based Systems Engineering and AI with Antigravity
 ---
 
 ## 2. System Architecture & Requirements
+
 - **Local Validation Pipeline:** Python wrappers (`validate_model.py`) run the official Java-based SysMLv2 engine locally to verify AI outputs.
 - **Dynamic Paths:** The setup dynamically discovers the `sysml-validator` as long as repositories share the same root folder.
 - **AI "Brain":** The repository compiles `SysMLv2_Language_Reference.md` and `fix_recipies.md` into a single `skill.md` for the LLM.
@@ -40,7 +43,9 @@ Bridging Model-Based Systems Engineering and AI with Antigravity
 ---
 
 ## 3. Key SysMLv2 Code Snippets
+
 ### Definitions vs. Usages (Pool Maintenance Robot)
+
 ```sysml
     package LogicalArchitecture {
         // Definition
@@ -64,6 +69,7 @@ Bridging Model-Based Systems Engineering and AI with Antigravity
 ---
 
 ## 4. Requirement Satisfaction
+
 ```sysml
     package Requirements {
         requirement def ChlorineCalculationReq {
@@ -71,11 +77,13 @@ Bridging Model-Based Systems Engineering and AI with Antigravity
         }
     }
 ```
+
 *Note: The Logical `ChemistryEngine` satisfies the requirement via the `satisfy ChlorineCalculationReq;` keyword.*
 
 ---
 
 ## 5. The AI Workflow (MCP + Antigravity)
+
 1. **Prompt Engineering:** AI receives the INCOSE template and methodology skills.
 2. **Generation:** AI authors the `.sysml` file.
 3. **Execution:** AI triggers `validate_model.py` via the terminal tool.
@@ -85,6 +93,7 @@ Bridging Model-Based Systems Engineering and AI with Antigravity
 ---
 
 ## 6. Gotchas & Lessons Learned
+
 - <span class="error">Error:</span> Missing standard library imports.
   - <span class="success">Solution:</span> Always include `private import ScalarValues::*;` or `ISQ::*`.
 - <span class="error">Error:</span> Confusing Part Definitions with Part Usages.
@@ -94,6 +103,7 @@ Bridging Model-Based Systems Engineering and AI with Antigravity
 ---
 
 ## 7. Conclusion & Next Steps
+
 - The test harness is fully self-contained and path-agnostic.
 - The next phase involves extending visual rendering (e.g., Matrix Views, MagicDraw integrations).
 - **Call to Action:** Explore the `Labs` directory to see the generated models (e.g., *Alarm Clock*, *Drone*, *Toaster*, *Pool Robot*).

@@ -5,6 +5,7 @@ Copy and paste the following prompt into your Antigravity (or LLM) chat to autom
 ***
 
 **Copy below this line:**
+
 ```text
 I want you to model a standard 2-slot toaster. Please execute the following workflow step-by-step:
 
