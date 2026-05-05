@@ -53,6 +53,10 @@ package BugDroneModel {
             frame SafetyConcern;
             doc /* The laser weapon must have safety interlocks to prevent firing toward humans. */
         }
+        requirement <REQ8> 'Telemetry Transmission' {
+            frame OperationalConcern;
+            doc /* The system shall transmit mission logs and telemetry to the base station via a communication link. */
+        }
     }
 
     package SystemContext {
@@ -94,6 +98,10 @@ package BugDroneModel {
             satisfy 'Battery Thermal Monitoring';
         }
 
+        part def CommunicationSystem {
+            satisfy 'Telemetry Transmission';
+        }
+
         part def FlightController {
             satisfy 'Rotor Guard Safety';
             perform action p : PatrolAction;
@@ -106,6 +114,7 @@ package BugDroneModel {
             part laser : LaserWeapon;
             part power : PowerSubsystem;
             part flightCtrl : FlightController;
+            part comms : CommunicationSystem;
 
             state droneStateMachine {
                 entry;
@@ -170,14 +179,16 @@ package BugDroneModel {
         part def AIVisionUnit :> SensorArray {}
         part def DiodeLaser :> LaserWeapon {}
         part def SolarBatteryPack :> PowerSubsystem {}
-        part def QuadRotorBoard :> FlightController {}
+        part def FlightControllerBoard :> FlightController {}
+        part def LTERFAntenna :> CommunicationSystem {}
 
         part def PhysicalDrone :> LogicalDrone {
             part physicalNav : GPSModule redefines nav;
             part physicalSensors : AIVisionUnit redefines sensors;
             part physicalLaser : DiodeLaser redefines laser;
             part physicalPower : SolarBatteryPack redefines power;
-            part physicalFlightCtrl : QuadRotorBoard redefines flightCtrl;
+            part physicalFlightCtrl : FlightControllerBoard redefines flightCtrl;
+            part physicalComms : LTERFAntenna redefines comms;
         }
     }
 

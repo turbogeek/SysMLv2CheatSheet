@@ -1,6 +1,6 @@
 # SysML v2 AI Agent Skill / Comprehensive Reference
 
-**Generated on:** 2026-05-03 23:54:09
+**Generated on:** 2026-05-05 14:01:42
 
 ---
 
@@ -1724,7 +1724,7 @@ This skill is intended to produce SysMLv2 that is:
 
 # SysML v2 Cheat Sheets: Complete Collection
 
-**Generated on:** 2026-05-03 23:54:09
+**Generated on:** 2026-05-05 14:01:42
 
 ---
 
@@ -2701,7 +2701,7 @@ package Constraints_4CalculationUsage {
 
 ## Part Definition
 
-![Part Definition](assets/symbols/light/PartDefinition.svg)
+![Part Definition](../output/cheatsheets/assets/symbols/light/PartDefinition.svg)
 
 **Notation**: Rectangle: 'part def'
 
@@ -2711,7 +2711,7 @@ package Constraints_4CalculationUsage {
 
 ## Part Usage
 
-![Part Usage](assets/symbols/light/PartUsage.svg)
+![Part Usage](../output/cheatsheets/assets/symbols/light/PartUsage.svg)
 
 **Notation**: Rounded Rect: 'part'
 
@@ -2721,7 +2721,7 @@ package Constraints_4CalculationUsage {
 
 ## Action Definition
 
-![Action Definition](assets/symbols/light/ActionDefinition.svg)
+![Action Definition](../output/cheatsheets/assets/symbols/light/ActionDefinition.svg)
 
 **Notation**: Rectangle: 'action def'
 
@@ -2731,7 +2731,7 @@ package Constraints_4CalculationUsage {
 
 ## Action Usage
 
-![Action Usage](assets/symbols/light/ActionUsage.svg)
+![Action Usage](../output/cheatsheets/assets/symbols/light/ActionUsage.svg)
 
 **Notation**: Rounded Rect: 'action'
 
@@ -2741,7 +2741,7 @@ package Constraints_4CalculationUsage {
 
 ## Requirement Def
 
-![Requirement Def](assets/symbols/light/RequirementDef.svg)
+![Requirement Def](../output/cheatsheets/assets/symbols/light/RequirementDef.svg)
 
 **Notation**: Rectangle: 'requirement def'
 
@@ -2751,7 +2751,7 @@ package Constraints_4CalculationUsage {
 
 ## Requirement Usage
 
-![Requirement Usage](assets/symbols/light/RequirementUsage.svg)
+![Requirement Usage](../output/cheatsheets/assets/symbols/light/RequirementUsage.svg)
 
 **Notation**: Rounded Rect: 'requirement'
 
@@ -2761,7 +2761,7 @@ package Constraints_4CalculationUsage {
 
 ## State Definition
 
-![State Definition](assets/symbols/light/StateDefinition.svg)
+![State Definition](../output/cheatsheets/assets/symbols/light/StateDefinition.svg)
 
 **Notation**: Rectangle: 'state def'
 
@@ -2771,7 +2771,7 @@ package Constraints_4CalculationUsage {
 
 ## State Usage
 
-![State Usage](assets/symbols/light/StateUsage.svg)
+![State Usage](../output/cheatsheets/assets/symbols/light/StateUsage.svg)
 
 **Notation**: Rounded Rect: 'state'
 
@@ -2783,7 +2783,7 @@ package Constraints_4CalculationUsage {
 
 ## Specialization
 
-![Specialization](assets/symbols/light/Specialization.svg)
+![Specialization](../output/cheatsheets/assets/symbols/light/Specialization.svg)
 
 **Notation**: Solid line, hollow triangle
 
@@ -2793,7 +2793,7 @@ package Constraints_4CalculationUsage {
 
 ## Composition
 
-![Composition](assets/symbols/light/Composition.svg)
+![Composition](../output/cheatsheets/assets/symbols/light/Composition.svg)
 
 **Notation**: Solid line, filled diamond
 
@@ -2803,7 +2803,7 @@ package Constraints_4CalculationUsage {
 
 ## Reference
 
-![Reference](assets/symbols/light/Reference.svg)
+![Reference](../output/cheatsheets/assets/symbols/light/Reference.svg)
 
 **Notation**: Solid line, hollow diamond
 
@@ -2813,7 +2813,7 @@ package Constraints_4CalculationUsage {
 
 ## Import
 
-![Import](assets/symbols/light/Import.svg)
+![Import](../output/cheatsheets/assets/symbols/light/Import.svg)
 
 **Notation**: Dashed line, open arrow
 
@@ -2823,7 +2823,7 @@ package Constraints_4CalculationUsage {
 
 ## Binding
 
-![Binding](assets/symbols/light/Binding.svg)
+![Binding](../output/cheatsheets/assets/symbols/light/Binding.svg)
 
 **Notation**: Solid line, «bind»
 
@@ -2833,7 +2833,7 @@ package Constraints_4CalculationUsage {
 
 ## Succession
 
-![Succession](assets/symbols/light/Succession.svg)
+![Succession](../output/cheatsheets/assets/symbols/light/Succession.svg)
 
 **Notation**: Dashed line, open arrow
 
@@ -3796,7 +3796,7 @@ style color = "red";
 
 # SysML v2 Tutorials: Complete Collection
 
-**Generated on:** 2026-05-03 23:54:09
+**Generated on:** 2026-05-05 14:01:42
 
 ---
 

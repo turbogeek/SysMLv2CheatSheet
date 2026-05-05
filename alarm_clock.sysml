@@ -43,7 +43,7 @@ package AlarmClockProject {
     }
 
     package LogicalDesign {
-        import ConceptDefinition::*;
+        private import ConceptDefinition::*;
         
         part def Timekeeper {
             satisfy 'Display Time';
@@ -71,7 +71,7 @@ package AlarmClockProject {
     }
 
     package PhysicalDesign {
-        import LogicalDesign::*;
+        private import LogicalDesign::*;
         
         part def Microcontroller;
         part def LCDDisplay;
@@ -91,7 +91,7 @@ package AlarmClockProject {
     }
     
     package Views {
-        import ConceptDefinition::*;
+        private import ConceptDefinition::*;
         
         view def RequirementsTable {
             filter EssentialElementsFilter;

@@ -1,8 +1,9 @@
 import os
 import glob
 import datetime
+import re
 
-def combine_markdown_files(source_dir, output_file, title):
+def combine_markdown_files(source_dir, output_file, title, relative_prefix=""):
     """
     Combines all .md files in the source_dir into a single output_file.
     """
@@ -43,6 +44,9 @@ def combine_markdown_files(source_dir, output_file, title):
             try:
                 with open(f, 'r', encoding='utf-8') as infile:
                     content = infile.read()
+                    if relative_prefix:
+                        # Rewrite links to point to the correct relative path
+                        content = re.sub(r'(\[.*?\])\((?!http|#|mailto:)(.*?)\)', rf'\1({relative_prefix}\2)', content)
                     # Optional: Demote headers if needed? 
                     # If individual files start with # Header, they become top level.
                     # That is fine if we want them to be top level chapters.
@@ -63,7 +67,7 @@ def main():
     
     if os.path.exists(tutorials_dir):
         print(f"Combining tutorials from {tutorials_dir}...")
-        combine_markdown_files(tutorials_dir, tutorials_out, "SysML v2 Tutorials: Complete Collection")
+        combine_markdown_files(tutorials_dir, tutorials_out, "SysML v2 Tutorials: Complete Collection", "tutorials/")
     else:
         print(f"Warning: Tutorials directory not found: {tutorials_dir}")
 
@@ -73,7 +77,7 @@ def main():
     
     if os.path.exists(cheatsheets_dir):
         print(f"Combining cheat sheets from {cheatsheets_dir}...")
-        combine_markdown_files(cheatsheets_dir, cheatsheets_out, "SysML v2 Cheat Sheets: Complete Collection")
+        combine_markdown_files(cheatsheets_dir, cheatsheets_out, "SysML v2 Cheat Sheets: Complete Collection", "cheatsheets/")
     else:
         print(f"Warning: Cheat sheets directory not found: {cheatsheets_dir}")
 
@@ -92,19 +96,25 @@ def main():
             # Add Language Reference
             if os.path.exists(reference_file):
                 with open(reference_file, 'r', encoding='utf-8') as ref_in:
-                    outfile.write(ref_in.read())
+                    content = ref_in.read()
+                    content = re.sub(r'(\[.*?\])\((?!http|#|mailto:)(.*?)\)', r'\1(../\2)', content)
+                    outfile.write(content)
                     outfile.write("\n\n---\n\n")
             
             # Add Cheat Sheets
             if os.path.exists(cheatsheets_out):
                 with open(cheatsheets_out, 'r', encoding='utf-8') as cs_in:
-                    outfile.write(cs_in.read())
+                    content = cs_in.read()
+                    content = re.sub(r'(\[.*?\])\((?!http|#|mailto:)(.*?)\)', r'\1(../output/\2)', content)
+                    outfile.write(content)
                     outfile.write("\n\n---\n\n")
             
             # Add Tutorials
             if os.path.exists(tutorials_out):
                 with open(tutorials_out, 'r', encoding='utf-8') as tut_in:
-                    outfile.write(tut_in.read())
+                    content = tut_in.read()
+                    content = re.sub(r'(\[.*?\])\((?!http|#|mailto:)(.*?)\)', r'\1(../output/\2)', content)
+                    outfile.write(content)
                     outfile.write("\n\n")
         print(f"Successfully created {skill_out}")
     except Exception as e:

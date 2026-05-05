@@ -1,6 +1,6 @@
 # SysML v2 Cheat Sheets: Complete Collection
 
-**Generated on:** 2026-05-04 06:29:44
+**Generated on:** 2026-05-05 14:11:03
 
 ---
 
@@ -977,7 +977,7 @@ package Constraints_4CalculationUsage {
 
 ## Part Definition
 
-![Part Definition](assets/symbols/light/PartDefinition.svg)
+![Part Definition](cheatsheets/assets/symbols/light/PartDefinition.svg)
 
 **Notation**: Rectangle: 'part def'
 
@@ -987,7 +987,7 @@ package Constraints_4CalculationUsage {
 
 ## Part Usage
 
-![Part Usage](assets/symbols/light/PartUsage.svg)
+![Part Usage](cheatsheets/assets/symbols/light/PartUsage.svg)
 
 **Notation**: Rounded Rect: 'part'
 
@@ -997,7 +997,7 @@ package Constraints_4CalculationUsage {
 
 ## Action Definition
 
-![Action Definition](assets/symbols/light/ActionDefinition.svg)
+![Action Definition](cheatsheets/assets/symbols/light/ActionDefinition.svg)
 
 **Notation**: Rectangle: 'action def'
 
@@ -1007,7 +1007,7 @@ package Constraints_4CalculationUsage {
 
 ## Action Usage
 
-![Action Usage](assets/symbols/light/ActionUsage.svg)
+![Action Usage](cheatsheets/assets/symbols/light/ActionUsage.svg)
 
 **Notation**: Rounded Rect: 'action'
 
@@ -1017,7 +1017,7 @@ package Constraints_4CalculationUsage {
 
 ## Requirement Def
 
-![Requirement Def](assets/symbols/light/RequirementDef.svg)
+![Requirement Def](cheatsheets/assets/symbols/light/RequirementDef.svg)
 
 **Notation**: Rectangle: 'requirement def'
 
@@ -1027,7 +1027,7 @@ package Constraints_4CalculationUsage {
 
 ## Requirement Usage
 
-![Requirement Usage](assets/symbols/light/RequirementUsage.svg)
+![Requirement Usage](cheatsheets/assets/symbols/light/RequirementUsage.svg)
 
 **Notation**: Rounded Rect: 'requirement'
 
@@ -1037,7 +1037,7 @@ package Constraints_4CalculationUsage {
 
 ## State Definition
 
-![State Definition](assets/symbols/light/StateDefinition.svg)
+![State Definition](cheatsheets/assets/symbols/light/StateDefinition.svg)
 
 **Notation**: Rectangle: 'state def'
 
@@ -1047,7 +1047,7 @@ package Constraints_4CalculationUsage {
 
 ## State Usage
 
-![State Usage](assets/symbols/light/StateUsage.svg)
+![State Usage](cheatsheets/assets/symbols/light/StateUsage.svg)
 
 **Notation**: Rounded Rect: 'state'
 
@@ -1059,7 +1059,7 @@ package Constraints_4CalculationUsage {
 
 ## Specialization
 
-![Specialization](assets/symbols/light/Specialization.svg)
+![Specialization](cheatsheets/assets/symbols/light/Specialization.svg)
 
 **Notation**: Solid line, hollow triangle
 
@@ -1069,7 +1069,7 @@ package Constraints_4CalculationUsage {
 
 ## Composition
 
-![Composition](assets/symbols/light/Composition.svg)
+![Composition](cheatsheets/assets/symbols/light/Composition.svg)
 
 **Notation**: Solid line, filled diamond
 
@@ -1079,7 +1079,7 @@ package Constraints_4CalculationUsage {
 
 ## Reference
 
-![Reference](assets/symbols/light/Reference.svg)
+![Reference](cheatsheets/assets/symbols/light/Reference.svg)
 
 **Notation**: Solid line, hollow diamond
 
@@ -1089,7 +1089,7 @@ package Constraints_4CalculationUsage {
 
 ## Import
 
-![Import](assets/symbols/light/Import.svg)
+![Import](cheatsheets/assets/symbols/light/Import.svg)
 
 **Notation**: Dashed line, open arrow
 
@@ -1099,7 +1099,7 @@ package Constraints_4CalculationUsage {
 
 ## Binding
 
-![Binding](assets/symbols/light/Binding.svg)
+![Binding](cheatsheets/assets/symbols/light/Binding.svg)
 
 **Notation**: Solid line, «bind»
 
@@ -1109,7 +1109,7 @@ package Constraints_4CalculationUsage {
 
 ## Succession
 
-![Succession](assets/symbols/light/Succession.svg)
+![Succession](cheatsheets/assets/symbols/light/Succession.svg)
 
 **Notation**: Dashed line, open arrow
 

@@ -4,20 +4,11 @@
 			"path": ".."
 		},
 		{
-			"path": "../.."
+			"path": "../../sysml-validator"
 		},
 		{
-			"path": "../../../_SysMLV2/_ExampleV2Models"
-		},
-		{
-			"path": "../../../_SysMLV2/_ExampleV2Models/Built-in Samples edits"
+			"path": "../../TutorialForCatiaMagicApiMCP"
 		}
 	],
-	"settings": {
-		"java.compile.nullAnalysis.mode": "automatic",
-		"java.project.sourcePaths": [
-			"Prompt Examples Outputs/Simple 2-slot Toaster"
-		],
-		"java.configuration.updateBuildConfiguration": "interactive"
-	}
+	"settings": {}
 }
