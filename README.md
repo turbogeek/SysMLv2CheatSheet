@@ -32,7 +32,7 @@ Whether you are a human learning the syntax or teaching an AI, you can access th
 - **[Comprehensive AI Skill Context (`skill.md`)](output/skill.md)**
 
 ### 📚 Aggregated References
-- **[SysMLv2 Language Reference](SysMLv2_Language_Reference.md)**
+- **[SysMLv2 Language Reference](docs/SysMLv2_Language_Reference.md)**
 - **[All Cheat Sheets Combined](output/SysMLv2_All_CheatSheets.md)**
 - **[All Tutorials Combined](output/SysMLv2_All_Tutorials.md)**
 
@@ -46,11 +46,11 @@ Whether you are a human learning the syntax or teaching an AI, you can access th
 - *(Browse the `output/cheatsheets/` folder for the full list)*
 
 ### 📖 Individual Tutorials (Highlights)
-- [Use Case Tutorial](output/tutorials/use_case_tutorial.md)
-- [State Machines Tutorial](output/tutorials/state_machines_tutorial.md)
-- [Ports & Interfaces](output/tutorials/ports_interfaces_tutorial.md)
-- [Analysis Tutorial](output/tutorials/analysis_tutorial.md)
-- [Domain Libraries](output/tutorials/domain_libs_tutorial.md)
+- [Use Case Tutorial](output/tutorials/UseCase_Tutorial.md)
+- [State Machines Tutorial](output/tutorials/StateMachine_Tutorial.md)
+- [Ports & Interfaces](output/tutorials/PortsInterfaces_Tutorial.md)
+- [Analysis Tutorial](output/tutorials/Analysis_Tutorial.md)
+- [Domain Libraries](output/tutorials/DomainLibs_Tutorial.md)
 - *(Browse the `output/tutorials/` folder for the full list)*
 
 ## 🛠️ Editing and Building the Docs
@@ -68,14 +68,14 @@ Or for a correction:
 > *"Claude, there is a typo in the Behavior Sheet. Please find `src/generate_behavior_sheet.py`, fix the typo in the markdown string, and run `generate_all.py`."*
 
 **Manual Updating Steps:**
-1. **Update the Reference Rules**: Edit `SysMLv2_Language_Reference.md` directly.
+1. **Update the Reference Rules**: Edit `docs/SysMLv2_Language_Reference.md` directly.
 2. **Update a Cheat Sheet or Tutorial**: Locate the corresponding Python generator script in the `src/` directory (e.g., `src/generate_behavior_sheet.py`). Open the file and update the markdown strings or python logic inside it.
 3. **Add a New Cheat Sheet**: 
    - Create a new `generate_your_topic_sheet.py` in the `src/` folder.
    - Add your new script to the `scripts` list inside `src/generate_all.py`.
 
 ### Generating the Updates
-If you need help configuring your machine to run the scripts, please see the **[Python Environment Setup Guide](Python_Environment_Setup.md)**.
+If you need help configuring your machine to run the scripts, please see the **[Python Environment Setup Guide](docs/Installation%20Guide/Python_Environment_Setup.md)**.
 
 To manually regenerate all markdown files and the `skill.md` file, run the master script from the root of the repository:
 
@@ -84,3 +84,15 @@ python generate_all.py
 ```
 
 *(Note: A pre-commit hook is set up to automatically run this script when you commit. Just making the changes to the `src/` files and committing will automatically rebuild the `output/` folder and `skill.md` for you!)*
+
+## 📁 Repository Structure
+
+To help navigate the project, here is an overview of the key directories:
+
+- **`docs/`** - Hand-written documentation. Includes the Installation Guide, User Guide, and the base `SysMLv2_Language_Reference.md`.
+- **`src/`** - Python generator scripts that build the various cheat sheets, tutorials, and aggregate documents.
+- **`output/`** - Auto-generated artifacts (Markdown files, SysML code snippets, SVGs, and aggregated tutorials/cheat sheets). *Do not edit files here directly.*
+- **`LLM_skills/`** - The "Brain" directory designed for AI consumption. Contains `skill.md`, fixing recipes, methodology skills, and the `Specifications_Markdown/` folder containing the raw OMG specifications.
+- **`testModels/`** - Sample SysMLv2 models used for testing and validating syntax.
+- **`utilityScripts/`** - Miscellaneous helper scripts, such as validation tools used by the pipeline.
+- **`TutorialContent/`** - Supplementary materials, such as presentation slides and lab resources for learning.

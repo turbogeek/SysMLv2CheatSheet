@@ -85,7 +85,7 @@ def main():
     llm_skills_dir = os.path.join(base_dir, "..", "LLM_skills")
     os.makedirs(llm_skills_dir, exist_ok=True)
     skill_out = os.path.join(llm_skills_dir, "skill.md")
-    reference_file = os.path.join(base_dir, "..", "SysMLv2_Language_Reference.md")
+    reference_file = os.path.join(base_dir, "..", "docs", "SysMLv2_Language_Reference.md")
     print(f"Combining everything into {skill_out}...")
     try:
         with open(skill_out, 'w', encoding='utf-8') as outfile:

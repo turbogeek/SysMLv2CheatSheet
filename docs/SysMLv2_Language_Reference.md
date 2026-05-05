@@ -7,13 +7,17 @@ Alias: SysMLv2
 Systems Modeling Language (SysML) v2.0 is an OMG standard for model-based systems engineering. It extends the Kernel Modeling Language (KerML) to provide comprehensive modeling capabilities for complex systems.
 
 ### Consulting Official Specifications
-If you encounter edge cases, ambiguous syntax, or need to verify the official OMG standard for SysMLv2 or KerML, you can query the official specifications directly using the provided python script.
-Run the following command in your terminal:
-`python src/query_specs.py "your search query"`
-This will return the most relevant sections from the official specification documents to guide your modeling.
+If you encounter edge cases, ambiguous syntax, or need to verify the official OMG standards, you have two options:
+
+1. **Search via Script:** Run `python ../src/query_specs.py "your search query"` in your terminal to get the most relevant sections.
+2. **Direct Markdown Access:** If you need to read the specifications in depth, the raw markdown files are located in `../LLM_skills/Specifications_Markdown/`. You should use your `view_file` tool to read the specific files based on your needs:
+   - `SysMLv2.md`: For deep questions on SysMLv2 syntax, modeling rules, and language architecture.
+   - `KerML.md`: For core Kernel Modeling Language foundations (what SysML is built upon), type systems, and base semantics.
+   - `SysML2API.md`: For instructions and reference on interacting with the SysMLv2 REST API and systems services.
+   - `SysMV1toSysMLv2Transform.md`: For understanding how to map, convert, or transform older SysML v1 models into the new SysML v2 semantics.
 
 ### Using Standard Libraries
-When you need to perform mathematical calculations, query collections, model 3D geometry, use cause-and-effect dynamics, or create custom/compound units (like `[ms]` or `ducks per meter`), you **MUST** consult `LLM_skills/standard_libraries_skill.md`. This dedicated skill explains how to leverage and extend the 9.x Domain Libraries from SysMLv2 and KerML.
+When you need to perform mathematical calculations, query collections, model 3D geometry, use cause-and-effect dynamics, or create custom/compound units (like `[ms]` or `ducks per meter`), you **MUST** consult `../LLM_skills/standard_libraries_skill.md`. This dedicated skill explains how to leverage and extend the 9.x Domain Libraries from SysMLv2 and KerML.
 
 ## Core Concepts
 
