@@ -13,8 +13,13 @@ def validate_sysml_file(file_path):
 
     # Determine the directory where this script resides
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    # The validator resides at the same level as this git project
-    validator_dir = os.path.abspath(os.path.join(script_dir, "..", "v2Implementation", "sysml-validator"))
+    
+    # Allow overriding the validator directory via environment variable
+    validator_dir = os.environ.get("SYSML_VALIDATOR_DIR")
+    if not validator_dir:
+        # Fallback: The validator resides at the same level as this git project by default
+        validator_dir = os.path.abspath(os.path.join(script_dir, "..", "v2Implementation", "sysml-validator"))
+        
     validator_cmd = os.path.join(validator_dir, "validate.cmd")
     
     if not os.path.exists(validator_cmd):

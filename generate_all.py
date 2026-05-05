@@ -1,6 +1,7 @@
 
 import os
 import subprocess
+import sys
 
 scripts = [
     "generate_actions_sheet.py",
@@ -62,14 +63,14 @@ base_dir = os.path.dirname(os.path.abspath(__file__))
 for script in scripts:
     print(f"Running {script}...")
     try:
-        subprocess.run(["py", script], check=True, cwd=os.path.join(base_dir, "src"))
+        subprocess.run([sys.executable, script], check=True, cwd=os.path.join(base_dir, "src"))
     except Exception as e:
         print(f"Error running {script}: {e}")
 
 # --- Methodology Generation ---
 print("Generating Methodology Templates...")
 try:
-    subprocess.run(["py", "generate_all.py"], check=True, cwd=os.path.join(base_dir, "src_methodology"))
+    subprocess.run([sys.executable, "generate_all.py"], check=True, cwd=os.path.join(base_dir, "src_methodology"))
 except Exception as e:
     print(f"Error running methodology generator: {e}")
 
