@@ -44,7 +44,7 @@ package CustomUnits {
     private import SI::*;
     private import MeasurementReferences::*;
 
-    // 1. Prefix Extension (Milliseconds)
+    /* 1. Prefix Extension (Milliseconds) */
     attribute <ms> millisecond : DurationUnit {
         :>> unitConversion : ConversionByPrefix {
             :>> prefix = milli;
@@ -52,13 +52,13 @@ package CustomUnits {
         }
     }
 
-    // 2. Base Unit Definition (Ducks)
+    /* 2. Base Unit Definition (Ducks) */
     attribute <duck> ducks : SimpleUnit {
         doc /* Custom base unit for counting ducks */
         :>> quantityDimension = ISQ::DimensionOne; 
     }
 
-    // 3. Compound Unit (Ducks per meter)
+    /* 3. Compound Unit (Ducks per meter) */
     attribute <'ducks/m'> ducksPerMeter : DerivedUnit {
         :>> unitFactor : UnitFactor[2] {
             unitFactor[1] { :>> unit = duck; :>> exponent = 1; }
@@ -98,16 +98,16 @@ package FunctionExamples {
         in dataArray : Real[0..*];
         in name : String;
         
-        // Use CollectionFunctions
+        /* Use CollectionFunctions */
         return dataSize : Integer = size(dataArray);
     }
     
     calc def MathAndString {
         in radius : Real;
-        // Use MathFunctions
+        /* Use MathFunctions */
         attribute area : Real = PI() * (radius ** 2);
         
-        // Use StringFunctions
+        /* Use StringFunctions */
         return label : String = concat("The area is: ", ToString(area));
     }
 }

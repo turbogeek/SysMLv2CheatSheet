@@ -18,23 +18,38 @@ def validate_sysml_file(file_path):
     validator_dir = os.environ.get("SYSML_VALIDATOR_DIR")
     if not validator_dir:
         # Fallback: The validator resides at the same level as this git project by default
-        validator_dir = os.path.abspath(os.path.join(script_dir, "..", "v2Implementation", "sysml-validator"))
+        validator_dir = os.path.abspath(os.path.join(script_dir, "..", "sysml-validator"))
+        if not os.path.exists(validator_dir):
+            validator_dir = os.path.abspath(os.path.join(script_dir, "..", "sysmlv2-validator"))
         
     validator_cmd = os.path.join(validator_dir, "validate.cmd")
+    validator_jar = os.path.join(validator_dir, "validator-cli", "target", "sysml-validator.jar")
     
-    if not os.path.exists(validator_cmd):
-        print(f"Error: Validator script '{validator_cmd}' not found.", file=sys.stderr)
+    use_jar = False
+    if os.path.exists(validator_jar):
+        use_jar = True
+    elif not os.path.exists(validator_cmd):
+        print(f"Error: Neither Validator jar '{validator_jar}' nor script '{validator_cmd}' found.", file=sys.stderr)
         return False
 
     print(f"Validating {file_path}...")
     try:
-        # Run the validate.cmd
-        result = subprocess.run(
-            [validator_cmd, file_path],
-            capture_output=True,
-            text=True,
-            cwd=validator_dir
-        )
+        if use_jar:
+            # Run the jar directly
+            result = subprocess.run(
+                ["java", "-jar", validator_jar, file_path],
+                capture_output=True,
+                text=True,
+                cwd=validator_dir
+            )
+        else:
+            # Run the validate.cmd
+            result = subprocess.run(
+                [validator_cmd, file_path],
+                capture_output=True,
+                text=True,
+                cwd=validator_dir
+            )
 
         # Check output for typical success indicators or return code
         if result.returncode == 0:

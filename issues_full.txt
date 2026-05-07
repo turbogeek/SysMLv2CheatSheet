@@ -1,0 +1,237 @@
+Issue 9: Installation guide points to SysML-v2-Release, but validate_model.py expects a missing sysml-validator/validate.cmd
+Problem
+The setup instructions in Installation_Guide.md:120 direct users to clone SysML-v2-Release into v2Implementation, but validate_model.py:16 expects a validator entrypoint at ../v2Implementation/sysml-validator/validate.cmd. In a fresh clone of SysML-v2-Release, that path does not exist, so validation fails immediately even when the repos are cloned in the documented sibling structure.
+
+Impact
+Users following the documented installation path cannot run the validation pipeline out of the box. This creates a false negative setup experience and blocks the primary workflow (iterative syntax validation from CLI/agent).
+
+Evidence
+Installation instruction clones SysML-v2-Release as v2Implementation in Installation_Guide.md:120.
+Script hardcodes expected validator path in validate_model.py:16 and validate_model.py:17.
+The described expected location is repeated in guide text in Installation_Guide.md:138.
+In current v2Implementation clone, only installer entrypoints are present (for Jupyter), e.g. v2Implementation/install/jupyter/install.bat, and no sysml-validator/validate.cmd path exists.
+
+Requested Change
+Update Installation_Guide.md to reference the actual repository/artifact that contains sysml-validator/validate.cmd, if that is still the intended runtime dependency, OR update validate_model.py to support the current SysML-v2-Release layout and documented install path.
+Add a short compatibility note describing which repo/version combinations are supported.
+Add a quick verification step in the guide (for example: check that expected validator entrypoint exists before first validation run).
+
+Done When
+A user can follow Installation_Guide.md from scratch and run validate_model.py successfully (ideally without manual path edits).
+
+
+========================================
+
+Issue 8: State machine tutorial view does not render a useful view
+Problem
+The StateMachine_Tutorial.sysml example parses successfully, but the initial view configuration did not produce an expected state-machine diagram in Cameo. The view had only top-level state elements without full transition rendering, instead of the expected view with a connected graph with labels on transitions.
+
+Impact
+The tutorial appears broken to users even though the model is valid. This creates confusion about SysML v2 syntax, view configuration, and expected Cameo behavior, and slows onboarding/testing.
+
+Evidence
+Original tutorial file: StateMachine_Tutorial.sysml
+Working result confirmed: (see below)
+
+Key observations from validation:
+Transition arrows rendered more reliably when using an exhibited state usage as the exposed target.
+Transition labels appeared when explicit accept trigger events were added.
+Clutter reduced by using a state-focused filtered view instead of a broad graphical view.
+
+Requested Change
+Update the tutorial guidance/example to use a Cameo-stable pattern:
+- Define the machine under the part, then use exhibit state for the machine usage.
+- Expose the exhibited usage in the view.
+- Use a state-focused view with EssentialElementsFilter and NonStandardLibraryElementFilter.
+- Include explicit accept trigger events on transitions that should display labels.
+- Add a short note in the tutorial that broad graphical views can surface unrelated meta elements.
+
+Done When
+The tutorial example renders a state machine with all transitions visible and labeled.
+Yellow→Red displays guard/effect label.
+View does not show broad unrelated meta elements such as doc/comment/assert/feature/step blocks.
+A user can paste the example into Cameo and get consistent output without manual trial-and-error.
+
+Working Example
+
+```
+package StateMachine_Tutorial {
+    private import DS_Views::SymbolicViews::*;
+    private import DS_Views::SymbolicViewsByExpression::*;
+    private import SysML::Systems::*;
+    
+    /* Define the component containing the machine */
+    part def TrafficLight {
+        /* Local actions defined in part scope can access part attributes */
+        action def LogStatus;
+        item def RedToGreenTimeout;
+        item def GreenToYellowTimeout;
+        
+        /* The machine behavior */
+        state def LightLogic {
+            /* Initial entry point */
+            entry ;
+            then Red;
+            
+            state Red;
+            state Yellow;
+            state Green;
+            
+            transition redToGreen first Red accept redToGreenTimeout : RedToGreenTimeout then Green;
+            transition greenToYellow first Green accept greenToYellowTimeout : GreenToYellowTimeout then Yellow;
+            /* Using if-guard and do-action */
+            transition yellowToRed first Yellow if true do action log : LogStatus then Red;
+        }
+        /* Usage of the machine */
+        exhibit state logic : LightLogic;
+    }
+    view StateMachine_Tutorial : StatesNestedView, EssentialElementsFilter, NonStandardLibraryElementFilter {
+        expose TrafficLight::logic;
+        expose TrafficLight::logic::**;
+    }
+}
+```
+
+========================================
+
+Issue 7: Remove incorrect binding bind syntax from binding guidance
+Problem: The docs teach binding bind ... = ..., but the main skill consistently documents binding statements as bind a = b;. The combined binding bind form is presented as normative guidance in multiple LLM skill docs.
+
+Impact: This can cause invalid generated syntax and conflicts with the repo’s own primary binding examples.
+
+Evidence:
+Incorrect guidance:
+[fix_recipies.md:117]
+[fix_recipies.md:123]
+[New items for skill.md:12]
+
+Conflicting canonical guidance:
+[skill.md:257]
+[skill.md:2830]
+
+Requested change: Replace binding bind ... with the correct statement form and align all binding guidance to one canonical syntax.
+
+Done when: All LLM skill docs use the same valid binding syntax and no longer show binding bind.
+
+========================================
+
+Issue 6: Fix invalid import syntax in ProjectUnits examples
+Problem: Two examples use "private import SI::;" which is syntactically incomplete and will fail if copied into a model.
+
+Impact: Users following the unit-definition examples may get parser errors immediately.
+
+Evidence:
+[skill.md:1408]
+[skill.md:1564]
+
+Requested change: Replace the incomplete import with a valid form such as private import SI::*; or a specific named import, and verify both examples parse.
+
+Done when: Both ProjectUnits examples use valid import syntax.
+
+========================================
+
+Issue 5: Clarify import accessibility policy as style rule vs. language requirement
+Summary:
+The guidance treats explicit import accessibility (private/public/protected) as mandatory, but the same docs also show plain import examples without any prefix. That makes it unclear which parts are parser/spec requirements and which are repository style preferences.
+
+Evidence:
+Mandatory wording for explicit accessibility: [skill.md:31]
+Style guidance preferring private import: [skill.md:78]
+Strong rule requiring private import for scalar types: [skill.md:1720]
+Same file later shows plain imports without accessibility prefix:
+[skill.md:1019]
+[skill.md:1020]
+[skill.md:1021]
+Companion reference repeats the same ambiguity:
+[SysMLv2_Language_Reference.md:25]
+[SysMLv2_Language_Reference.md:1013]
+
+Requested change:
+Label each import rule as one of: required for language validity, required for this repository’s style, or optional best practice.
+
+Done when:
+The import guidance explicitly distinguishes parser/spec requirements from house style, and examples are aligned or annotated accordingly.
+
+========================================
+
+Issue 4: Fix corrupted text and malformed tokens in modeling conventions section
+Summary:
+The Modeling Conventions & Best Practices section contains encoding artifacts and broken tokens (for example, missing leading characters and a control-character artifact in action keywords). This makes the section unreliable as normative guidance.
+
+Evidence:
+
+Section header location: [skill.md:1183]
+Broken token in requirement usage text ("equirement"): [skill.md:1186]
+Broken token in requirement definition text ("equirement def"): [skill.md:1188]
+Broken token in requirement definition text ("equirement"): [skill.md:1189]
+Garbled action keyword (malformed control char): [skill.md:1190]
+Invalid text character (BEL code): [skill.md:1191]
+
+Requested change:
+Clean encoding artifacts, restore broken keywords/terms, and proofread the entire conventions subsection for syntax and readability.
+
+Done when:
+The conventions subsection is plain readable text with valid SysML terminology and no garbled or truncated tokens and no invalid text characters.
+
+========================================
+
+Issue 3: Clarify canonical flow syntax and context-specific variants
+Summary:
+The guidance currently mixes multiple flow forms (flow A to B, flow from A to B, and flow of X from A to B) while also stating stricter rules in interface context. This makes it unclear which form should be generated by default.
+
+Evidence:
+
+Interface-specific rule: [skill.md:284]
+Interface example using flow A to B: [skill.md:285]
+Other examples using flow from A to B: [skill.md:2570]
+Other examples using flow of X from A to B: [skill.md:4571]
+Stated rule favoring no from/of: [skill.md:4841]
+
+Requested change:
+Define one canonical default flow syntax and provide a clear matrix of allowed forms by context (interface, action/internal flow, tutorial shorthand).
+
+Done when:
+The flow section has one default style, context-specific exceptions are explicit, and examples are updated to match that policy consistently.
+
+========================================
+
+Issue 2: Clarify and standardize the two allocation styles used in guidance - allocation syntax and preferred pattern
+Summary:
+The docs currently show two allocation styles: an explicit allocation block style and a statement style using allocate ... to .... Without a clear preference, generators and contributors can produce mixed patterns.
+
+Evidence:
+
+Explicit allocation block style: [skill.md:311]
+Statement style (usage-to-usage): [skill.md:330]
+Same dual-style pattern in companion reference:
+[SysMLv2_Language_Reference.md:305]
+[SysMLv2_Language_Reference.md:324]
+
+Requested change:
+Pick one canonical style for general use, and explicitly document when the alternate style is allowed.
+
+Done when:
+The allocation section declares a default syntax, marks the secondary syntax as optional/advanced, and examples are aligned to that policy.
+
+========================================
+
+Issue 1: Resolve conflicting guidance on single-line comments
+Summary:
+The guidance currently says single-line comments (//) should not be used, but multiple Markdown documents include // examples. This creates a repo-wide inconsistency, not just in skill.md.
+
+Evidence:
+[skill.md:28]
+[skill.md:71]
+[SysMLv2_Language_Reference.md:65]
+[SysMLv2_Language_Reference.md:993]
+[shorthands_skill.md:14]
+[presentation.md:51]
+
+Requested change:
+Define one canonical comment policy and update all Markdown examples to match it.
+
+Done when:
+There is one unambiguous comment rule and no conflicting examples across the Markdown guidance set.
+
+========================================
+

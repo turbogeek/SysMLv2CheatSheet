@@ -24,18 +24,18 @@ if %ERRORLEVEL% neq 0 (
 )
 echo [OK] Python is installed.
 
-:: 3. Setup SysML v2 Implementation / Validator directory
-set V2_DIR=..\v2Implementation
+:: 3. Setup SysML v2 Validator directory
+set V2_DIR=..\sysml-validator
 if exist "%V2_DIR%" (
-    echo [OK] SysML v2 Implementation repository already exists at %V2_DIR%.
+    echo [OK] SysML v2 Validator repository already exists at %V2_DIR%.
 ) else (
-    echo [INFO] Cloning official SysML v2 Implementation repository...
-    git clone https://github.com/Systems-Modeling/SysML-v2-Release.git "%V2_DIR%"
+    echo [INFO] Cloning turbogeek SysML v2 Validator repository...
+    git clone https://github.com/turbogeek/sysmlv2-validator.git "%V2_DIR%"
     if !ERRORLEVEL! neq 0 (
         echo [ERROR] Failed to clone the repository. Please check your internet connection or Git configuration.
         exit /b 1
     )
-    echo [OK] Cloned SysML-v2-Release to %V2_DIR%.
+    echo [OK] Cloned sysmlv2-validator to %V2_DIR%.
 )
 
 :: 4. Configure Java via CATIA Magic / Cameo

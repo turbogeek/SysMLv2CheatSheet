@@ -8,7 +8,7 @@ This skill file equips AI Agents (like Antigravity, Claude, ChatGPT) with the kn
     *   **INCOSE Process** (Standard SE Lifecycle)
     *   **OOSEM** (Object-Oriented Systems Engineering Method)
     *   **MagicGrid** (Dassault/Cameo 3x4 matrix approach)
-2.  **Provide the Template:** Once the user selects a methodology, output the corresponding Markdown template (found in `LLM_Assets/`) to the user. Ask them to fill it out as completely as possible.
+2.  **Provide the Template:** Once the user selects a methodology, output the corresponding Markdown template (found in `LLM_skills/`) to the user. Ask them to fill it out as completely as possible.
     *   Use `incose_template.md` for INCOSE.
     *   Use `oosem_template.md` for OOSEM.
     *   Use `magicgrid_template.md` for MagicGrid.

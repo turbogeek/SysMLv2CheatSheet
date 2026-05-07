@@ -1,6 +1,6 @@
 # SysML v2 AI Agent Skill / Comprehensive Reference
 
-**Generated on:** 2026-05-05 15:09:13
+**Generated on:** 2026-05-07 11:53:46
 
 ---
 
@@ -29,10 +29,11 @@ When you need to perform mathematical calculations, query collections, model 3D 
 
 ### Key things to remember
 
-NEVER use single line comments `//` in the SysMLv2 language because these are not persisted to the model and are lost.
-The only reason to use `public` is when the element is to be used everywhere because a `public` is part of the world view. It is better to use the default (no `public` or `private`) so that a user in another package is forced to import.
-The only reason to use `private` is when the element is truly not usable or redefinable outside of a context of the package it lives, which in SysMLv2 is rare as we care less about this in engineering than is in software where we don't trust fellow programmers.
-When importing, the import must be prefixed with `public` , `private` or `protected` with 'private' being the default import accessibility specified (for example `private import ScalarValues::*;`).
+NEVER use single line comments `/* ` in the SysMLv2 language because these are not persisted to the model and are lost. */
+**Import Visibility (Repository Style Rule):**
+Lack of visibility on import statements (plain `import`) is forbidden in this repository. 
+While standard SysMLv2 allows plain `import`, this repository's strict best practice is to always use `private import` (e.g., `private import ScalarValues::*;`) to prevent namespace pollution. 
+`public import` should be avoided except in rare circumstances when there is a specific need to expose the imported elements to the public or to avoid circular dependencies.
 
 ### Definition and Usage Pattern
 
@@ -71,8 +72,8 @@ Packages organize model elements into namespaces.
 
 ```sysml
 package VehicleSystem {
-    private import ScalarValues::*; // Or explicitly: private import ScalarValues::Real;
-    // Package members
+    private import ScalarValues::*; /* Or explicitly: private import ScalarValues::Real; */
+    /* Package members */
 }
 ```
 
@@ -150,17 +151,17 @@ occurrence def Flight {
     attribute departureTime : DateTime;
 }
 
-// Time slices
+/* Time slices */
 occurrence def Mission {
     timeslice planning[1];
     timeslice execution[1];
     timeslice review[1];
 }
 
-// Individuals
+/* Individuals */
 individual def Flight_248 :> Flight;
 
-// Snapshots
+/* Snapshots */
 snapshot def SystemSnapshot :> System;
 ```
 
@@ -233,9 +234,9 @@ part def FuelTank {
     port fuelOutPort : FuelingPort;
 }
 
-// Conjugated port (reversed directions)
+/* Conjugated port (reversed directions) */
 part def Engine {
-    port fuelInPort : ~FuelingPort;  // Conjugated
+    port fuelInPort : ~FuelingPort;  /* Conjugated */
 }
 ```
 
@@ -257,7 +258,7 @@ connection def DeviceConnection {
     attribute bandwidth : Real;
 }
 
-// Binding connection
+/* Binding connection */
 bind part2.feature = part3.feature; /* Must use '=', not 'to' */
 
 /* Bindings cannot contain indices or multiplicity ranges.
@@ -265,7 +266,7 @@ bind part2.feature = part3.feature; /* Must use '=', not 'to' */
    Binding to an entire multi-part is only allowed when the target side is a part with multiplicity and no indexing is needed. */
 bind battery.pwrOut = escs.pwrIn;
 
-// Succession
+/* Succession */
 first action1 then action2;
 ```
 
@@ -311,12 +312,8 @@ package PhysicalSystem {
     part battery : Battery;
 }
 package LogicalToPhysicalAllocation {
-    
-    allocation power : Allocation {
-        end source : LogicalSystem::power;
-        end target : PhysicalSystem::battery;
-    }
-
+    /* The canonical and generally preferred syntax for allocations */
+    allocation allocate PhysicalSystem::battery to LogicalSystem::power;
 }
 ```
 
@@ -331,7 +328,7 @@ part def PhysicalSystem {
 part logicalUsage : LogicalSystem;
 part physicalUsage : PhysicalSystem;
 
-allocate physicalUsage.comp to logicalUsage.func;
+allocation allocate physicalUsage.comp to logicalUsage.func;
 
 ```
 
@@ -350,7 +347,7 @@ SysMLv2 handles units and quantities through the `ISQ` and `SI` libraries.
 ```sysml
 package ProjectUnits {
     private import SI::*;
-    private import ISQInformation::*; // Required for 'byte', 'storageCapacity', etc.
+    private import ISQInformation::*; /* Required for 'byte', 'storageCapacity', etc. */
     private import MeasurementReferences::ConversionByPrefix;
 
     /* Define custom units via ConversionByPrefix */
@@ -364,8 +361,8 @@ package ProjectUnits {
 
 part def Battery {
     /* Use standard quantity kinds rather than raw Reals when applicable */
-    attribute capacity : ISQ::electricCharge; // Correct for physical batteries (mAh / Ah)
-    attribute storage : ISQInformation::storageCapacity; // Correct for data storage (bytes)
+    attribute capacity : ISQ::electricCharge; /* Correct for physical batteries (mAh / Ah) */
+    attribute storage : ISQInformation::storageCapacity; /* Correct for data storage (bytes) */
 }
 ```
 
@@ -491,13 +488,13 @@ if selectedSensor != null {
 **Loop Actions:**
 
 ```sysml
-// While loop
+/* While loop */
 while t < endTime {
     assign y := 2*x;
     then assign x := x + increment;
 } until x >= 10;
 
-// For loop
+/* For loop */
 for i in 1..n {
     assign y := y + i;
 }
@@ -533,7 +530,7 @@ state def OperationalStates {
         then on /* transition to state*/; 
 }
 
-// State with actions
+/* State with actions */
 state def Exercising {
     entry action warmup : WarmUp;
     do action exercise : Exercise {
@@ -580,7 +577,7 @@ calc def Pythagorean {
     return c : Real = sqrt(a**2 + b**2);
 }
 
-// Calculation usage
+/* Calculation usage */
 calc hypotenuse : Pythagorean {
     in a = 3.0;
     in b = 4.0;
@@ -605,7 +602,7 @@ constraint def MassLimit {
     mass <= limit
 }
 
-// Constraint usage
+/* Constraint usage */
 constraint vehicleMassLimit : MassLimit {
     in mass = vehicle.mass;
     in limit = 2000[kg];
@@ -631,7 +628,7 @@ assert constraint positiveValue {
     value > 0;
 }
 
-// Negated assertion
+/* Negated assertion */
 not assert constraint {
     mass > maxMass;
 }
@@ -656,7 +653,7 @@ Requirements specify stakeholder-imposed constraints.
 Use a `requirement def` ONLY when creating a specific *kind* or *type* of requirement (e.g., PerformanceRequirement, SafetyRequirement).
 
 ```sysml
-// Define requirement types (Defs)
+/* Define requirement types (Defs) */
 package <RT> RequirementTypes {
     requirement def PerformanceRequirement {
         doc /* A requirement that requires a specific metric to be met. */
@@ -666,9 +663,9 @@ package <RT> RequirementTypes {
     }
 }
 
-// Instantiate actual system requirements (Usages)
+/* Instantiate actual system requirements (Usages) */
 package Requirements {
-    // Use the <'ID'> shortcut syntax for the ID and provide a short name
+    /* Use the <'ID'> shortcut syntax for the ID and provide a short name */
     requirement <'REQ-PERF-01'> 'Minimum System MTBF' : RT::PerformanceRequirement {
         doc /* The system shall have a mean time between failures of greater than 5 years. */
         attribute MTBF : Time::Iso8601DateTimeStructure; 
@@ -680,7 +677,7 @@ package Requirements {
     }
     
     requirement <'REQ-SAFE-01'> 'Max Temperature' : RT::SafetyRequirement {
-        doc /* The external chassis temperature shall not exceed 45°C. No // comments allowed! */
+        doc /* The external chassis temperature shall not exceed 45°C. No /* comments allowed! */ */
     }
 }
 ```
@@ -688,8 +685,8 @@ package Requirements {
 **Subjects, Actors, Stakeholders:**
 
 ```sysml
-// NOTE: `actor` and `stakeholder` are USAGE keywords, not definition keywords.
-// The types they reference must be defined as `part def` or `item def` (e.g., `part def Person;`).
+/* NOTE: `actor` and `stakeholder` are USAGE keywords, not definition keywords. */
+/* The types they reference must be defined as `part def` or `item def` (e.g., `part def Person;`). */
 requirement def BrakingRequirement {
     subject vehicle : Vehicle;
     actor environment : DrivingEnvironment;
@@ -719,12 +716,12 @@ requirement def SafetyRequirement {
 ```sysml
 satisfy requirement vehicleMaxMass by vehicle1;
 
-// In context
+/* In context */
 part vehicle1 : Vehicle {
     satisfy rqts : VehicleRequirementsGroup;
 }
 
-// Negated
+/* Negated */
 not satisfy vehicleMaxMass by vehicle2;
 ```
 
@@ -752,7 +749,7 @@ case def FaultRecovery {
         doc /* Engineer resolves fault and restores system. */
     }
 
-    // Case actions
+    /* Case actions */
     action diagnoseFault;
     action applyFix;
     action verifyRecovery;
@@ -781,7 +778,7 @@ analysis def FuelEconomyAnalysis {
         doc /* Determine fuel economy for given driving cycle. */
     }
 
-    // Analysis actions
+    /* Analysis actions */
     calc dynamicsAnalysis;
     calc fuelConsumptionAnalysis;
 }
@@ -806,7 +803,7 @@ verification def MaxMassVerification {
         subject vehicle = testVehicle;
     }
 
-    // Verification actions
+    /* Verification actions */
     action measureMass;
     action compareToLimit;
 }
@@ -937,23 +934,23 @@ part criticalComponent : Component;
 ### Feature Values
 
 ```sysml
-// Bind (equality)
+/* Bind (equality) */
 attribute count : Integer = 12;
 
-// Initial value
+/* Initial value */
 attribute counter : Integer := 0;
 
-// Default value
+/* Default value */
 attribute cutoff : Real default = 0.75 * average;
 ```
 
 ### Multiplicities
 
 ```sysml
-part wheels[4] : Wheel;           // Exactly 4
-part driver[0..1] : Person;       // Optional
-part passengers[*] : Person;      // Any number
-part engines[1..*] : Engine;      // At least 1
+part wheels[4] : Wheel;           /* Exactly 4 */
+part driver[0..1] : Person;       /* Optional */
+part passengers[*] : Person;      /* Any number */
+part engines[1..*] : Engine;      /* At least 1 */
 ```
 
 ### Ordered and Unique
@@ -970,7 +967,7 @@ attribute stocks : StockData[*] ordered nonunique;
 
 ```sysml
 part def SportsCar specializes Vehicle;
-part def SportsCar :> Vehicle;  // Shorthand
+part def SportsCar :> Vehicle;  /* Shorthand */
 ```
 
 ### Redefinition
@@ -1000,7 +997,7 @@ doc /* This is a documentation comment. */
 ### Comments
 
 ```sysml
-// Single line comment
+/* Single line comment */
 /* Multi-line
    comment */
 ```
@@ -1020,9 +1017,9 @@ SysML v2 includes standard model libraries:
 Standard imports:
 
 ```sysml
-import ScalarValues::*;
-import ISQ::*;
-import SI::*;
+private import ScalarValues::*;
+private import ISQ::*;
+private import SI::*;
 ```
 
 ---
@@ -1061,7 +1058,7 @@ part sender {
 }
 
 part receiver {
-    port in : ~DataPort;  // Conjugated
+    port in : ~DataPort;  /* Conjugated */
 }
 
 interface connection sender.out to receiver.in;
@@ -1409,7 +1406,7 @@ Good example:
 
 ```sysml
 package ProjectUnits {
-    private import SI::;
+    private import SI::*;
     private import MeasurementReferences::ConversionByPrefix;
 
     attribute <ms> millisecond : DurationUnit {
@@ -1565,7 +1562,7 @@ Project units
 
 ```sysml
 package ProjectUnits {
-    private import SI::;
+    private import SI::*;
     private import MeasurementReferences::ConversionByPrefix;
 
     doc /* Project-specific units added where the standard SI library does not already provide the needed named unit. */
@@ -1728,7 +1725,7 @@ This skill is intended to produce SysMLv2 that is:
 
 # SysML v2 Cheat Sheets: Complete Collection
 
-**Generated on:** 2026-05-05 15:09:13
+**Generated on:** 2026-05-07 11:53:46
 
 ---
 
@@ -3251,7 +3248,7 @@ package Requirements_3Satisfy {
     part server {
       satisfy req1;
     }
-    /* satisfy req1 by server; // Alternative syntax */
+    /* satisfy req1 by server; */
 }
 ```
 
@@ -3800,7 +3797,7 @@ style color = "red";
 
 # SysML v2 Tutorials: Complete Collection
 
-**Generated on:** 2026-05-05 15:09:13
+**Generated on:** 2026-05-07 11:53:46
 
 ---
 

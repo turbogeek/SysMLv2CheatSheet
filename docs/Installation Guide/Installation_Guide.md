@@ -113,16 +113,35 @@ You need two repositories: the SysML v2 Reference Implementation (which contains
    cd git
    ```
 
-#### 3. Clone the SysML v2 Implementation:
+#### 3. Clone the SysML v2 Validator:
    * Run the following command to clone the SysML v2 validation engine:
 
      ```bash
-     git clone https://github.com/Systems-Modeling/SysML-v2-Release.git v2Implementation
+     git clone https://github.com/turbogeek/sysmlv2-validator.git sysml-validator
      ```
 
-   * *(Note: If your organization has a specific fork of the SysML-v2-Release or the validator, use that URL instead).*
+   * *(Note: This replaces the older SysML-v2-Release dependency).*
 
-#### 4. Clone the LLM Scripts Repository:
+#### 4. Build the SysML v2 Validator:
+   * The validator must be compiled to generate the executable JAR file required by the pipeline.
+   * Navigate into the folder and run the build script:
+
+     **Windows:**
+     ```cmd
+     cd sysml-validator
+     build-with-portable-maven.cmd
+     cd ..
+     ```
+
+     **macOS/Linux:**
+     *(Assuming Maven is installed or a `.sh` equivalent is provided)*
+     ```bash
+     cd sysml-validator
+     mvn clean package
+     cd ..
+     ```
+
+#### 5. Clone the LLM Scripts Repository:
    * Clone the repository containing the prompt engineering assets and validation scripts:
 
      ```bash
@@ -134,7 +153,7 @@ You need two repositories: the SysML v2 Reference Implementation (which contains
 ## 3. Validating the Scripts
 
 The Python wrapper script (`validate_model.py`) automatically determines where the Java validator is located.
-As long as you cloned both repositories into the same parent folder (e.g., `Documents/git/` as shown in Step 2), the script will correctly find the validator at `../v2Implementation/sysml-validator/validate.cmd` (or `.sh`).
+As long as you cloned both repositories into the same parent folder (e.g., `Documents/git/` as shown in Step 2), the script will correctly find the validator JAR at `../sysml-validator/validator-cli/target/sysml-validator.jar` (or fallback to `validate.cmd`).
 
 You do **not** need to manually edit paths inside `validate_model.py`.
 
@@ -250,7 +269,7 @@ To test generated `.sysml` code directly within CATIA Magic / Cameo, a local RES
 ### Troubleshooting
 
 * **"Java is not recognized..."**: Ensure you installed JDK 17 and added it to your PATH environment variable.
-* **"Validator script not found..."**: Double-check that you cloned the `v2Implementation` repository exactly at the same folder level as `SysMLv2CheatSheet`.
+* **"Validator script not found..."**: Double-check that you cloned the `sysml-validator` repository exactly at the same folder level as `SysMLv2CheatSheet`.
 * **"Python is not recognized..."**: Re-run the Python installer and check "Add Python to PATH".
 
 ---

@@ -1,6 +1,6 @@
 # SysML v2 Cheat Sheets: Complete Collection
 
-**Generated on:** 2026-05-05 18:17:20
+**Generated on:** 2026-05-07 11:54:01
 
 ---
 
@@ -1523,7 +1523,7 @@ package Requirements_3Satisfy {
     part server {
       satisfy req1;
     }
-    /* satisfy req1 by server; // Alternative syntax */
+    /* satisfy req1 by server; */
 }
 ```
 

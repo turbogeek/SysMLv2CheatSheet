@@ -549,7 +549,7 @@ def generate_sysml_file():
             
             /* send */
             /* startSignal { */
-            /* out p1; // implicit */
+            /* out p1; */
             /*  */}
             
             /* send startSignal via p1; (concatenation bug */)
