@@ -185,3 +185,63 @@ package Architecture {
     }
 }
 ```
+
+## 16. Invalid Requirement ID Syntax
+
+**Error:** `mismatched input '<' expecting {'default', '{', ';', '=', ':='}`
+**Context:** The LLM attempts to use a requirement ID but formats it incorrectly, such as adding spaces (`< 'REQ-01' >`), omitting the requirement name, or failing to quote an ID that contains illegal characters.
+**Fix:** The `<ID>` syntax is standard in SysMLv2 for specifying the requirement's unique identifier. The ID is treated as a name. You must use single quotes (`'`) around the ID or the summary name *only if* it contains illegal characters (like hyphens, spaces, or special symbols). For example, `REQ-01` must be quoted as `'REQ-01'` because of the hyphen, whereas `REQ_01` is legal without quotes because underscores are allowed. Always follow the ID with a short summary string (the name).
+**Answer:**
+
+```sysml
+// Incorrect forms:
+// requirement <REQ-01> 'System Name' { ... } // Fails because '-' is an illegal character without quotes
+// requirement < 'REQ-01' > 'System Name' { ... } // Extra spaces inside the brackets
+// requirement <'REQ-01'> { ... } // Missing the required short name
+
+// Correct forms:
+requirement <'REQ-01'> 'System Name' {
+    doc /* Uses quotes because of the hyphen '-' in the ID and spaces in the name */
+}
+
+requirement <REQ_01> SystemName {
+    doc /* No quotes needed because underscores and camelCase are legal characters */
+}
+```
+
+## 17. Invalid Expose Syntax in Views
+
+**Error:** `SYNTAX_ERROR: no viable alternative at input '::;'`
+**Context:** The LLM attempts to expose all elements of a package in a view using `expose PackageName::;`.
+**Fix:** The `::` is incorrect and causes a parsing error in certain Cameo implementations.
+**Answer:** Remove the `::` and just use the package name.
+
+```sysml
+// Incorrect:
+view concernsView {
+    expose Stakeholders::;
+}
+
+// Correct:
+view concernsView {
+    expose Stakeholders;
+}
+```
+
+## 18. Framing Unowned Concerns
+
+**Error:** `Name resolution error: couldn't resolve reference to Element 'power'.`
+**Context:** The LLM frames a concern from a stakeholder part (e.g., `frame humanOperator.power`) but forgot to explicitly add that concern usage inside the stakeholder part definition.
+**Fix:** Ensure that any concern you reference via dot-notation is actually declared as a usage inside that specific part.
+**Answer:**
+
+```sysml
+part humanOperator : HumanOperator {
+    // This usage must exist before it can be framed by a requirement
+    concern power : PowerConcern;
+}
+
+requirement solarPower {
+    frame humanOperator.power; // Now this resolves correctly
+}
+```
