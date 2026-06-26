@@ -189,14 +189,13 @@ package Architecture {
 ## 16. Invalid Requirement ID Syntax
 
 **Error:** `mismatched input '<' expecting {'default', '{', ';', '=', ':='}`
-**Context:** The LLM attempts to use a requirement ID but formats it incorrectly, such as adding spaces (`< 'REQ-01' >`), omitting the requirement name, or failing to quote an ID that contains illegal characters.
+**Context:** The LLM attempts to use a requirement ID but formats it incorrectly, such as omitting the requirement name, or failing to quote an ID that contains illegal characters.
 **Fix:** The `<ID>` syntax is standard in SysMLv2 for specifying the requirement's unique identifier. The ID is treated as a name. You must use single quotes (`'`) around the ID or the summary name *only if* it contains illegal characters (like hyphens, spaces, or special symbols). For example, `REQ-01` must be quoted as `'REQ-01'` because of the hyphen, whereas `REQ_01` is legal without quotes because underscores are allowed. Always follow the ID with a short summary string (the name).
 **Answer:**
 
 ```sysml
 // Incorrect forms:
 // requirement <REQ-01> 'System Name' { ... } // Fails because '-' is an illegal character without quotes
-// requirement < 'REQ-01' > 'System Name' { ... } // Extra spaces inside the brackets
 // requirement <'REQ-01'> { ... } // Missing the required short name
 
 // Correct forms:
@@ -207,6 +206,8 @@ requirement <'REQ-01'> 'System Name' {
 requirement <REQ_01> SystemName {
     doc /* No quotes needed because underscores and camelCase are legal characters */
 }
+
+// Note: Spaces inside the angle brackets (e.g., < 'REQ-01' >) are syntactically valid but have excess whitespace.
 ```
 
 ## 17. Invalid Expose Syntax in Views
@@ -244,4 +245,41 @@ part humanOperator : HumanOperator {
 requirement solarPower {
     frame humanOperator.power; // Now this resolves correctly
 }
+```
+
+## 19. Traceability Keyword (`derive`)
+
+**Error:** `SYNTAX_ERROR: mismatched input 'someName' expecting {'istype', 'hastype'...}` near a `derive` statement.
+**Context:** When attempting to use `derive requirementName;` to trace requirements.
+**Fix:** The `derive` keyword may not be supported by the current parser version. Remove the `derive` statement and rely on documentation or `dependency` relationships to trace requirements.
+
+## 20. Variant Definition Syntax
+
+**Error:** `extraneous input 'variant' expecting ...`
+**Context:** When defining variants of a variation using `variant part def MyVariant :> MyVariation;`
+**Fix:** Do not use the `variant` keyword. A variant is implicitly defined by specializing (`:>`) a variation definition. Use standard part definition syntax.
+**Answer:**
+
+```sysml
+// Incorrect:
+variant part def NichromeCoil :> HeatingElement;
+
+// Correct:
+part def NichromeCoil :> HeatingElement;
+```
+
+## 21. Time Events in Transitions
+
+**Error:** `SYNTAX_ERROR: no viable alternative at input 'transition t1 first State1 after'` or `extraneous input 'after'`
+**Context:** When attempting to use `after 120 [s]` in a transition statement.
+**Fix:** The `after` syntax may not be supported directly in transition sequences. Instead, define an action/event like `action def TimerExpired;` and use `accept TimerExpired`.
+**Answer:**
+
+```sysml
+// Incorrect:
+transition t2 first Heating after 120 [s] then Cooling;
+
+// Correct:
+action def TimerExpired;
+transition t2 first Heating accept TimerExpired then Cooling;
 ```

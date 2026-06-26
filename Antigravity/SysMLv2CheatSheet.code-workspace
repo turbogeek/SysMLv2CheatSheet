@@ -1,17 +1,39 @@
 {
-	"folders": [
-		{
-			"path": ".."
-		},
-		{
-			"path": "../../sysml-validator"
-		},
-		{
-			"path": "../../TutorialForCatiaMagicApiMCP"
-		}
-	],
-	"settings": {
-		"java.compile.nullAnalysis.mode": "automatic",
-		"powershell.cwd": "sysml-validator"
-	}
+    "folders":  [
+                    {
+                        "path":  ".."
+                    },
+                    {
+                        "path":  "../../sysml-validator"
+                    },
+                    {
+                        "path":  "../../TutorialForCatiaMagicApiMCP"
+                    }
+                ],
+    "settings":  {
+                     "java.compile.nullAnalysis.mode":  "automatic",
+                     "powershell.cwd":  "sysml-validator",
+                     "files.exclude":  {
+                                           "**/.git":  true,
+                                           "**/build":  true,
+                                           "**/target":  true,
+                                           "**/.gemini":  true,
+                                           "**/node_modules":  true,
+                                           "**/bin":  true
+                                       },
+                     "search.exclude":  {
+                                            "**/.gemini":  true,
+                                            "**/node_modules":  true,
+                                            "**/bin":  true,
+                                            "**/target":  true,
+                                            "**/build":  true
+                                        },
+                     "files.watcherExclude":  {
+                                                  "**/build/**":  true,
+                                                  "**/.git/objects/**":  true,
+                                                  "**/target/**":  true,
+                                                  "**/.gemini/**":  true,
+                                                  "**/node_modules/**":  true
+                                              }
+                 }
 }
