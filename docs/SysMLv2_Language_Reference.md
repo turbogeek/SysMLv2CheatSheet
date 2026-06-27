@@ -38,6 +38,9 @@ When iterating against a live Cameo session via a load/REST harness, each succes
 **Provide proper diagrams, not just `view` elements:**
 A textual model with `view`/`viewpoint` elements is not "diagrammed" until the views are realized as actual diagrams in the tool. For a deliverable, generate the standard diagrams (e.g., the package/containment overview, a BDD-style definition view of the parts, an IBD-style internal view showing ports & connections, a requirements table, and any state-machine/action diagrams) so the model is reviewable visually, not only as text.
 
+**Filter library elements out of every `expose` view:**
+`expose` pulls in the imported standard-library / scope elements as well, which render as clutter that is worthless to the reader. Add `filter not KerML::Root::Element::isLibraryElement;` inside every view that uses `expose`, so the diagram shows only the model's own elements. Filters can also narrow by kind, e.g. `filter @RequirementUsage;` (keep one kind) or `filter not (istype ViewUsage);` (drop the views themselves).
+
 **Validate in BOTH the standalone validator and the production tool:**
 Run the standalone SysML v2 validator AND load into the live Cameo/Dassault plugin. They are not equivalent — the production plugin is stricter (e.g. it rejects `satisfy <requirement def>`; you must `satisfy` a requirement USAGE). Treat a clean load in the production tool as authoritative.
 

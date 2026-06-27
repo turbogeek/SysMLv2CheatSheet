@@ -53,3 +53,9 @@ validator + live CATIA Magic / Cameo). These complement the syntax rules in `ski
     For a deliverable, generate the containment/package overview, a BDD-style definition
     view of the parts, an IBD-style internal view with ports & connections, requirement
     tables, and any state-machine/action diagrams.
+12. **Filter library elements out of every `expose` view.** `expose` pulls in the imported
+    standard-library / scope elements too, which render as clutter worthless to the reader.
+    Add `filter not KerML::Root::Element::isLibraryElement;` inside every view that uses
+    `expose` so the diagram shows only the model's own elements. (Other useful filters:
+    `filter @RequirementUsage;` to keep one kind, `filter not (istype ViewUsage);` to drop
+    the views themselves.)
