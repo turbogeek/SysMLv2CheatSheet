@@ -1,6 +1,6 @@
 # SysML v2 AI Agent Skill / Comprehensive Reference
 
-**Generated on:** 2026-05-12 18:52:37
+**Generated on:** 2026-06-27 10:59:36
 
 ---
 
@@ -34,6 +34,27 @@ NEVER use single line comments `/* ` in the SysMLv2 language because these are n
 Lack of visibility on import statements (plain `import`) is forbidden in this repository. 
 While standard SysMLv2 allows plain `import`, this repository's strict best practice is to always use `private import` (e.g., `private import ScalarValues::*;`) to prevent namespace pollution. 
 `public import` should be avoided except in rare circumstances when there is a specific need to expose the imported elements to the public or to avoid circular dependencies.
+
+**One root package per file (CATIA Magic namespace naming):**
+Keep exactly ONE package at the root of the file's namespace; put everything else (helper packages, math extensions, etc.) NESTED inside it. CATIA Magic / Cameo names the imported namespace after the FIRST root element in the containment tree, so a single named root package gives the model a clean, predictable name. Two or more sibling root packages (or a leading bare comment as the first element) produce an awkwardly-named or ambiguous namespace. Put the file's overview in that root package's `doc`, not in a comment above it.
+
+**Reuse the model in the tool — undo, don't pollute (Cameo workflow):**
+When iterating against a live Cameo session via a load/REST harness, each successful textual import COMMITS into the open project. Before re-loading an edited version, UNDO the previous load (Cameo has full undo) or remove the previously-loaded packages — otherwise the project accumulates duplicate root packages, and `import Foo::*` may resolve to a STALE earlier copy (missing your new members). Prefer undo/cleanup over renaming packages to dodge the clash. A fresh project or a harness reset also gives a clean load.
+
+**Provide proper diagrams, not just `view` elements:**
+A textual model with `view`/`viewpoint` elements is not "diagrammed" until the views are realized as actual diagrams in the tool. For a deliverable, generate the standard diagrams (e.g., the package/containment overview, a BDD-style definition view of the parts, an IBD-style internal view showing ports & connections, a requirements table, and any state-machine/action diagrams) so the model is reviewable visually, not only as text.
+
+**Filter library elements out of every `expose` view:**
+`expose` pulls in the imported standard-library / scope elements as well, which render as clutter that is worthless to the reader. Add `filter not KerML::Root::Element::isLibraryElement;` inside every view that uses `expose`, so the diagram shows only the model's own elements. Filters can also narrow by kind, e.g. `filter @RequirementUsage;` (keep one kind) or `filter not (istype ViewUsage);` (drop the views themselves).
+
+**Validate in BOTH the standalone validator and the production tool:**
+Run the standalone SysML v2 validator AND load into the live Cameo/Dassault plugin. They are not equivalent — the production plugin is stricter (e.g. it rejects `satisfy <requirement def>`; you must `satisfy` a requirement USAGE). Treat a clean load in the production tool as authoritative.
+
+**Math the standard library lacks goes in a Groovy textual representation:**
+`ln`, `exp`, etc. are NOT in the SysML v2 standard Kernel Function Library. Declare them in a nested `MathExtensions` package as a `calc def` with a Groovy textual representation, e.g. `calc def ln { in x : Real[1]; return result : Real[1]; rep lnGroovy language "Groovy" /* result = Math.log(x) */ }`, so a scripting-capable tool can execute them. `sqrt`, `**`, and `^` ARE available.
+
+**Element documentation goes INSIDE the element as `doc`:**
+A comment about an element belongs inside it with the `doc` keyword (`attribute mass : MassValue { doc /* ... */ }`), because `doc` persists as element documentation. A comment about a group of following lines is a single block comment above them. Never stack many one-line block comments to fake a multi-line comment, and never embed a `*/` inside another block comment (block comments do not nest).
 
 ### Definition and Usage Pattern
 
@@ -1763,7 +1784,7 @@ This skill is intended to produce SysMLv2 that is:
 
 # SysML v2 Cheat Sheets: Complete Collection
 
-**Generated on:** 2026-05-12 18:52:36
+**Generated on:** 2026-06-27 10:59:36
 
 ---
 
@@ -3835,7 +3856,7 @@ style color = "red";
 
 # SysML v2 Tutorials: Complete Collection
 
-**Generated on:** 2026-05-12 18:52:36
+**Generated on:** 2026-06-27 10:59:36
 
 ---
 
