@@ -277,9 +277,50 @@ part def NichromeCoil :> HeatingElement;
 
 ```sysml
 // Incorrect:
-transition t2 first Heating after 120 [s] then Cooling;
+transition t2 first Heating accept TimerExpired then Cooling;
+```
+
+## 22. Private Imports and Package Scope
+
+**Error:** Top-level package-level imports using `public import` or imports placed outside of the package body.
+**Fix:** All imports must be `private import` (plain `import` and `public import` are forbidden, except to break circular dependencies). Additionally, imports must be placed *inside* the package/subpackage bodies (folders) to prevent namespace pollution.
+**Answer:**
+
+```sysml
+// Incorrect:
+package MyModel {
+    public import ScalarValues::*;
+    package SubPackage {
+        // Missing imports in subpackage scope
+    }
+}
 
 // Correct:
-action def TimerExpired;
-transition t2 first Heating accept TimerExpired then Cooling;
+package MyModel {
+    private import ScalarValues::*;
+    package SubPackage {
+        private import ScalarValues::*;
+        // Imports placed inside the package body
+    }
+}
+```
+
+## 23. Package Comments Placement using `doc`
+
+**Error:** Comments/descriptions describing a package are placed outside the package, or lack the `doc` prefix.
+**Fix:** In SysML v2, comments intended as package description metadata must be placed *inside* the package body and prefixed by the `doc` keyword.
+**Answer:**
+
+```sysml
+// Incorrect:
+/* ================= SubSystem ================= */
+package SubSystem {
+    ...
+}
+
+// Correct:
+package SubSystem {
+    doc /* ================= SubSystem ================= */
+    ...
+}
 ```

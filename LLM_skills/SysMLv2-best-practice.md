@@ -11,15 +11,18 @@ validator + live CATIA Magic / Cameo). These complement the syntax rules in `ski
    single named root package gives a clean, predictable name. Avoid sibling root packages
    or a leading bare comment as the first element. Put the file overview in the root
    package's `doc`.
-2. **`private import` only.** Plain `import` is forbidden here; `public import` only to
-   break circular deps. Prevents namespace pollution.
+2. **`private import` only and placed inside the package.** Plain `import` and `public import`
+   are forbidden (except to break circular dependencies). All imports (such as `ScalarValues::*`, 
+   `ISQ::*`, `SI::*`) must be `private import` and must be placed *inside* each package/subpackage 
+   definition (i.e., inside the folder/package scope) to prevent namespace leaks.
 3. **Definition/usage discipline.** `def` classifies; usages apply. Don't use reserved
    words (`type`, `standard`, `interface`, `in`, `out`, …) as names.
 
 ## Documentation
 
-4. **Element docs go INSIDE the element as `doc`** (`attribute m : MassValue { doc /* … */ }`)
-   — `doc` persists as model documentation; trailing `//` or plain `/* */` may be dropped.
+4. **Element and package docs go INSIDE the element/package as `doc`.**
+   - For elements: `attribute m : MassValue { doc /* … */ }`.
+   - For packages/folders: The overview comment must be placed *inside* the package definition block and be preceded by the `doc` keyword (e.g., `package MyPackage { doc /* description */ ... }`). Plain comments outside or before the package definition block do not associate with the package in the model AST and are discouraged.
 5. **One comment, not a stack.** A multi-line comment is a single `/* … */` block, never a
    column of one-line block comments. **Block comments do not nest** — never put a `*/`
    inside another `/* … */`.
