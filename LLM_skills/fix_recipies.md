@@ -324,3 +324,28 @@ package SubSystem {
     ...
 }
 ```
+## 24. filter @SysML::Systems::PartUsage;
+**Error:** Name resolution error: Element 'SysML' as cannot be cast to .
+**Fix:** This is a common error in which the user confuses dot reference with a uses '.' instead of '::' (containment/path). 
+```sysml
+// Incorrect:
+filter @SysML.Systems.PartUsage;
+    ...
+}
+
+// Correct:
+filter @SysML::Systems::PartUsage;
+}
+```
+## 25. filter not using @
+**Error:** Error: A condition result must directly or indirectly specialize ScalarValues::Boolean.
+**Fix:** Forgetting that when filtering by metatype, the @ acts as an instance-of type test, and @@ acts as a metaclass instance test, so depending on the intent one of these must be used. The following is a common error of many users.
+```sysml
+// Incorrect:
+filter SysML::Systems::PartUsage;
+    ...
+
+// Correct:
+filter @SysML::Systems::PartUsage;
+    ...
+```

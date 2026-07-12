@@ -1971,6 +1971,142 @@ package States_5ParallelStates {
     }
 }
 
+// --- Source: Symbols_1InheritanceRedefinition.sysml ---
+package Symbols_1SpecializationAndSubsetting {
+    private import ScalarValues::*;
+    private import SysML::*;
+
+    part def Vehicle;
+    /* Definition Specialization */
+    part def Car :> Vehicle;
+
+    part def Garage {
+        /* Usage Subsetting */
+        part vehicles [*];
+        part cars :> vehicles;
+    }
+
+    part myGarage : Garage {
+        /* Usage Redefinition */
+        part :>> cars [2..4];
+    }
+}
+
+// --- Source: Symbols_2TypingNamespace.sysml ---
+package Symbols_2TypingAndNamespace {
+    private import ScalarValues::*;
+    private import SysML::*;
+
+    /* Namespace qualification using '::' */
+    attribute x : ISQ::mass;
+
+    action def ProcessEvent {
+        /* Trigger parameter binding using ':' */
+        accept e : Event;
+    }
+}
+
+// --- Source: Symbols_3PortConjugationOperators.sysml ---
+package Symbols_3ConjugationAndOperators {
+    private import ScalarValues::*;
+    private import SysML::*;
+
+    port def OutputInterface;
+    /* Conjugated port reverses feature directions */
+    port inputPort : ~OutputInterface;
+
+    attribute val : Real;
+    /* Unary prefix operator (custom meaning) */
+    attribute inv = ~val;
+}
+
+// --- Source: Symbols_4RangeNullCoalescing.sysml ---
+package Symbols_4RangeAndCoalescing {
+    private import ScalarValues::*;
+    private import SysML::*;
+
+    /* '..' for multiplicity range */
+    part sensors [1..5];
+
+    attribute status : String[0..1];
+    /* '??' and '..' in expressions */
+    attribute currentStatus = status ?? "Unknown";
+    attribute rangeList = 1..10;
+}
+
+// --- Source: Symbols_5BindAssignEquality.sysml ---
+package Symbols_5EqualityAndAssignment {
+    private import ScalarValues::*;
+    private import SysML::*;
+
+    attribute val1 = 5; /* Rigid value binding */
+    attribute val2 := 10; /* Initial value (re-assignable) */
+
+    action def Compare {
+        in attribute a : Integer;
+        in attribute b : Integer;
+        out attribute isEqual : Boolean;
+        out attribute isSame : Boolean;
+
+        /* Value equality (==) vs Identity same (===) */
+        isEqual = (a == b);
+        isSame = (a === b);
+    }
+}
+
+// --- Source: Symbols_6WildcardsMultiplicity.sysml ---
+package Symbols_6WildcardsAndMultiplicity {
+    private import ScalarValues::*;
+    /* Wildcard import: direct members only */
+    private import SysML::*;
+    /* Recursive import: direct and indirect nested members */
+    public import Symbols_6WildcardsAndMultiplicity::**;
+
+    /* Single asterisk: unrestricted upper bound */
+    part passengers [*];
+
+    /* Single and double asterisk operators in expressions */
+    attribute val1 : Real;
+    attribute val2 : Real;
+    attribute product = val1 * val2;
+    attribute power = val1 ** 3;
+}
+
+// --- Source: Symbols_7MetadataClassification.sysml ---
+package Symbols_7AnnotationsAndClassification {
+    private import ScalarValues::*;
+    private import SysML::*;
+
+    /* Declaring metadata annotation type */
+    metadata def SafetyLevel {
+        attribute level : Integer;
+    }
+
+    /* '@' applied as annotation */
+    @SafetyLevel { level = 1; }
+    part safePart;
+
+    attribute isSafeType = safePart @ Part; /* '@' used for Type test */
+    attribute isSafeMeta = safePart @@ Part; /* '@@' used for Metaclass test */
+}
+
+// --- Source: Symbols_8EscapesLiterals.sysml ---
+package Symbols_8EscapesAndLiterals {
+    private import ScalarValues::*;
+    private import SysML::*;
+
+    part 'wheels';
+    /* Single quotes escape names with spaces/symbols */
+    part 'left wheel' :> 'wheels';
+
+    /* Double quotes wrap string literals */
+    attribute str1 = "standard string";
+
+    /* Backslash escapes special characters in strings and names */
+    attribute str2 = "first line\nsecond line with \"quotes\" and \\backslash";
+    part 'it\'s a quoted name' :> 'wheels';
+}
+
 // --- Source: UseCaseTutorial_APS.sysml ---
 package AutomatedPickleballServerModel {
 

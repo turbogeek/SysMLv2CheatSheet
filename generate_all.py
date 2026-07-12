@@ -17,6 +17,7 @@ scripts = [
     "generate_reference_sheet.py",
     "generate_requirements_sheet.py",
     "generate_shorthand_sheet.py",
+    "generate_symbols_sheet.py",
     "generate_states_sheet.py",
     "generate_state_patterns_sheet.py",
     "generate_views_sheet.py",

@@ -149,14 +149,16 @@ def generate_for_theme(theme_key, theme):
 
     # Symbols
     items = [
-        (":>", "Structure (Inherit)"),
-        (":>>", "Reference (Redefine)"),
-        ("::", "Reference (Namespace)"),
-
-        ("/* */", "Reference (Comment)"),
-        ("=", "Connections (Bind)"),
-        (":=", "Actions (Assign)"),
-        ("->", "Connections (Flow)"),
+        (":>", "Inheritance / Subsetting"),
+        (":>>", "Usage Redefinition"),
+        ("::", "Namespace Scope"),
+        ("~", "Conjugation / Operator"),
+        ("=", "Constraint / Binding"),
+        (":=", "Assignment / Init Value"),
+        ("== / ===", "Value/Identity Equality"),
+        ("* / **", "Multiplicity / Wildcards"),
+        ("@ / @@", "Metadata / Type Test"),
+        ("' / \" / \\", "Escapes & Literals")
     ]
     card, h = draw_section(col2_x, cur_y_c2, "Symbols", items, theme)
     svg += card
